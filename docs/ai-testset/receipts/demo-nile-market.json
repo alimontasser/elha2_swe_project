@@ -1,0 +1,77 @@
+{
+  "id": "demo-nile-market",
+  "source": "Fictional demo receipt (apps/mobile/lib/data/mock/mock_data.dart)",
+  "shopName": "سوبرماركت النيل",
+  "kind": "arabic-supermarket",
+  "lines": [
+    "سوبرماركت النيل - فرع المعادي",
+    "فاتورة رقم 000482   29/10/2026 18:42",
+    "العميل: منى أحمد",
+    "موبايل: 0101 234 5678",
+    "طماطم            1.000 كجم   18.50",
+    "عيش بلدي        10 × 1.25    12.50",
+    "لبن رايب ١ لتر              32.00",
+    "رز مصري          2 كجم       70.00",
+    "فراخ             1.200 كجم  132.00",
+    "جبنه بيضاء       500 جم      45.00",
+    "PAPER BAG                     1.00",
+    "الإجمالي                    311.00",
+    "فيزا **** 4417"
+  ],
+  "expected": [
+    {
+      "line": 4,
+      "catalogueId": "tomatoes",
+      "nameAr": "طماطم",
+      "nameEn": "Tomatoes",
+      "quantity": 1,
+      "unit": "kg",
+      "category": "produce"
+    },
+    {
+      "line": 5,
+      "catalogueId": "baladi-bread",
+      "nameAr": "عيش بلدي",
+      "nameEn": "Baladi bread",
+      "quantity": 10,
+      "unit": "loaf",
+      "category": "bakery"
+    },
+    {
+      "line": 6,
+      "catalogueId": "laban-rayeb",
+      "nameAr": "لبن رايب",
+      "nameEn": "Laban",
+      "quantity": 1,
+      "unit": "l",
+      "category": "dairy"
+    },
+    {
+      "line": 7,
+      "catalogueId": "rice",
+      "nameAr": "رز",
+      "nameEn": "Rice",
+      "quantity": 2,
+      "unit": "kg",
+      "category": "dry"
+    },
+    {
+      "line": 8,
+      "catalogueId": "chicken-whole",
+      "nameAr": "فرخة",
+      "nameEn": "Whole chicken",
+      "quantity": 1.2,
+      "unit": "kg",
+      "category": "meat"
+    },
+    {
+      "line": 9,
+      "catalogueId": "white-cheese",
+      "nameAr": "جبنة بيضا",
+      "nameEn": "White cheese",
+      "quantity": 0.5,
+      "unit": "kg",
+      "category": "dairy"
+    }
+  ]
+}

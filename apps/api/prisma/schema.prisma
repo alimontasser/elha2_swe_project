@@ -1,0 +1,254 @@
+// Elha2 data model (SDD v1.1 Chapter 4). One Postgres schema per backend module; a module reads
+// another module's data only through that module's interface, so there are no foreign keys
+// across schemas (they would tie modules together and block a later split, SDD D1).
+// This increment holds only what the AI gateway and receipt scanning need.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["accounts", "expiry", "pantry", "ai"]
+}
+
+// ---------- Accounts ----------
+
+model User {
+  id          String    @id @default(uuid()) @db.Uuid
+  authUid     String    @unique @map("auth_uid")
+  phone       String?   @unique
+  language    String    @default("ar")
+  householdId String?   @map("household_id") @db.Uuid
+  household   Household? @relation(fields: [householdId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("user")
+  @@schema("accounts")
+}
+
+model Household {
+  id        String   @id @default(uuid()) @db.Uuid
+  ownerId   String   @map("owner_id") @db.Uuid
+  size      Int      @default(1)
+  members   User[]
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("household")
+  @@schema("accounts")
+}
+
+// ---------- Expiry (owns the food catalogue) ----------
+
+enum FoodCategory {
+  bakery
+  produce
+  dairy
+  meat
+  cooked
+  dry
+  drinks
+
+  @@map("food_category")
+  @@schema("expiry")
+}
+
+enum Unit {
+  piece
+  kg
+  g
+  l
+  ml
+  pack
+  loaf
+
+  @@map("unit")
+  @@schema("expiry")
+}
+
+enum StoragePlace {
+  fridge
+  freezer
+  cupboard
+
+  @@map("storage_place")
+  @@schema("expiry")
+}
+
+model FoodCatalogueItem {
+  id                String       @id
+  nameAr            String       @map("name_ar")
+  nameEn            String       @map("name_en")
+  category          FoodCategory
+  unit              Unit
+  defaultQuantity   Decimal      @map("default_quantity") @db.Decimal(10, 3)
+  defaultStorage    StoragePlace @map("default_storage")
+  shelfLifeFridge   Int?         @map("shelf_life_fridge")
+  shelfLifeFreezer  Int?         @map("shelf_life_freezer")
+  shelfLifeCupboard Int?         @map("shelf_life_cupboard")
+  receiptAliases    String[]     @map("receipt_aliases")
+  // Normalised Arabic + English names and aliases, matched with pg_trgm (index added in the migration).
+  searchText        String       @map("search_text")
+  retiredAt         DateTime?    @map("retired_at") @db.Timestamptz(3)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("food_catalogue_item")
+  @@schema("expiry")
+}
+
+// ---------- Pantry ----------
+
+enum ItemStatus {
+  inStock @map("in_stock")
+  used
+  donated
+  wasted
+
+  @@map("item_status")
+  @@schema("pantry")
+}
+
+enum ExpirySource {
+  printed
+  estimated
+  userSet @map("user_set")
+
+  @@map("expiry_source")
+  @@schema("pantry")
+}
+
+enum CaptureMethod {
+  receipt
+  barcode
+  order
+  photo
+  voice
+  manual
+
+  @@map("capture_method")
+  @@schema("pantry")
+}
+
+enum WasteReason {
+  spoiled
+  forgotten
+  cookedTooMuch @map("cooked_too_much")
+  other
+
+  @@map("waste_reason")
+  @@schema("pantry")
+}
+
+model PantryItem {
+  id           String        @id @default(uuid()) @db.Uuid
+  householdId  String        @map("household_id") @db.Uuid
+  catalogueId  String?       @map("catalogue_id")
+  nameAr       String        @map("name_ar")
+  nameEn       String        @map("name_en")
+  category     String
+  quantity     Decimal       @db.Decimal(10, 3)
+  unit         String
+  storage      String
+  expiryDate   DateTime      @map("expiry_date") @db.Date
+  expirySource ExpirySource  @map("expiry_source")
+  status       ItemStatus    @default(inStock)
+  wasteReason  WasteReason?  @map("waste_reason")
+  addedBy      CaptureMethod @map("added_by")
+  addedOn      DateTime      @default(now()) @map("added_on") @db.Timestamptz(3)
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([householdId, status, expiryDate])
+  @@map("pantry_item")
+  @@schema("pantry")
+}
+
+// AI-extracted items awaiting the user's review (US-2.02); deleted on confirm or after 24 h.
+model ReceiptDraft {
+  id           String   @id @default(uuid()) @db.Uuid
+  householdId  String   @map("household_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  lines        String[] // masked on the phone and again on the server
+  items        Json
+  aiRequestId  String?  @map("ai_request_id") @db.Uuid
+  fallbackUsed Boolean  @map("fallback_used")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("receipt_draft")
+  @@schema("pantry")
+}
+
+// ---------- AI gateway ----------
+
+// One row per AI task call. Holds no personal data: the input is kept only as a hash.
+model AiRequestLog {
+  id            String   @id @default(uuid()) @db.Uuid
+  task          String
+  provider      String
+  model         String?
+  promptVersion Int      @map("prompt_version")
+  inputHash     String   @map("input_hash")
+  contextChars  Int      @map("context_chars")
+  latencyMs     Int      @map("latency_ms")
+  inputTokens   Int?     @map("input_tokens")
+  outputTokens  Int?     @map("output_tokens")
+  costUsd       Decimal  @default(0) @map("cost_usd") @db.Decimal(10, 6)
+  confidence    Decimal? @db.Decimal(4, 3)
+  fallbackUsed  Boolean  @map("fallback_used")
+  fromCache     Boolean  @default(false) @map("from_cache")
+  attempts      Int
+  errorCodes    String[] @map("error_codes")
+  userCorrected Boolean  @default(false) @map("user_corrected")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([task, createdAt])
+  @@map("request_log")
+  @@schema("ai")
+}
+
+model AiResponseCache {
+  key           String   @id
+  task          String
+  promptVersion Int      @map("prompt_version")
+  response      Json
+  provider      String
+  model         String?
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  expiresAt     DateTime @map("expires_at") @db.Timestamptz(3)
+
+  @@index([expiresAt])
+  @@map("response_cache")
+  @@schema("ai")
+}
+
+// Per-user daily counters for the scan cap (R-02) and, later, the cost cap (US-14.05).
+model AiDailyUsage {
+  userId String   @map("user_id") @db.Uuid
+  day    DateTime @db.Date
+  task   String
+  count  Int      @default(0)
+
+  @@id([userId, day, task])
+  @@map("daily_usage")
+  @@schema("ai")
+}
+
+// Worked examples for the context builder: labelled receipts and, later, confirmed corrections.
+model AiExample {
+  id        String   @id @default(uuid()) @db.Uuid
+  task      String
+  input     Json
+  output    Json
+  source    String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([task])
+  @@map("example")
+  @@schema("ai")
+}

@@ -1,5 +1,5 @@
 {
-  "_comment": "Shared fixture for the phone masker (US-14.03). The AI gateway's server-side check will read the same file.",
+  "_comment": "Shared by the phone masker (apps/mobile) and the AI gateway (apps/api) tests, US-14.03.",
   "masked": [
     { "in": "العميل: منى أحمد", "out": "العميل: [name]" },
     { "in": "Customer: Mona Ahmed", "out": "Customer: [name]" },

@@ -1607,6 +1607,24 @@
    ]
   },
   {
+   "id": "ful-canned",
+   "nameAr": "فول معلب",
+   "nameEn": "Canned fava beans",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "فول معلب",
+    "فول",
+    "FOUL",
+    "FUL CAN"
+   ]
+  },
+  {
    "id": "baked-beans",
    "nameAr": "فاصوليا معلبة",
    "nameEn": "Canned beans",

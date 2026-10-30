@@ -1,0 +1,86 @@
+{
+  "id": "demo-fresh-mart",
+  "source": "Fictional demo receipt (apps/mobile/lib/data/mock/mock_data.dart)",
+  "shopName": "Fresh Mart",
+  "kind": "english-abbreviations",
+  "lines": [
+    "FRESH MART - NEW CAIRO",
+    "Cashier: Karim",
+    "Member: Sara Mostafa",
+    "Tel +20 112 345 6789",
+    "MILK FULL CRM 1L   x2     64.00",
+    "YOG PLAIN 4PK              40.00",
+    "EGGS WHT 10PC              55.00",
+    "BANANA      1.100KG        33.00",
+    "PASTA PENNE 400G   x2      30.00",
+    "CUC         0.800KG        12.00",
+    "STRAWB      0.500KG        35.00",
+    "TOTAL                     269.00",
+    "VISA XXXX-XXXX-XXXX-9921"
+  ],
+  "expected": [
+    {
+      "line": 4,
+      "catalogueId": "milk",
+      "nameAr": "لبن",
+      "nameEn": "Milk",
+      "quantity": 2,
+      "unit": "l",
+      "category": "dairy"
+    },
+    {
+      "line": 5,
+      "catalogueId": "yogurt",
+      "nameAr": "زبادي",
+      "nameEn": "Yogurt",
+      "quantity": 4,
+      "unit": "piece",
+      "category": "dairy"
+    },
+    {
+      "line": 6,
+      "catalogueId": "eggs",
+      "nameAr": "بيض",
+      "nameEn": "Eggs",
+      "quantity": 10,
+      "unit": "piece",
+      "category": "dairy"
+    },
+    {
+      "line": 7,
+      "catalogueId": "bananas",
+      "nameAr": "موز",
+      "nameEn": "Bananas",
+      "quantity": 1.1,
+      "unit": "kg",
+      "category": "produce"
+    },
+    {
+      "line": 8,
+      "catalogueId": "pasta",
+      "nameAr": "مكرونة",
+      "nameEn": "Pasta",
+      "quantity": 2,
+      "unit": "pack",
+      "category": "dry"
+    },
+    {
+      "line": 9,
+      "catalogueId": "cucumbers",
+      "nameAr": "خيار",
+      "nameEn": "Cucumbers",
+      "quantity": 0.8,
+      "unit": "kg",
+      "category": "produce"
+    },
+    {
+      "line": 10,
+      "catalogueId": "strawberries",
+      "nameAr": "فراولة",
+      "nameEn": "Strawberries",
+      "quantity": 0.5,
+      "unit": "kg",
+      "category": "produce"
+    }
+  ]
+}

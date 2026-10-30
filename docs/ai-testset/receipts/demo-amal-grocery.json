@@ -1,0 +1,63 @@
+{
+  "id": "demo-amal-grocery",
+  "source": "Fictional demo receipt (apps/mobile/lib/data/mock/mock_data.dart)",
+  "shopName": "بقالة الأمل",
+  "kind": "arabic-grocery",
+  "lines": [
+    "بقالة الأمل",
+    "اسم: محمد علي",
+    "زيت 1 لتر          85",
+    "سكر 2 ك            60",
+    "شاي 1 علبة         45",
+    "فول 2 علبة         36",
+    "مكرونه 1 كيس       15",
+    "المجموع           241"
+  ],
+  "expected": [
+    {
+      "line": 2,
+      "catalogueId": "oil",
+      "nameAr": "زيت",
+      "nameEn": "Cooking oil",
+      "quantity": 1,
+      "unit": "l",
+      "category": "dry"
+    },
+    {
+      "line": 3,
+      "catalogueId": "sugar",
+      "nameAr": "سكر",
+      "nameEn": "Sugar",
+      "quantity": 2,
+      "unit": "kg",
+      "category": "dry"
+    },
+    {
+      "line": 4,
+      "catalogueId": "tea",
+      "nameAr": "شاي",
+      "nameEn": "Tea",
+      "quantity": 1,
+      "unit": "pack",
+      "category": "dry"
+    },
+    {
+      "line": 5,
+      "catalogueId": "ful-canned",
+      "nameAr": "فول معلب",
+      "nameEn": "Canned fava beans",
+      "quantity": 2,
+      "unit": "pack",
+      "category": "dry"
+    },
+    {
+      "line": 6,
+      "catalogueId": "pasta",
+      "nameAr": "مكرونة",
+      "nameEn": "Pasta",
+      "quantity": 1,
+      "unit": "pack",
+      "category": "dry"
+    }
+  ]
+}

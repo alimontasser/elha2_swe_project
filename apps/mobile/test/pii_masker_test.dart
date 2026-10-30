@@ -6,7 +6,7 @@ import 'package:elha2/data/mock/mock_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final fixture = jsonDecode(File('test/fixtures/pii_cases.json').readAsStringSync()) as Map<String, dynamic>;
+  final fixture = jsonDecode(File('../../fixtures/pii_cases.json').readAsStringSync()) as Map<String, dynamic>;
   const masker = PiiMasker();
 
   group('PiiMasker (US-14.03)', () {
