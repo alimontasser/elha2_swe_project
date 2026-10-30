@@ -10,7 +10,8 @@
     "loading": "Loading…",
     "back": "Back",
     "help": "Help",
-    "comingSprint": "Coming in Sprint {{n}}"
+    "comingSprint": "Coming in Sprint {{n}}",
+    "listSeparator": ", "
   },
   "nav": {
     "organisation": "My organisation",
@@ -78,7 +79,10 @@
     "none": "You have not registered an organisation yet.",
     "registerBusinessCta": "Register a business",
     "registerNgoCta": "Register an NGO",
-    "kind": { "business": "Business", "ngo": "NGO" },
+    "kind": {
+      "business": "Business",
+      "ngo": "NGO"
+    },
     "branches": "Branches",
     "serviceAreas": "Service areas",
     "foodTypes": "Accepted food",

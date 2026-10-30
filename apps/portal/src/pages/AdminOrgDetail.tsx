@@ -114,11 +114,11 @@ export function AdminOrgDetail() {
                 </div>
                 <div>
                   <dt>{t('org.serviceAreas')}</dt>
-                  <dd>{org.serviceAreas.map((a) => t(`areas.${a}`)).join('، ')}</dd>
+                  <dd>{org.serviceAreas.map((a) => t(`areas.${a}`)).join(t('app.listSeparator'))}</dd>
                 </div>
                 <div>
                   <dt>{t('org.foodTypes')}</dt>
-                  <dd>{org.foodTypes.map((f) => t(`food.${f}`)).join('، ')}</dd>
+                  <dd>{org.foodTypes.map((f) => t(`food.${f}`)).join(t('app.listSeparator'))}</dd>
                 </div>
                 <div>
                   <dt>{t('form.capacity')}</dt>
@@ -179,6 +179,7 @@ export function AdminOrgDetail() {
                   <label htmlFor="reason">{pending === 'rejected' ? t('admin.reasonLabelReject') : t('admin.reasonLabelInfo')}</label>
                   <textarea
                     id="reason"
+                    dir="auto"
                     rows={3}
                     placeholder={t('admin.reasonPlaceholder')}
                     value={reason}
@@ -208,7 +209,7 @@ export function AdminOrgDetail() {
                     {t('admin.historyBy')}{' '}
                     <bdi dir="ltr">{h.byPhone}</bdi>
                   </span>
-                  {h.reason && <p className="quote">{h.reason}</p>}
+                  {h.reason && <p className="quote" dir="auto">{h.reason}</p>}
                 </li>
               ))}
             </ol>

@@ -1,0 +1,1708 @@
+{
+ "version": 1,
+ "source": "Elha2 seed catalogue, Sprint 1 demo. Shelf lives are conservative estimates to be reviewed by the team.",
+ "items": [
+  {
+   "id": "baladi-bread",
+   "nameAr": "عيش بلدي",
+   "nameEn": "Baladi bread",
+   "category": "bakery",
+   "unit": "loaf",
+   "defaultQuantity": 10,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 90,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "عيش بلدي",
+    "BALADI"
+   ]
+  },
+  {
+   "id": "fino-bread",
+   "nameAr": "عيش فينو",
+   "nameEn": "Fino bread",
+   "category": "bakery",
+   "unit": "loaf",
+   "defaultQuantity": 6,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 90,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "فينو",
+    "FINO"
+   ]
+  },
+  {
+   "id": "shami-bread",
+   "nameAr": "عيش شامي",
+   "nameEn": "Shami bread",
+   "category": "bakery",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 6,
+    "freezer": 90,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "عيش شامي",
+    "SHAMI"
+   ]
+  },
+  {
+   "id": "toast",
+   "nameAr": "عيش توست",
+   "nameEn": "Toast bread",
+   "category": "bakery",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "freezer": 90,
+    "cupboard": 5
+   },
+   "receiptAliases": [
+    "توست",
+    "TOAST"
+   ]
+  },
+  {
+   "id": "croissant",
+   "nameAr": "كرواسون",
+   "nameEn": "Croissant",
+   "category": "bakery",
+   "unit": "piece",
+   "defaultQuantity": 4,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 4,
+    "freezer": 60,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "كرواسون",
+    "CROISS"
+   ]
+  },
+  {
+   "id": "feteer",
+   "nameAr": "فطير مشلتت",
+   "nameEn": "Feteer meshaltet",
+   "category": "bakery",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 60,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "مشلتت"
+   ]
+  },
+  {
+   "id": "simit",
+   "nameAr": "سميط",
+   "nameEn": "Simit",
+   "category": "bakery",
+   "unit": "piece",
+   "defaultQuantity": 4,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 60,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "سميط"
+   ]
+  },
+  {
+   "id": "rusk",
+   "nameAr": "بقسماط",
+   "nameEn": "Rusk",
+   "category": "bakery",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 90
+   },
+   "receiptAliases": [
+    "بقسماط"
+   ]
+  },
+  {
+   "id": "cake",
+   "nameAr": "كيك",
+   "nameEn": "Cake",
+   "category": "bakery",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 90,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "كيك",
+    "CAKE"
+   ]
+  },
+  {
+   "id": "basbousa",
+   "nameAr": "بسبوسة",
+   "nameEn": "Basbousa",
+   "category": "bakery",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 60,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "بسبوسة"
+   ]
+  },
+  {
+   "id": "tomatoes",
+   "nameAr": "طماطم",
+   "nameEn": "Tomatoes",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 4
+   },
+   "receiptAliases": [
+    "طماطم",
+    "TOM",
+    "TOMATO"
+   ]
+  },
+  {
+   "id": "cucumbers",
+   "nameAr": "خيار",
+   "nameEn": "Cucumbers",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "خيار",
+    "CUCUMBER",
+    "CUC"
+   ]
+  },
+  {
+   "id": "potatoes",
+   "nameAr": "بطاطس",
+   "nameEn": "Potatoes",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 21
+   },
+   "receiptAliases": [
+    "بطاطس",
+    "POTATO",
+    "POT"
+   ]
+  },
+  {
+   "id": "onions",
+   "nameAr": "بصل",
+   "nameEn": "Onions",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 30,
+    "cupboard": 30
+   },
+   "receiptAliases": [
+    "بصل",
+    "ONION"
+   ]
+  },
+  {
+   "id": "garlic",
+   "nameAr": "توم",
+   "nameEn": "Garlic",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 3,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 60
+   },
+   "receiptAliases": [
+    "توم",
+    "GARLIC"
+   ]
+  },
+  {
+   "id": "lemons",
+   "nameAr": "لمون",
+   "nameEn": "Lemons",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 21,
+    "cupboard": 7
+   },
+   "receiptAliases": [
+    "لمون",
+    "ليمون",
+    "LEMON"
+   ]
+  },
+  {
+   "id": "bananas",
+   "nameAr": "موز",
+   "nameEn": "Bananas",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 5
+   },
+   "receiptAliases": [
+    "موز",
+    "BANANA"
+   ]
+  },
+  {
+   "id": "oranges",
+   "nameAr": "برتقال",
+   "nameEn": "Oranges",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 21,
+    "cupboard": 10
+   },
+   "receiptAliases": [
+    "برتقال",
+    "ORANGE"
+   ]
+  },
+  {
+   "id": "apples",
+   "nameAr": "تفاح",
+   "nameEn": "Apples",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 30,
+    "cupboard": 7
+   },
+   "receiptAliases": [
+    "تفاح",
+    "APPLE"
+   ]
+  },
+  {
+   "id": "guava",
+   "nameAr": "جوافة",
+   "nameEn": "Guava",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "جوافة",
+    "GUAVA"
+   ]
+  },
+  {
+   "id": "mango",
+   "nameAr": "مانجا",
+   "nameEn": "Mango",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "مانجا",
+    "MANGO"
+   ]
+  },
+  {
+   "id": "grapes",
+   "nameAr": "عنب",
+   "nameEn": "Grapes",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "عنب",
+    "GRAPES"
+   ]
+  },
+  {
+   "id": "watermelon",
+   "nameAr": "بطيخ",
+   "nameEn": "Watermelon",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 10
+   },
+   "receiptAliases": [
+    "بطيخ"
+   ]
+  },
+  {
+   "id": "dates",
+   "nameAr": "بلح",
+   "nameEn": "Dates",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 30,
+    "cupboard": 14
+   },
+   "receiptAliases": [
+    "بلح",
+    "DATES"
+   ]
+  },
+  {
+   "id": "carrots",
+   "nameAr": "جزر",
+   "nameEn": "Carrots",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 21,
+    "cupboard": 5
+   },
+   "receiptAliases": [
+    "جزر",
+    "CARROT"
+   ]
+  },
+  {
+   "id": "zucchini",
+   "nameAr": "كوسة",
+   "nameEn": "Zucchini",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 2
+   },
+   "receiptAliases": [
+    "كوسة",
+    "ZUCCHINI"
+   ]
+  },
+  {
+   "id": "eggplant",
+   "nameAr": "بتنجان",
+   "nameEn": "Eggplant",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "بتنجان",
+    "باذنجان",
+    "EGGPLANT"
+   ]
+  },
+  {
+   "id": "peppers",
+   "nameAr": "فلفل رومي",
+   "nameEn": "Bell peppers",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 3
+   },
+   "receiptAliases": [
+    "فلفل رومي",
+    "PEPPER"
+   ]
+  },
+  {
+   "id": "hot-peppers",
+   "nameAr": "فلفل حامي",
+   "nameEn": "Hot peppers",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.25,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 10,
+    "cupboard": 4
+   },
+   "receiptAliases": [
+    "فلفل حامي"
+   ]
+  },
+  {
+   "id": "lettuce",
+   "nameAr": "خس",
+   "nameEn": "Lettuce",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "خس",
+    "LETTUCE"
+   ]
+  },
+  {
+   "id": "molokhia-fresh",
+   "nameAr": "ملوخية خضرا",
+   "nameEn": "Fresh molokhia",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "ملوخية"
+   ]
+  },
+  {
+   "id": "molokhia-frozen",
+   "nameAr": "ملوخية مجمدة",
+   "nameEn": "Frozen molokhia",
+   "category": "produce",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "ملوخية مجمدة"
+   ]
+  },
+  {
+   "id": "spinach",
+   "nameAr": "سبانخ",
+   "nameEn": "Spinach",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 4,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "سبانخ",
+    "SPINACH"
+   ]
+  },
+  {
+   "id": "parsley",
+   "nameAr": "بقدونس",
+   "nameEn": "Parsley",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "بقدونس",
+    "PARSLEY"
+   ]
+  },
+  {
+   "id": "coriander",
+   "nameAr": "كزبرة خضرا",
+   "nameEn": "Coriander",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "كزبرة"
+   ]
+  },
+  {
+   "id": "dill",
+   "nameAr": "شبت",
+   "nameEn": "Dill",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "شبت"
+   ]
+  },
+  {
+   "id": "rocket",
+   "nameAr": "جرجير",
+   "nameEn": "Rocket",
+   "category": "produce",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "جرجير"
+   ]
+  },
+  {
+   "id": "okra-frozen",
+   "nameAr": "بامية مجمدة",
+   "nameEn": "Frozen okra",
+   "category": "produce",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "بامية"
+   ]
+  },
+  {
+   "id": "peas-frozen",
+   "nameAr": "بسلة مجمدة",
+   "nameEn": "Frozen peas",
+   "category": "produce",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 240
+   },
+   "receiptAliases": [
+    "بسلة",
+    "PEAS"
+   ]
+  },
+  {
+   "id": "mixed-veg-frozen",
+   "nameAr": "خضار مشكل مجمد",
+   "nameEn": "Frozen mixed vegetables",
+   "category": "produce",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 240
+   },
+   "receiptAliases": [
+    "خضار مشكل",
+    "MIX VEG"
+   ]
+  },
+  {
+   "id": "strawberries",
+   "nameAr": "فراولة",
+   "nameEn": "Strawberries",
+   "category": "produce",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 180,
+    "cupboard": 1
+   },
+   "receiptAliases": [
+    "فراولة",
+    "STRAWB"
+   ]
+  },
+  {
+   "id": "milk",
+   "nameAr": "لبن",
+   "nameEn": "Milk",
+   "category": "dairy",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5
+   },
+   "receiptAliases": [
+    "لبن",
+    "MILK",
+    "حليب"
+   ]
+  },
+  {
+   "id": "laban-rayeb",
+   "nameAr": "لبن رايب",
+   "nameEn": "Laban",
+   "category": "dairy",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7
+   },
+   "receiptAliases": [
+    "رايب",
+    "LABAN"
+   ]
+  },
+  {
+   "id": "yogurt",
+   "nameAr": "زبادي",
+   "nameEn": "Yogurt",
+   "category": "dairy",
+   "unit": "piece",
+   "defaultQuantity": 4,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 10
+   },
+   "receiptAliases": [
+    "زبادي",
+    "YOGURT",
+    "YOG"
+   ]
+  },
+  {
+   "id": "eggs",
+   "nameAr": "بيض",
+   "nameEn": "Eggs",
+   "category": "dairy",
+   "unit": "piece",
+   "defaultQuantity": 10,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 28,
+    "cupboard": 14
+   },
+   "receiptAliases": [
+    "بيض",
+    "EGGS",
+    "EGG"
+   ]
+  },
+  {
+   "id": "white-cheese",
+   "nameAr": "جبنة بيضا",
+   "nameEn": "White cheese",
+   "category": "dairy",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 14
+   },
+   "receiptAliases": [
+    "جبنة بيضا",
+    "جبنه بيضاء",
+    "WHITE CHEESE",
+    "DOMTY"
+   ]
+  },
+  {
+   "id": "istanbuli",
+   "nameAr": "جبنة إسطنبولي",
+   "nameEn": "Istanbuli cheese",
+   "category": "dairy",
+   "unit": "kg",
+   "defaultQuantity": 0.25,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 14
+   },
+   "receiptAliases": [
+    "اسطنبولي"
+   ]
+  },
+  {
+   "id": "roumi-cheese",
+   "nameAr": "جبنة رومي",
+   "nameEn": "Roumi cheese",
+   "category": "dairy",
+   "unit": "kg",
+   "defaultQuantity": 0.25,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 30
+   },
+   "receiptAliases": [
+    "رومي",
+    "ROUMI"
+   ]
+  },
+  {
+   "id": "cheddar",
+   "nameAr": "جبنة شيدر",
+   "nameEn": "Cheddar",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 30
+   },
+   "receiptAliases": [
+    "شيدر",
+    "CHEDDAR"
+   ]
+  },
+  {
+   "id": "mozzarella",
+   "nameAr": "موتزاريلا",
+   "nameEn": "Mozzarella",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 14,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "موتزاريلا",
+    "MOZZ"
+   ]
+  },
+  {
+   "id": "triangle-cheese",
+   "nameAr": "جبنة مثلثات",
+   "nameEn": "Cheese triangles",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 60
+   },
+   "receiptAliases": [
+    "مثلثات",
+    "LA VACHE"
+   ]
+  },
+  {
+   "id": "cream",
+   "nameAr": "قشطة",
+   "nameEn": "Cream (eshta)",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5
+   },
+   "receiptAliases": [
+    "قشطة",
+    "CREAM"
+   ]
+  },
+  {
+   "id": "butter",
+   "nameAr": "زبدة",
+   "nameEn": "Butter",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 60,
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "زبدة",
+    "BUTTER"
+   ]
+  },
+  {
+   "id": "ghee",
+   "nameAr": "سمنة",
+   "nameEn": "Ghee",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "سمنة",
+    "GHEE"
+   ]
+  },
+  {
+   "id": "mish",
+   "nameAr": "مش",
+   "nameEn": "Mish",
+   "category": "dairy",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 60
+   },
+   "receiptAliases": [
+    "مش"
+   ]
+  },
+  {
+   "id": "rice-pudding",
+   "nameAr": "أرز باللبن",
+   "nameEn": "Rice pudding",
+   "category": "dairy",
+   "unit": "piece",
+   "defaultQuantity": 2,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 4
+   },
+   "receiptAliases": [
+    "رز بلبن",
+    "ارز باللبن"
+   ]
+  },
+  {
+   "id": "chicken-whole",
+   "nameAr": "فرخة",
+   "nameEn": "Whole chicken",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 1.2,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 270
+   },
+   "receiptAliases": [
+    "فراخ",
+    "فرخة",
+    "CHICKEN",
+    "CHKN"
+   ]
+  },
+  {
+   "id": "chicken-breast",
+   "nameAr": "صدور فراخ",
+   "nameEn": "Chicken breast",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 270
+   },
+   "receiptAliases": [
+    "صدور",
+    "BREAST"
+   ]
+  },
+  {
+   "id": "minced-beef",
+   "nameAr": "لحمة مفرومة",
+   "nameEn": "Minced beef",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 120
+   },
+   "receiptAliases": [
+    "مفروم",
+    "MINCED",
+    "MINCE"
+   ]
+  },
+  {
+   "id": "beef",
+   "nameAr": "لحمة",
+   "nameEn": "Beef",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "لحم",
+    "لحمة",
+    "BEEF"
+   ]
+  },
+  {
+   "id": "liver",
+   "nameAr": "كبدة",
+   "nameEn": "Liver",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "كبدة",
+    "LIVER"
+   ]
+  },
+  {
+   "id": "sausage",
+   "nameAr": "سجق",
+   "nameEn": "Sausage",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 5,
+    "freezer": 60
+   },
+   "receiptAliases": [
+    "سجق",
+    "SAUSAGE"
+   ]
+  },
+  {
+   "id": "luncheon",
+   "nameAr": "لانشون",
+   "nameEn": "Luncheon meat",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7
+   },
+   "receiptAliases": [
+    "لانشون",
+    "LUNCHEON"
+   ]
+  },
+  {
+   "id": "pastrami",
+   "nameAr": "بسطرمة",
+   "nameEn": "Pastirma",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 21
+   },
+   "receiptAliases": [
+    "بسطرمة"
+   ]
+  },
+  {
+   "id": "fish-fresh",
+   "nameAr": "سمك بلطي",
+   "nameEn": "Tilapia",
+   "category": "meat",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "بلطي",
+    "سمك",
+    "FISH"
+   ]
+  },
+  {
+   "id": "shrimp-frozen",
+   "nameAr": "جمبري مجمد",
+   "nameEn": "Frozen shrimp",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "جمبري",
+    "SHRIMP"
+   ]
+  },
+  {
+   "id": "tuna",
+   "nameAr": "تونة",
+   "nameEn": "Canned tuna",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 3,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "تونة",
+    "TUNA"
+   ]
+  },
+  {
+   "id": "sardines",
+   "nameAr": "سردين",
+   "nameEn": "Canned sardines",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "سردين",
+    "SARDINE"
+   ]
+  },
+  {
+   "id": "frozen-chicken-pane",
+   "nameAr": "بانيه مجمد",
+   "nameEn": "Frozen chicken pané",
+   "category": "meat",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "freezer",
+   "shelfLifeDays": {
+    "freezer": 180
+   },
+   "receiptAliases": [
+    "بانيه",
+    "PANE"
+   ]
+  },
+  {
+   "id": "ful",
+   "nameAr": "فول مدمس",
+   "nameEn": "Ful medames",
+   "category": "cooked",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3
+   },
+   "receiptAliases": [
+    "فول",
+    "FUL"
+   ]
+  },
+  {
+   "id": "falafel",
+   "nameAr": "طعمية",
+   "nameEn": "Ta'meya",
+   "category": "cooked",
+   "unit": "piece",
+   "defaultQuantity": 6,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2,
+    "freezer": 60
+   },
+   "receiptAliases": [
+    "طعمية"
+   ]
+  },
+  {
+   "id": "koshari",
+   "nameAr": "كشري",
+   "nameEn": "Koshari",
+   "category": "cooked",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2
+   },
+   "receiptAliases": [
+    "كشري"
+   ]
+  },
+  {
+   "id": "rice-cooked",
+   "nameAr": "رز مطبوخ",
+   "nameEn": "Cooked rice",
+   "category": "cooked",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 4,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "رز مطبوخ"
+   ]
+  },
+  {
+   "id": "mahshi",
+   "nameAr": "محشي",
+   "nameEn": "Mahshi",
+   "category": "cooked",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "محشي"
+   ]
+  },
+  {
+   "id": "molokhia-cooked",
+   "nameAr": "ملوخية مطبوخة",
+   "nameEn": "Cooked molokhia",
+   "category": "cooked",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 90
+   },
+   "receiptAliases": []
+  },
+  {
+   "id": "macarona-bechamel",
+   "nameAr": "مكرونة بشاميل",
+   "nameEn": "Macarona béchamel",
+   "category": "cooked",
+   "unit": "piece",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "بشاميل"
+   ]
+  },
+  {
+   "id": "leftover-stew",
+   "nameAr": "طبيخ",
+   "nameEn": "Vegetable stew",
+   "category": "cooked",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 3,
+    "freezer": 90
+   },
+   "receiptAliases": [
+    "طبيخ"
+   ]
+  },
+  {
+   "id": "rice",
+   "nameAr": "رز",
+   "nameEn": "Rice",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "رز",
+    "أرز",
+    "RICE"
+   ]
+  },
+  {
+   "id": "pasta",
+   "nameAr": "مكرونة",
+   "nameEn": "Pasta",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "مكرونة",
+    "PASTA",
+    "ELMALEKA"
+   ]
+  },
+  {
+   "id": "lentils",
+   "nameAr": "عدس",
+   "nameEn": "Lentils",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "عدس",
+    "LENTIL"
+   ]
+  },
+  {
+   "id": "fava-dry",
+   "nameAr": "فول ناشف",
+   "nameEn": "Dried fava beans",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "فول ناشف"
+   ]
+  },
+  {
+   "id": "flour",
+   "nameAr": "دقيق",
+   "nameEn": "Flour",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 240
+   },
+   "receiptAliases": [
+    "دقيق",
+    "FLOUR"
+   ]
+  },
+  {
+   "id": "sugar",
+   "nameAr": "سكر",
+   "nameEn": "Sugar",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "سكر",
+    "SUGAR"
+   ]
+  },
+  {
+   "id": "salt",
+   "nameAr": "ملح",
+   "nameEn": "Salt",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 1825
+   },
+   "receiptAliases": [
+    "ملح",
+    "SALT"
+   ]
+  },
+  {
+   "id": "oil",
+   "nameAr": "زيت",
+   "nameEn": "Cooking oil",
+   "category": "dry",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "زيت",
+    "OIL",
+    "CRYSTAL"
+   ]
+  },
+  {
+   "id": "tea",
+   "nameAr": "شاي",
+   "nameEn": "Tea",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "شاي",
+    "TEA",
+    "LIPTON"
+   ]
+  },
+  {
+   "id": "coffee",
+   "nameAr": "بن",
+   "nameEn": "Coffee",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "بن",
+    "COFFEE"
+   ]
+  },
+  {
+   "id": "tomato-paste",
+   "nameAr": "صلصة",
+   "nameEn": "Tomato paste",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "صلصة",
+    "PASTE"
+   ]
+  },
+  {
+   "id": "tahini",
+   "nameAr": "طحينة",
+   "nameEn": "Tahini",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "طحينة",
+    "TAHINI"
+   ]
+  },
+  {
+   "id": "honey",
+   "nameAr": "عسل",
+   "nameEn": "Honey",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "عسل",
+    "HONEY"
+   ]
+  },
+  {
+   "id": "halawa",
+   "nameAr": "حلاوة طحينية",
+   "nameEn": "Halawa",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "حلاوة"
+   ]
+  },
+  {
+   "id": "jam",
+   "nameAr": "مربى",
+   "nameEn": "Jam",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "fridge": 90,
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "مربى",
+    "JAM"
+   ]
+  },
+  {
+   "id": "vermicelli",
+   "nameAr": "شعرية",
+   "nameEn": "Vermicelli",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "شعرية"
+   ]
+  },
+  {
+   "id": "freekeh",
+   "nameAr": "فريك",
+   "nameEn": "Freekeh",
+   "category": "dry",
+   "unit": "kg",
+   "defaultQuantity": 0.5,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "فريك"
+   ]
+  },
+  {
+   "id": "biscuits",
+   "nameAr": "بسكويت",
+   "nameEn": "Biscuits",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "بسكويت",
+    "BISC"
+   ]
+  },
+  {
+   "id": "chips",
+   "nameAr": "شيبسي",
+   "nameEn": "Crisps",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 120
+   },
+   "receiptAliases": [
+    "شيبسي",
+    "CHIPSY"
+   ]
+  },
+  {
+   "id": "cornflakes",
+   "nameAr": "كورن فليكس",
+   "nameEn": "Cornflakes",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "كورن فليكس",
+    "CORNFL"
+   ]
+  },
+  {
+   "id": "baked-beans",
+   "nameAr": "فاصوليا معلبة",
+   "nameEn": "Canned beans",
+   "category": "dry",
+   "unit": "pack",
+   "defaultQuantity": 2,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 730
+   },
+   "receiptAliases": [
+    "فاصوليا",
+    "BEANS"
+   ]
+  },
+  {
+   "id": "water",
+   "nameAr": "مياه",
+   "nameEn": "Water",
+   "category": "drinks",
+   "unit": "L",
+   "defaultQuantity": 6,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "مياه",
+    "WATER"
+   ]
+  },
+  {
+   "id": "juice",
+   "nameAr": "عصير",
+   "nameEn": "Juice",
+   "category": "drinks",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 7,
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "عصير",
+    "JUICE",
+    "JUHAYNA"
+   ]
+  },
+  {
+   "id": "soda",
+   "nameAr": "مياه غازية",
+   "nameEn": "Soft drink",
+   "category": "drinks",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 180
+   },
+   "receiptAliases": [
+    "بيبسي",
+    "كوكاكولا",
+    "PEPSI",
+    "COLA"
+   ]
+  },
+  {
+   "id": "sobia",
+   "nameAr": "سوبيا",
+   "nameEn": "Sobia",
+   "category": "drinks",
+   "unit": "L",
+   "defaultQuantity": 1,
+   "defaultStorage": "fridge",
+   "shelfLifeDays": {
+    "fridge": 2
+   },
+   "receiptAliases": [
+    "سوبيا"
+   ]
+  },
+  {
+   "id": "karkade",
+   "nameAr": "كركديه",
+   "nameEn": "Hibiscus (karkade)",
+   "category": "drinks",
+   "unit": "pack",
+   "defaultQuantity": 1,
+   "defaultStorage": "cupboard",
+   "shelfLifeDays": {
+    "cupboard": 365
+   },
+   "receiptAliases": [
+    "كركديه"
+   ]
+  }
+ ]
+}

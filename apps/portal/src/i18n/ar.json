@@ -10,7 +10,8 @@
     "loading": "جاري التحميل…",
     "back": "رجوع",
     "help": "مساعدة",
-    "comingSprint": "قريبًا في السبرنت {{n}}"
+    "comingSprint": "قريبًا في السبرنت {{n}}",
+    "listSeparator": "، "
   },
   "nav": {
     "organisation": "منشأتي",
@@ -78,7 +79,10 @@
     "none": "لسه ما سجلتش أي منشأة.",
     "registerBusinessCta": "سجّل نشاط تجاري",
     "registerNgoCta": "سجّل جمعية",
-    "kind": { "business": "نشاط تجاري", "ngo": "جمعية" },
+    "kind": {
+      "business": "نشاط تجاري",
+      "ngo": "جمعية"
+    },
     "branches": "الفروع",
     "serviceAreas": "مناطق الخدمة",
     "foodTypes": "الأكل المقبول",

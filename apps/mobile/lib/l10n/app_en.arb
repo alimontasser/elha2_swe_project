@@ -1,0 +1,229 @@
+{
+  "@@locale": "en",
+  "appName": "Elha2",
+  "demoBanner": "Demo: sign-in, AI and notifications are simulated",
+  "signInTitle": "Welcome to Elha2",
+  "signInSubtitle": "Save food, save money. Sign in with your mobile number, no password needed.",
+  "phoneLabel": "Mobile number",
+  "phoneHint": "010 1234 5678",
+  "sendCode": "Send code",
+  "invalidPhone": "Enter an Egyptian mobile number that starts with 010, 011, 012 or 015.",
+  "otpTitle": "Enter the code",
+  "otpSentTo": "We sent a 6-digit code by SMS to {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "otpHint": "Demo code: 123456",
+  "verify": "Continue",
+  "wrongCode": "That code is not right. {remaining, plural, =1{1 try left} other{{remaining} tries left}} this hour.",
+  "@wrongCode": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "locked": "Too many wrong codes. Try again at {time}.",
+  "@locked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "changeNumber": "Change number",
+  "locationTitle": "Where do you live?",
+  "locationSubtitle": "We use your area to show deals near you. Other users only ever see an approximate distance, never your exact location.",
+  "useGps": "Use my location",
+  "gpsFound": "Your area: {area}",
+  "@gpsFound": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseArea": "Or choose your area",
+  "continueLabel": "Continue",
+  "tabHome": "Home",
+  "tabPantry": "Pantry",
+  "tabDeals": "Deals",
+  "tabDonate": "Donate",
+  "tabImpact": "Impact",
+  "pantryTitle": "My pantry",
+  "searchFood": "Search your food",
+  "filterAll": "All",
+  "storageFridge": "Fridge",
+  "storageFreezer": "Freezer",
+  "storageCupboard": "Cupboard",
+  "addFood": "Add food",
+  "emptyPantry": "Your pantry is empty. Tap Add food to start.",
+  "noResults": "No food matches your search.",
+  "expired": "Expired",
+  "expiresToday": "Expires today",
+  "expiresInDays": "{count, plural, =1{Expires tomorrow} other{Expires in {count} days}}",
+  "@expiresInDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "urgencyLegend": "Red = today · Orange = within 3 days · Green = later",
+  "unitPiece": "pcs",
+  "unitKg": "kg",
+  "unitG": "g",
+  "unitL": "L",
+  "unitMl": "ml",
+  "unitPack": "pack",
+  "unitLoaf": "loaves",
+  "addSheetTitle": "How do you want to add food?",
+  "captureReceipt": "Scan receipt",
+  "captureBarcode": "Scan barcode",
+  "capturePhoto": "Photo of fridge",
+  "captureVoice": "Say it",
+  "captureManual": "Type it",
+  "comingSprint": "Sprint {n}",
+  "@comingSprint": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "manualTitle": "Add by hand",
+  "manualSearchHint": "e.g. طماطم or tomatoes",
+  "commonItems": "Common items · tap to add",
+  "itemAdded": "{name} added",
+  "@itemAdded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Undo",
+  "addCustom": "Add “{name}”",
+  "@addCustom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "expiry": "Expiry",
+  "estimated": "estimated",
+  "printed": "printed date",
+  "quantity": "Quantity",
+  "storage": "Storage",
+  "category": "Category",
+  "markUsed": "Used it",
+  "markThrownAway": "Thrown away",
+  "deleteItem": "Delete",
+  "usedRecorded": "Marked as used",
+  "deleted": "Deleted",
+  "wasteTitle": "Why was it thrown away?",
+  "wasteSpoiled": "Spoiled",
+  "wasteForgotten": "Forgotten",
+  "wasteCookedTooMuch": "Cooked too much",
+  "wasteOther": "Other",
+  "wasteOtherHint": "Tell us why",
+  "wasteRecorded": "Recorded. This counts towards your waste rate.",
+  "save": "Save",
+  "cancel": "Cancel",
+  "receiptTitle": "Scan a receipt",
+  "receiptChoose": "Demo camera: choose a sample receipt",
+  "receiptRead": "Read this receipt",
+  "readingReceipt": "Reading your receipt…",
+  "maskedTitle": "Personal data hidden on your phone",
+  "maskedCount": "{count, plural, =0{No personal data found} =1{1 personal detail hidden before upload} other{{count} personal details hidden before upload}}",
+  "@maskedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "privacyNote": "Only these masked lines leave your phone.",
+  "reviewTitle": "Review receipt",
+  "itemsFound": "{count, plural, =1{1 item found} other{{count} items found}} · tap to edit",
+  "@itemsFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lowConfidenceHint": "Orange = please check",
+  "confirmAll": "Confirm all",
+  "byHand": "By hand",
+  "itemsAdded": "{count, plural, =1{1 item added} other{{count} items added}}",
+  "@itemsAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confidence": "{pct}% sure",
+  "@confidence": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "editItem": "Edit item",
+  "itemName": "Name",
+  "unknownLine": "Unknown line",
+  "unknownLineHint": "Not saved unless you name it. Swipe to remove.",
+  "aiFailedTitle": "We couldn’t read the items",
+  "aiFailedBody": "The AI service didn’t answer in time. Here are the lines your phone read. Add the items by hand.",
+  "aiSuggestion": "AI result, check before saving",
+  "notificationsTitle": "Notifications",
+  "noNotifications": "No notifications yet.",
+  "pushExpiryTitle": "3 items expire soon",
+  "pushExpiryBody": "Laban, tomatoes and baladi bread. Use them first today.",
+  "pushReservedTitle": "Bag reserved",
+  "pushReservedBody": "Your surprise bag at Sun Bakery is ready 9–10 pm. Code 4821.",
+  "open": "Open",
+  "settingsTitle": "Settings",
+  "language": "Language",
+  "arabicDigits": "Arabic-Indic numerals (١٢٣)",
+  "area": "Your area",
+  "areaPrivacy": "Others only see an approximate distance.",
+  "demoTools": "Demo tools",
+  "simulateAiFailure": "Simulate AI failure",
+  "sendExpiryPush": "Send expiry push",
+  "sendReservationPush": "Send reservation push",
+  "resetDemo": "Reset demo data",
+  "signOut": "Sign out",
+  "homeUseFirst": "Use these first",
+  "homeNoRisk": "Nothing is about to expire. Well done!",
+  "recipesSoon": "Recipe ideas for these items arrive in Sprint 2.",
+  "dealsSoon": "Nearby surplus deals arrive in Sprint 2.",
+  "donateSoon": "Donating sealed items arrives in Sprint 3.",
+  "impactSoon": "Your impact dashboard arrives in Sprint 3.",
+  "comingSoon": "Coming soon",
+  "areaNewCairo": "New Cairo",
+  "areaMaadi": "Maadi",
+  "areaZamalek": "Zamalek",
+  "areaHeliopolis": "Heliopolis",
+  "areaNasrCity": "Nasr City",
+  "areaDokki": "Dokki",
+  "areaMohandessin": "Mohandessin",
+  "areaSheikhZayed": "Sheikh Zayed",
+  "areaOctober": "6th of October",
+  "areaDowntown": "Downtown",
+  "catBakery": "Bread and bakery",
+  "catProduce": "Fruit and vegetables",
+  "catDairy": "Dairy and eggs",
+  "catMeat": "Meat, poultry and fish",
+  "catCooked": "Cooked food",
+  "catDry": "Dry and canned food",
+  "catDrinks": "Drinks"
+}

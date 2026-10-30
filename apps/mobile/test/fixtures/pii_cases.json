@@ -1,0 +1,27 @@
+{
+  "_comment": "Shared fixture for the phone masker (US-14.03). The AI gateway's server-side check will read the same file.",
+  "masked": [
+    { "in": "العميل: منى أحمد", "out": "العميل: [name]" },
+    { "in": "Customer: Mona Ahmed", "out": "Customer: [name]" },
+    { "in": "Cashier: Karim", "out": "Cashier: [name]" },
+    { "in": "اسم: محمد علي", "out": "اسم: [name]" },
+    { "in": "موبايل: 0101 234 5678", "out": "موبايل: [phone]" },
+    { "in": "Tel +20 112 345 6789", "out": "Tel [phone]" },
+    { "in": "00201512345678", "out": "[phone]" },
+    { "in": "هاتف ٠١٢٣٤٥٦٧٨٩٠", "out": "هاتف [phone]" },
+    { "in": "Landline 02 2358 1234", "out": "Landline [phone]" },
+    { "in": "4111 1111 1111 1111", "out": "[card]" },
+    { "in": "VISA XXXX-XXXX-XXXX-9921", "out": "VISA [card]" },
+    { "in": "فيزا **** 4417", "out": "فيزا **** [card]" },
+    { "in": "receipt to mona.ahmed@example.com", "out": "receipt to [email]" }
+  ],
+  "kept": [
+    "طماطم            1.000 كجم   18.50",
+    "عيش بلدي        10 × 1.25    12.50",
+    "MILK FULL CRM 1L   x2     64.00",
+    "فاتورة رقم 000482   29/10/2026 18:42",
+    "EAN 6221031234567",
+    "TOTAL                     269.00",
+    "سوبرماركت النيل - فرع المعادي"
+  ]
+}

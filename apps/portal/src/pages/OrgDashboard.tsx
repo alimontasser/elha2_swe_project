@@ -63,7 +63,7 @@ export function OrgDashboard() {
               {lastReason && org.verification !== 'verified' && (
                 <div className="callout">
                   <strong>{t('org.lastReason')}</strong>
-                  <p>{lastReason}</p>
+                  <p dir="auto">{lastReason}</p>
                 </div>
               )}
               {!canOperate(org) && (
@@ -106,11 +106,11 @@ export function OrgDashboard() {
                 <dl className="facts">
                   <div>
                     <dt>{t('org.serviceAreas')}</dt>
-                    <dd>{org.serviceAreas.map((a) => t(`areas.${a}`)).join('، ')}</dd>
+                    <dd>{org.serviceAreas.map((a) => t(`areas.${a}`)).join(t('app.listSeparator'))}</dd>
                   </div>
                   <div>
                     <dt>{t('org.foodTypes')}</dt>
-                    <dd>{org.foodTypes.map((f) => t(`food.${f}`)).join('، ')}</dd>
+                    <dd>{org.foodTypes.map((f) => t(`food.${f}`)).join(t('app.listSeparator'))}</dd>
                   </div>
                   <div>
                     <dt>{t('form.capacity')}</dt>
