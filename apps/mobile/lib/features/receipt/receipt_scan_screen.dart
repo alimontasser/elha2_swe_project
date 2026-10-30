@@ -108,7 +108,8 @@ class PaperReceipt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const base = TextStyle(fontFamily: 'monospace', fontSize: 13, height: 1.5, color: Color(0xFF333333));
+    // Inherits the bundled Cairo face: a 'monospace' family would make Flutter web fetch a fallback font.
+    const base = TextStyle(fontSize: 13, height: 1.5, color: Color(0xFF333333));
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

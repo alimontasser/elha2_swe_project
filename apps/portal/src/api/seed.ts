@@ -34,9 +34,9 @@ export function seedDb(): DemoDb {
         createdAt: daysAgo(1),
       },
       {
-        id: 'org-foodbank',
+        id: 'org-ngo',
         kind: 'ngo',
-        name: 'بنك الطعام – المعادي',
+        name: 'جمعية سلة الخير – المعادي',
         registrationNo: 'MOSS-2291',
         ownerPhone: DEMO_NGO_PHONE,
         documents: [{ kind: 'ngoRegistration', fileName: 'moss-registration.pdf' }],

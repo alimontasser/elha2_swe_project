@@ -29,7 +29,7 @@ pnpm dev                # http://localhost:5173
 | One-time code (any number) | `123456` (5 wrong codes lock the number for 1 h) |
 | Portal admin | `01000000000`, role "Administrator" |
 | Portal business owner | `01011112222`, role "Business owner" (owns the pending *مخبز الشمس*) |
-| Portal NGO coordinator | `01233334444`, role "NGO coordinator" (pending *بنك الطعام – المعادي*) |
+| Portal NGO coordinator | `01233334444`, role "NGO coordinator" (pending *جمعية سلة الخير – المعادي*) |
 | App | Any Egyptian mobile (`010/011/012/015` + 8 digits) |
 
 **Reset:** in the portal, **Reset demo data** in the top bar. In the app, Settings → **Reset demo data**.
