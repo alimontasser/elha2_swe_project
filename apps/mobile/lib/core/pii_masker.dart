@@ -23,7 +23,7 @@ class PiiMasker {
 
   // Labels after which a person's name follows, in Arabic and English.
   static final _nameLabel = RegExp(
-    r'((?:customer|client|cashier|name|member|delivered to|اسم العميل|العميل|الكاشير|كاشير|الاسم|اسم|السيد|السيدة|عضو)\s*[:：\-]?\s*)'
+    r'(?<!\[)((?:customer|client|cashier|name|member|delivered to|اسم العميل|العميل|الكاشير|كاشير|الاسم|اسم|السيد|السيدة|عضو)\s*[:：\-]?\s*)'
     r'([^\d:：\n]{1,40}?)\s*$',
     caseSensitive: false,
   );

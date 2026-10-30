@@ -16,7 +16,7 @@ const ARABIC_DIGITS = /[٠-٩]/g;
 
 // Labels after which a person's name follows, in Arabic and English.
 const NAME_LABEL =
-  /((?:customer|client|cashier|name|member|delivered to|اسم العميل|العميل|الكاشير|كاشير|الاسم|اسم|السيد|السيدة|عضو)\s*[:：-]?\s*)([^\d:：\n]{1,40}?)\s*$/i;
+  /(?<!\[)((?:customer|client|cashier|name|member|delivered to|اسم العميل|العميل|الكاشير|كاشير|الاسم|اسم|السيد|السيدة|عضو)\s*[:：-]?\s*)([^\d:：\n]{1,40}?)\s*$/i;
 
 const EMAIL = /[\w.+-]+@[\w-]+\.[\w.-]+/g;
 

@@ -70,3 +70,19 @@ pnpm dev                # http://localhost:5173
   - Every step above passed with no console errors.
   - The portal has no horizontal scroll at phone width.
   - The screenshots are in `screenshots/`. Use them to replace the SDD wireframes at the Sprint 1 review (SDD change procedure).
+
+## Receipt scan through the real backend
+The app's receipt scan can use the real AI gateway instead of the mock.
+
+```bash
+cd apps/api
+cp .env.example .env        # fill DATABASE_URL, AUTH_JWT_SECRET (any random string) and GEMINI_API_KEY
+pnpm install && pnpm db:deploy && pnpm db:seed
+pnpm build && node dist/main          # API on http://localhost:3000
+pnpm -s dev-token                     # prints a local login token
+```
+```bash
+cd apps/mobile
+flutter run -d chrome --dart-define=ELHA2_API_URL=http://localhost:3000 --dart-define=ELHA2_DEV_TOKEN=<token>
+```
+Without the two `--dart-define` values the app keeps using the demo mock. Only scanning goes to the backend so far; "Confirm all" still saves into the app's demo pantry.

@@ -49,7 +49,8 @@ class _ReceiptReviewScreenState extends ConsumerState<ReceiptReviewScreen> {
     final result = widget.result;
     final fmt = Fmt.watch(ref, context);
 
-    if (result == null || result.fallbackUsed) {
+    // A rule-based reading (AI unavailable) still has items to review; only an empty one needs manual entry.
+    if (result == null || (result.fallbackUsed && result.items.isEmpty)) {
       return Scaffold(
         appBar: AppBar(title: Text(l.reviewTitle)),
         body: ListView(

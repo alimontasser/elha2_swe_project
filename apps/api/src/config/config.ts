@@ -33,7 +33,7 @@ const ConfigSchema = z
     AI_DAILY_RECEIPTS_PER_USER: z.coerce.number().int().positive().default(30),
     AI_CACHE_DAYS: z.coerce.number().int().positive().default(30),
     GEMINI_API_KEY: optionalText,
-    GEMINI_MODEL: z.string().default('gemini-3.8-flash'),
+    GEMINI_MODEL: z.string().default('gemini-3.5-flash-lite'),
     GEMINI_BASE_URL: z.url().default('https://generativelanguage.googleapis.com/v1beta'),
     GROQ_API_KEY: optionalText,
     GROQ_MODEL: z.string().default('llama-3.3-70b-versatile'),
