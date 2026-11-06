@@ -5,8 +5,10 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 ## Access and accounts
 - [ ] **GitHub:** give Claude access to `mdessouky/elha2_swe_project`. Either install the Claude GitHub App or reconnect at <https://claude.ai/connect-github>.
 - [x] **Supabase project:** `https://ujvucfvrhlrjttzmavgg.supabase.co` (ref `ujvucfvrhlrjttzmavgg`); publishable key received.
+- [x] **Network:** the cloud environment now allows `ujvucfvrhlrjttzmavgg.supabase.co` and `api.groq.com`. Inside the cloud sandbox, Node needs `NODE_USE_ENV_PROXY=1` to use its proxy; local machines don't.
+- [x] **Groq backup:** key works; default model `openai/gpt-oss-120b` read the Fresh Mart demo receipt correctly in 3.2 s.
 - [ ] **Supabase, still to do:**
-  - allow `ujvucfvrhlrjttzmavgg.supabase.co` in the cloud environment's network settings;
+  - turn on Phone in Authentication → Providers (it is off), with test numbers for the demo;
   - add the database connection string as the environment secret `DATABASE_URL`;
   - enable the `postgis` and `pg_trgm` extensions.
 - [ ] **Supabase phone login (US-1.01):** pick one.
