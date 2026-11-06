@@ -35,7 +35,7 @@
     "phoneHint": "For example 010 1234 5678",
     "sendCode": "Send code",
     "codeLabel": "6-digit code",
-    "codeHint": "Demo code: 123456. The code expires after 5 minutes.",
+    "codeHint": "Demo code: 654321. The code expires after 5 minutes.",
     "roleLabel": "Sign in as (demo only)",
     "verify": "Sign in",
     "changeNumber": "Change number",

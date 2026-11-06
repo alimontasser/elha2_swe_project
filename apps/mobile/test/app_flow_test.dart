@@ -32,7 +32,7 @@ Future<void> signIn(WidgetTester tester) async {
   await tester.enterText(find.byKey(const Key('phoneField')), '010 1234 5678');
   await tester.tap(find.byKey(const Key('sendCode')));
   await tester.pumpAndSettle();
-  await tester.enterText(find.byKey(const Key('otpField')), '123456');
+  await tester.enterText(find.byKey(const Key('otpField')), '654321');
   await tester.pumpAndSettle();
   await tester.tap(find.byKey(const Key('useGps')));
   await tester.pump(const Duration(seconds: 1));
