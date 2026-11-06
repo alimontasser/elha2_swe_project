@@ -156,11 +156,15 @@ class MockReceiptAiService implements ReceiptAiService {
 
 class MockNotificationService implements NotificationService {
   final _controller = StreamController<AppNotification>.broadcast();
+  final _changes = StreamController<void>.broadcast();
   final _history = <AppNotification>[];
   var _seq = 0;
 
   @override
   Stream<AppNotification> get incoming => _controller.stream;
+
+  @override
+  Stream<void> get changes => _changes.stream;
 
   @override
   List<AppNotification> get history => List.unmodifiable(_history);
@@ -170,18 +174,23 @@ class MockNotificationService implements NotificationService {
     final n = AppNotification(
       id: 'n${_seq++}',
       type: type,
-      deepLink: type == NotificationType.expiryDigest ? '/pantry' : '/deals',
+      deepLink: switch (type) {
+        NotificationType.expiryDigest => '/pantry',
+        NotificationType.reservation || NotificationType.pickup => '/deals',
+      },
       sentAt: DateTime.now(),
     );
     _history.insert(0, n);
     _controller.add(n);
+    _changes.add(null);
   }
 
   @override
   void markRead(String id) {
     final i = _history.indexWhere((n) => n.id == id);
-    if (i < 0) return;
+    if (i < 0 || _history[i].readAt != null) return;
     final n = _history[i];
     _history[i] = AppNotification(id: n.id, type: n.type, deepLink: n.deepLink, sentAt: n.sentAt, readAt: DateTime.now());
+    _changes.add(null);
   }
 }

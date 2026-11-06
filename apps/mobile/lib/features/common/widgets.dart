@@ -25,6 +25,41 @@ class DemoBanner extends StatelessWidget {
   );
 }
 
+/// SRS §3.1: says what went wrong and how to fix it, and never shows raw exception text.
+class LoadError extends StatelessWidget {
+  const LoadError({super.key, required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.cloud_off, size: 48, color: Elha2Colors.orange),
+          const SizedBox(height: 12),
+          Text(context.l10n.loadFailed, textAlign: TextAlign.center),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            key: const Key('retryLoad'),
+            onPressed: onRetry,
+            icon: const Icon(Icons.refresh),
+            label: Text(context.l10n.retry),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/// SRS §3.1: a failed change is reported in a snackbar, replacing any Undo offer on screen.
+void showSaveFailed(ScaffoldMessengerState messenger, String message) {
+  messenger.hideCurrentSnackBar();
+  messenger.showSnackBar(SnackBar(content: Text(message)));
+}
+
 class LanguageButton extends ConsumerWidget {
   const LanguageButton({super.key});
 

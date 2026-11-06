@@ -20,7 +20,7 @@ pnpm install
 pnpm dev                # http://localhost:5173
 ```
 **Tests:**
-- mobile: `flutter analyze && flutter test` (37 tests);
+- mobile: `flutter analyze && flutter test` (211 tests; see [`sprint-1-test-report.md`](sprint-1-test-report.md));
 - portal: `pnpm test && pnpm typecheck` (19 tests).
 
 ## Demo data
@@ -49,7 +49,7 @@ pnpm dev                # http://localhost:5173
 | US-2.01 Scan a receipt + US-14.03 Mask personal data | **Add food** → **Scan receipt** → pick a sample → **Read this receipt** | The masked lines show `[name]`, `[phone]`, `[card]` and the count hidden; then "Reading your receipt…" |
 | US-2.02 Review AI-extracted items | Review screen | % per item; orange below 70%; tap to edit; swipe to delete; unknown line not saved unless named; **Confirm all** → "6 items added" |
 | NFR-22 AI fallback | Settings → **Simulate AI failure** → scan again | "We couldn't read the items", the raw lines, and **By hand** |
-| US-11.01 Receive push notifications | Settings → **Send expiry push** / **Send reservation push** | Banner at the top; **Open** deep-links to Pantry / Deals; bell shows the unread count |
+| US-11.01 Receive push notifications | Settings → **Send expiry push** / **Send reservation push** / **Send pickup push** | Banner at the top; **Open** deep-links to Pantry / Deals and marks it read; bell shows the unread count |
 | US-14.01 AI gateway | (back end, not in the demo) | `MockReceiptAiService` stands in for Gemini → Groq → non-AI fallback |
 
 **Web portal** (`docs/sprints/screenshots/portal-*.png`):
@@ -70,6 +70,10 @@ pnpm dev                # http://localhost:5173
   - Every step above passed with no console errors.
   - The portal has no horizontal scroll at phone width.
   - The screenshots are in `screenshots/`. Use them to replace the SDD wireframes at the Sprint 1 review (SDD change procedure).
+
+## Re-tested on 06/11/2026
+- **App:** `dart analyze`: no issues. `flutter test`: 211 passed. Defects and fixes are in [`sprint-1-test-report.md`](sprint-1-test-report.md).
+- The screenshots and browser walkthroughs above were not repeated.
 
 ## Receipt scan through the real backend
 The app's receipt scan can use the real AI gateway instead of the mock.

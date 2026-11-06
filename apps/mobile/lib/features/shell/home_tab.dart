@@ -19,7 +19,7 @@ class HomeTab extends ConsumerWidget {
     final pantry = ref.watch(pantryProvider);
     return pantry.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('$e')),
+      error: (_, _) => LoadError(onRetry: () => ref.invalidate(pantryProvider)),
       data: (items) {
         final atRisk = groupPantry(items).values.expand((g) => g).where((i) => daysUntil(i.expiryDate, now) <= 3).toList()
           ..sort((a, b) => a.expiryDate.compareTo(b.expiryDate));

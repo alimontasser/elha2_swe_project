@@ -37,7 +37,7 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
     return item;
   }
 
-  /// A free-text item that is not in the catalogue: cupboard, one piece, a cautious 3-day expiry the user can change.
+  /// A free-text item that is not in the catalogue: cupboard, one piece, a cautious 3-day estimate (US-3.01).
   Future<PantryItem> addCustom(String name) async {
     final today = DateTime.now();
     final item = PantryItem(
@@ -48,8 +48,8 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
       quantity: 1,
       unit: Unit.piece,
       storage: StoragePlace.cupboard,
-      expiryDate: DateTime(today.year, today.month, today.day).add(const Duration(days: 3)),
-      expirySource: ExpirySource.userSet,
+      expiryDate: daysAfter(today, 3),
+      expirySource: ExpirySource.estimated,
       addedBy: CaptureMethod.manual,
       addedOn: today,
     );
@@ -74,10 +74,8 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
           quantity: d.quantity,
           unit: d.unit,
           storage: d.storage,
-          expiryDate: byId[d.catalogueId] != null
-              ? estimateExpiry(byId[d.catalogueId]!, d.storage, today)
-              : DateTime(today.year, today.month, today.day).add(const Duration(days: 3)),
-          expirySource: byId[d.catalogueId] != null ? ExpirySource.estimated : ExpirySource.userSet,
+          expiryDate: byId[d.catalogueId] != null ? estimateExpiry(byId[d.catalogueId]!, d.storage, today) : daysAfter(today, 3),
+          expirySource: ExpirySource.estimated,
           addedBy: CaptureMethod.receipt,
           addedOn: today,
         ),

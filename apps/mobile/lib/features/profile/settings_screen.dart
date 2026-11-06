@@ -74,6 +74,11 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () => ref.read(notificationServiceProvider).simulate(NotificationType.reservation),
           ),
           ListTile(
+            leading: const Icon(Icons.storefront_outlined),
+            title: Text(l.sendPickupPush),
+            onTap: () => ref.read(notificationServiceProvider).simulate(NotificationType.pickup),
+          ),
+          ListTile(
             leading: const Icon(Icons.restart_alt),
             title: Text(l.resetDemo),
             onTap: () => ref.read(pantryProvider.notifier).reset(),

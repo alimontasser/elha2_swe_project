@@ -202,7 +202,7 @@ class SampleReceipt {
   final List<String> ocrLines;
 }
 
-enum NotificationType { expiryDigest, reservation }
+enum NotificationType { expiryDigest, reservation, pickup }
 
 class AppNotification {
   const AppNotification({required this.id, required this.type, required this.deepLink, required this.sentAt, this.readAt});

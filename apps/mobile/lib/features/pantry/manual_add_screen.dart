@@ -5,6 +5,7 @@ import '../../app/labels.dart';
 import '../../core/expiry_rules.dart';
 import '../../data/models.dart';
 import '../../state/pantry.dart';
+import '../common/widgets.dart';
 
 // Shown before the user types, so an item can be added in 3 taps: Add food → Type it → item.
 const _commonIds = [
@@ -43,18 +44,38 @@ class _ManualAddScreenState extends ConsumerState<ManualAddScreen> {
     super.dispose();
   }
 
-  void _added(PantryItem item) {
+  Future<void> _add(Future<PantryItem> Function(PantryController controller) add) async {
+    // Read everything first: the user may leave this screen while the save is running.
     final l = context.l10n;
+    final lang = context.lang;
     final messenger = ScaffoldMessenger.of(context);
     final controller = ref.read(pantryProvider.notifier);
+    final PantryItem item;
+    try {
+      item = await add(controller);
+    } on Exception {
+      showSaveFailed(messenger, l.saveFailed);
+      return;
+    }
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
-        content: Text(l.itemAdded(item.name(context.lang))),
+        content: Text(l.itemAdded(item.name(lang))),
         duration: const Duration(seconds: 10),
-        action: SnackBarAction(label: l.undo, onPressed: () => controller.delete(item.id)),
+        persist: false, // a snackbar with an action otherwise stays until dismissed; the SRS gives Undo 10 s
+        action: SnackBarAction(
+          label: l.undo,
+          onPressed: () async {
+            try {
+              await controller.delete(item.id);
+            } on Exception {
+              showSaveFailed(messenger, l.saveFailed);
+            }
+          },
+        ),
       ),
     );
+    if (!mounted) return;
     _query.clear();
     setState(() {});
   }
@@ -68,7 +89,7 @@ class _ManualAddScreenState extends ConsumerState<ManualAddScreen> {
       appBar: AppBar(title: Text(l.manualTitle)),
       body: catalogue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (_, _) => LoadError(onRetry: () => ref.invalidate(catalogueProvider)),
         data: (all) {
           final text = _query.text.trim();
           final byId = {for (final c in all) c.id: c};
@@ -111,14 +132,14 @@ class _ManualAddScreenState extends ConsumerState<ManualAddScreen> {
                           '${c.name(context.lang == 'ar' ? 'en' : 'ar')} · ${fmt.qty(c.defaultQuantity, c.unit)} · ${storageLabel(l, c.defaultStorage)}',
                         ),
                         trailing: const Icon(Icons.add_circle_outline),
-                        onTap: () async => _added(await ref.read(pantryProvider.notifier).addFromCatalogue(c)),
+                        onTap: () => _add((controller) => controller.addFromCatalogue(c)),
                       ),
                     if (text.isNotEmpty)
                       ListTile(
                         key: const Key('addCustom'),
                         leading: const Icon(Icons.edit_note),
                         title: Text(l.addCustom(text)),
-                        onTap: () async => _added(await ref.read(pantryProvider.notifier).addCustom(text)),
+                        onTap: () => _add((controller) => controller.addCustom(text)),
                       ),
                   ],
                 ),

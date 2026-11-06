@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/labels.dart';
 import '../../data/models.dart';
 import '../../state/pantry.dart';
+import '../common/widgets.dart';
 
 /// Item details with "used it", "thrown away" (US-2.10) and delete, each with an Undo.
 void showItemSheet(BuildContext context, PantryItem item) {
@@ -21,15 +22,40 @@ class _ItemSheet extends ConsumerWidget {
   final PantryItem item;
   final BuildContext hostContext;
 
-  void _undoable(WidgetRef ref, String message) {
+  /// Closes the sheet, applies the change, then offers Undo for 10 s or reports the failure.
+  Future<void> _apply(
+    BuildContext sheetContext,
+    WidgetRef ref,
+    String message,
+    Future<void> Function(PantryController controller) change,
+  ) async {
+    // Read everything first: the sheet is gone by the time a slow save returns.
+    final l = hostContext.l10n;
     final messenger = ScaffoldMessenger.of(hostContext);
     final controller = ref.read(pantryProvider.notifier);
+    Navigator.of(sheetContext).pop();
+    try {
+      await change(controller);
+    } on Exception {
+      showSaveFailed(messenger, l.saveFailed);
+      return;
+    }
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 10),
-        action: SnackBarAction(label: hostContext.l10n.undo, onPressed: () => controller.restore(item)),
+        persist: false, // a snackbar with an action otherwise stays until dismissed; the SRS gives Undo 10 s
+        action: SnackBarAction(
+          label: l.undo,
+          onPressed: () async {
+            try {
+              await controller.restore(item);
+            } on Exception {
+              showSaveFailed(messenger, l.saveFailed);
+            }
+          },
+        ),
       ),
     );
   }
@@ -45,7 +71,7 @@ class _ItemSheet extends ConsumerWidget {
     };
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -61,11 +87,7 @@ class _ItemSheet extends ConsumerWidget {
               key: const Key('markUsed'),
               icon: const Icon(Icons.check),
               label: Text(l.markUsed),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await ref.read(pantryProvider.notifier).markUsed(item);
-                _undoable(ref, l.usedRecorded);
-              },
+              onPressed: () => _apply(context, ref, l.usedRecorded, (c) => c.markUsed(item)),
             ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
@@ -75,19 +97,13 @@ class _ItemSheet extends ConsumerWidget {
               onPressed: () async {
                 final result = await showWasteReasonDialog(context);
                 if (result == null || !context.mounted) return;
-                Navigator.of(context).pop();
-                await ref.read(pantryProvider.notifier).markWasted(item, result.reason, note: result.note);
-                _undoable(ref, l.wasteRecorded);
+                await _apply(context, ref, l.wasteRecorded, (c) => c.markWasted(item, result.reason, note: result.note));
               },
             ),
             TextButton.icon(
               icon: const Icon(Icons.delete_outline),
               label: Text(l.deleteItem),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await ref.read(pantryProvider.notifier).delete(item.id);
-                _undoable(ref, l.deleted);
-              },
+              onPressed: () => _apply(context, ref, l.deleted, (c) => c.delete(item.id)),
             ),
           ],
         ),

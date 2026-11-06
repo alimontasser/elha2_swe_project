@@ -22,7 +22,7 @@ class HomeShell extends ConsumerWidget {
         title: Row(children: [const BrandMark(size: 32), const SizedBox(width: 10), Text(l.appName)]),
         actions: [
           StreamBuilder(
-            stream: notifications.incoming,
+            stream: notifications.changes,
             builder: (context, _) {
               final unread = notifications.history.where((n) => n.readAt == null).length;
               return IconButton(

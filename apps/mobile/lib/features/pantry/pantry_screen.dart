@@ -31,7 +31,7 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
       backgroundColor: Colors.transparent,
       body: pantry.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (_, _) => LoadError(onRetry: () => ref.invalidate(pantryProvider)),
         data: (items) {
           final q = normaliseArabic(_query.trim().toLowerCase());
           final visible = items.where((i) => q.isEmpty || normaliseArabic(i.nameAr).contains(q) || i.nameEn.toLowerCase().contains(q));

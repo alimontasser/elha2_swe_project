@@ -7,7 +7,7 @@ class Elha2Colors {
   static const green = Color(0xFF1F6F4A);
   static const greenSoft = Color(0xFFE8F3EC);
   static const sand = Color(0xFFF7F4EE);
-  static const orange = Color(0xFFB85C12);
+  static const orange = Color(0xFFA8520F); // at least 4.5:1 on orangeSoft (WCAG AA, NFR-17)
   static const orangeSoft = Color(0xFFFBEFE2);
   static const red = Color(0xFFB3261E);
   static const redSoft = Color(0xFFFBE9E7);

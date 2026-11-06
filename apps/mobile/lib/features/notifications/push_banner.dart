@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,12 +10,17 @@ import '../../l10n/gen/app_localizations.dart';
 ({String title, String body, IconData icon}) notificationText(AppLocalizations l, NotificationType t) => switch (t) {
   NotificationType.expiryDigest => (title: l.pushExpiryTitle, body: l.pushExpiryBody, icon: Icons.schedule),
   NotificationType.reservation => (title: l.pushReservedTitle, body: l.pushReservedBody, icon: Icons.shopping_bag_outlined),
+  NotificationType.pickup => (title: l.pushPickupTitle, body: l.pushPickupBody, icon: Icons.storefront_outlined),
 };
 
-/// Demo stand-in for an FCM push received in the foreground.
-void showPushBanner(GlobalKey<ScaffoldMessengerState> messengerKey, AppNotification n, GoRouter router) {
+// One timer for the one banner on screen: a new push restarts it, so an older push cannot hide a newer banner.
+Timer? _hideBanner;
+
+/// Demo stand-in for an FCM push received in the foreground. [onOpen] runs when the user taps Open.
+void showPushBanner(GlobalKey<ScaffoldMessengerState> messengerKey, AppNotification n, GoRouter router, {required VoidCallback onOpen}) {
   final messenger = messengerKey.currentState;
   if (messenger == null) return;
+  _hideBanner?.cancel();
   messenger.clearMaterialBanners();
   messenger.showMaterialBanner(
     MaterialBanner(
@@ -47,6 +54,7 @@ void showPushBanner(GlobalKey<ScaffoldMessengerState> messengerKey, AppNotificat
           builder: (context) => FilledButton(
             onPressed: () {
               messenger.hideCurrentMaterialBanner();
+              onOpen();
               router.go(n.deepLink);
             },
             child: Text(context.l10n.open),
@@ -55,7 +63,7 @@ void showPushBanner(GlobalKey<ScaffoldMessengerState> messengerKey, AppNotificat
       ],
     ),
   );
-  Future<void>.delayed(const Duration(seconds: 8), () {
+  _hideBanner = Timer(const Duration(seconds: 8), () {
     if (messengerKey.currentState?.mounted ?? false) messenger.hideCurrentMaterialBanner();
   });
 }

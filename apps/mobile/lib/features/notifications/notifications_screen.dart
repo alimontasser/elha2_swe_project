@@ -22,7 +22,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(l.notificationsTitle)),
       body: StreamBuilder(
-        stream: service.incoming,
+        stream: service.changes,
         builder: (context, _) {
           final list = service.history;
           if (list.isEmpty) return Center(child: Text(l.noNotifications));

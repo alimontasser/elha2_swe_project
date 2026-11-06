@@ -1,3 +1,4 @@
+import '../../core/expiry_rules.dart';
 import '../models.dart';
 
 // Fictional shops and people; the personal details exist so the masker has something to hide.
@@ -143,10 +144,10 @@ List<PantryItem> seedPantry(DateTime now) {
     quantity: qty,
     unit: unit,
     storage: st,
-    expiryDate: today.add(Duration(days: inDays)),
+    expiryDate: daysAfter(today, inDays),
     expirySource: src,
     addedBy: by,
-    addedOn: today.subtract(Duration(days: addedDaysAgo)),
+    addedOn: daysAfter(today, -addedDaysAgo),
   );
   return [
     item(

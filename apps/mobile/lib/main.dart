@@ -28,8 +28,9 @@ class _Elha2AppState extends ConsumerState<Elha2App> {
   void initState() {
     super.initState();
     // US-11.01: a push arriving while the app is open shows a banner that deep-links to its screen.
-    _pushes = ref.read(notificationServiceProvider).incoming.listen((n) {
-      showPushBanner(_messengerKey, n, ref.read(routerProvider));
+    final notifications = ref.read(notificationServiceProvider);
+    _pushes = notifications.incoming.listen((n) {
+      showPushBanner(_messengerKey, n, ref.read(routerProvider), onOpen: () => notifications.markRead(n.id));
     });
   }
 

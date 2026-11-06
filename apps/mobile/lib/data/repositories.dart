@@ -60,6 +60,9 @@ abstract interface class NotificationService {
   /// US-11.01: pushes arriving on this device (FCM in the real app).
   Stream<AppNotification> get incoming;
 
+  /// Fires whenever [history] changes (a new push, or one marked read), so the bell stays correct.
+  Stream<void> get changes;
+
   List<AppNotification> get history;
 
   void simulate(NotificationType type);

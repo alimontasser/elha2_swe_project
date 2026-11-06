@@ -9,9 +9,12 @@ DateTime estimateExpiry(CatalogueItem item, StoragePlace storage, DateTime purch
   if (storage != StoragePlace.freezer && isSummer) {
     days = (days * summerFactor).floor().clamp(1, days);
   }
-  final day = DateTime(purchasedOn.year, purchasedOn.month, purchasedOn.day);
-  return day.add(Duration(days: days));
+  return daysAfter(purchasedOn, days);
 }
+
+/// The calendar date [days] after [from]. Adding a Duration would land on the wrong day when
+/// Egypt's clocks change, because that local day is 23 or 25 hours long.
+DateTime daysAfter(DateTime from, int days) => DateTime(from.year, from.month, from.day + days);
 
 enum Urgency { expired, today, soon, later }
 
@@ -25,8 +28,9 @@ Urgency urgencyOf(DateTime expiry, DateTime now) {
 }
 
 int daysUntil(DateTime expiry, DateTime now) {
-  final a = DateTime(now.year, now.month, now.day);
-  final b = DateTime(expiry.year, expiry.month, expiry.day);
+  // UTC days are always 24 hours, so a clock change cannot shorten the count.
+  final a = DateTime.utc(now.year, now.month, now.day);
+  final b = DateTime.utc(expiry.year, expiry.month, expiry.day);
   return b.difference(a).inDays;
 }
 
