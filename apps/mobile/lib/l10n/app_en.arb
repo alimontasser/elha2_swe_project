@@ -17,7 +17,7 @@
       }
     }
   },
-  "otpHint": "Demo code: 123456",
+  "otpHint": "Demo code: 654321",
   "verify": "Continue",
   "wrongCode": "That code is not right. {remaining, plural, =1{1 try left} other{{remaining} tries left}} this hour.",
   "@wrongCode": {

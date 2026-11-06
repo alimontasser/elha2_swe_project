@@ -26,7 +26,7 @@ pnpm dev                # http://localhost:5173
 ## Demo data
 | What | Value |
 |---|---|
-| One-time code (any number) | `123456` (5 wrong codes lock the number for 1 h) |
+| One-time code (any number) | `654321` (5 wrong codes lock the number for 1 h) |
 | Portal admin | `01000000000`, role "Administrator" |
 | Portal business owner | `01011112222`, role "Business owner" (owns the pending *مخبز الشمس*) |
 | Portal NGO coordinator | `01233334444`, role "NGO coordinator" (pending *جمعية سلة الخير – المعادي*) |
@@ -40,7 +40,7 @@ pnpm dev                # http://localhost:5173
 
 | Story | Steps | Expected |
 |---|---|---|
-| US-1.01 Sign up with a phone number | Enter `010 1234 5678` → Send code → type `123456` | Signed in. A wrong code shows the attempts left; the 5th locks for 1 h |
+| US-1.01 Sign up with a phone number | Enter `010 1234 5678` → Send code → type `654321` | Signed in. A wrong code shows the attempts left; the 5th locks for 1 h |
 | US-1.02 Switch the app language | Tap **English** on sign-in, or Settings → Language; Settings → Arabic-Indic numerals | Switches instantly; Arabic is right to left, English left to right |
 | US-1.04 Set a location | "Use my location", or pick an area → Continue | Only the area name is stored and shown. Settings explains that others see an approximate distance |
 | US-2.11 View the pantry | Pantry tab | Grouped Fridge / Freezer / Cupboard, sorted by expiry. Red/orange/green with an icon **and** a text label. Search and filter chips |
@@ -56,7 +56,7 @@ pnpm dev                # http://localhost:5173
 
 | Story | Steps | Expected |
 |---|---|---|
-| US-1.01 | Sign in with any role and code `123456` | Wrong code shows an inline error; 5 wrong codes lock the number |
+| US-1.01 | Sign in with any role and code `654321` | Wrong code shows an inline error; 5 wrong codes lock the number |
 | US-1.06 Register a business | Business owner → **Register a business** → name, CR no., licence no., branches (add several), both documents → Submit | Status "Pending review"; listing is locked until verified (BR-01) |
 | US-1.07 Register an NGO | NGO coordinator → **Register an NGO** → areas, food types, capacity, coordinators, certificate → Submit | Pending; "donation offers blocked until verified" |
 | US-13.01 Verify organisations | Admin → Verification → **Review** → Approve / Reject (reason required) / Request information (reason required) | History records who decided and when; the owner (or every NGO coordinator) gets a notification |

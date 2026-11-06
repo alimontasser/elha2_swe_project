@@ -8,7 +8,7 @@ import { seedDb, type DemoDb } from './seed'
 // - Supabase Auth phone OTP: the code is always DEMO_OTP; 5 wrong codes in 1 h lock the number (NFR-12).
 // - Supabase Storage: documents keep their file name only.
 // - INotify / FCM: notifications are rows in the local store.
-export const DEMO_OTP = '123456'
+export const DEMO_OTP = '654321'
 const MAX_ATTEMPTS = 5
 const LOCK_MS = 60 * 60 * 1000
 const DB_KEY = 'elha2-portal-demo-db-v1'

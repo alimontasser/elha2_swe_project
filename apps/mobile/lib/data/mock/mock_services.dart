@@ -14,7 +14,7 @@ import 'mock_data.dart';
 class MockAuthRepository implements AuthRepository {
   MockAuthRepository({DateTime Function()? clock, this.latency = const Duration(milliseconds: 400)}) : _clock = clock ?? DateTime.now;
 
-  static const demoOtp = '123456';
+  static const demoOtp = '654321';
   static const maxAttempts = 5;
   static const lockWindow = Duration(hours: 1);
 
