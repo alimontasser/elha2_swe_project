@@ -42,7 +42,7 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
           return CustomScrollView(
             slivers: [
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 4),
                 sliver: SliverToBoxAdapter(
                   child: TextField(
                     key: const Key('pantrySearch'),
@@ -83,7 +83,7 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                 for (final p in places)
                   if (groups[p]!.isNotEmpty)
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
                       sliver: SliverToBoxAdapter(
                         child: Card(
                           child: Column(
