@@ -7,10 +7,11 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 - [x] **Supabase project:** `https://ujvucfvrhlrjttzmavgg.supabase.co` (ref `ujvucfvrhlrjttzmavgg`); publishable key received.
 - [x] **Network:** the cloud environment now allows `ujvucfvrhlrjttzmavgg.supabase.co` and `api.groq.com`. Inside the cloud sandbox, Node needs `NODE_USE_ENV_PROXY=1` to use its proxy; local machines don't.
 - [x] **Groq backup:** key works; default model `openai/gpt-oss-120b` read the Fresh Mart demo receipt correctly in 3.2 s.
+- [x] **Supabase database:** both Prisma migrations are applied (schemas `accounts`, `expiry`, `pantry`, `ai`; `pg_trgm`; row-level security on). The 104 catalogue items and 3 AI examples are loaded. `_prisma_migrations` matches the repo, so `pnpm db:deploy` against Supabase is a no-op until a new migration is added.
 - [ ] **Supabase, still to do:**
   - turn on Phone in Authentication → Providers (it is off), with test numbers for the demo;
-  - add the database connection string as the environment secret `DATABASE_URL`;
-  - enable the `postgis` and `pg_trgm` extensions.
+  - give the team the database connection string (Connect → **Session pooler**) for `DATABASE_URL` in `apps/api/.env`; on Cloud Run it goes in the secret manager;
+  - enable `postgis` when the Accounts location endpoint (US-1.04) is built.
 - [ ] **Supabase phone login (US-1.01):** pick one.
   - An SMS provider (Twilio, Vonage or MessageBird). Each SMS costs money.
   - Or free **test phone numbers** with fixed OTPs, for the course demo.
