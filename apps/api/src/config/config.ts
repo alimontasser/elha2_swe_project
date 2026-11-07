@@ -43,6 +43,9 @@ const ConfigSchema = z
       .default('qwen/qwen3.8-27b')
       .transform((v) => v.trim() || undefined),
 
+    // Barcode lookup (US-2.03): the open product database.
+    OPEN_FOOD_FACTS_URL: z.url().default('https://world.openfoodfacts.org'),
+
     // Push notifications (US-11.01): path to the Firebase service-account JSON (never committed).
     // Without it, notifications are stored and listed but not pushed.
     FIREBASE_SERVICE_ACCOUNT_FILE: optionalText,

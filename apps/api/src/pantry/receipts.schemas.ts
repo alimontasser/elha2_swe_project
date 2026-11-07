@@ -7,7 +7,7 @@ export const ScanReceiptBody = z.object({
   shopName: z.string().max(80).optional(),
 });
 
-const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD');
+export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD');
 
 /** One reviewed item as the app sends it back on "Confirm all" (US-2.02). */
 export const ConfirmedItem = z.object({

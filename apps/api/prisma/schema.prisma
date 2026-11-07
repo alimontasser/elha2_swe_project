@@ -103,6 +103,44 @@ model FoodCatalogueItem {
   @@schema("expiry")
 }
 
+/// Where a barcoded product's details came from (US-2.03).
+enum ProductSource {
+  openFoodFacts @map("open_food_facts")
+  user
+
+  @@map("product_source")
+  @@schema("expiry")
+}
+
+enum ProductStatus {
+  known
+  pendingReview @map("pending_review")
+
+  @@map("product_status")
+  @@schema("expiry")
+}
+
+/// A packaged product found by its barcode: from Open Food Facts, or suggested by a user for an
+/// admin to review (US-2.03). It points to the catalogue item that gives its shelf life.
+model Product {
+  barcode     String        @id
+  catalogueId String?       @map("catalogue_id")
+  nameAr      String?       @map("name_ar")
+  nameEn      String?       @map("name_en")
+  brand       String?
+  quantity    Decimal?      @db.Decimal(10, 3)
+  unit        String?
+  source      ProductSource
+  status      ProductStatus
+  suggestedBy String?       @map("suggested_by") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status])
+  @@map("product")
+  @@schema("expiry")
+}
+
 // ---------- Pantry ----------
 
 enum ItemStatus {
@@ -160,6 +198,7 @@ model PantryItem {
   expirySource ExpirySource  @map("expiry_source")
   status       ItemStatus    @default(inStock)
   wasteReason  WasteReason?  @map("waste_reason")
+  wasteNote    String?       @map("waste_note")
   addedBy      CaptureMethod @map("added_by")
   addedOn      DateTime      @default(now()) @map("added_on") @db.Timestamptz(3)
   createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
