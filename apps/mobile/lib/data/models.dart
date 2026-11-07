@@ -222,3 +222,29 @@ class Session {
 
   Session withArea(Area area) => Session(phone: phone, area: area);
 }
+
+/// US-4.02: one answer from the cooking assistant.
+class AssistantReply {
+  const AssistantReply({
+    required this.answer,
+    this.reheatingNote = '',
+    this.onTopic = true,
+    this.usedItems = const [],
+    this.fallbackUsed = false,
+    this.unreachable = false,
+  });
+
+  /// The assistant could not be reached at all; the screen shows its own message.
+  const AssistantReply.unreachable() : this(answer: '', fallbackUsed: true, unreachable: true);
+
+  final String answer;
+
+  /// A reheating safety sentence for leftovers (NFR-07), or empty.
+  final String reheatingNote;
+  final bool onTopic;
+  final List<String> usedItems;
+
+  /// True when no AI answer was available and a simple rule-based suggestion was given (NFR-22).
+  final bool fallbackUsed;
+  final bool unreachable;
+}

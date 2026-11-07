@@ -50,6 +50,7 @@ pnpm dev                # http://localhost:5173
 | US-2.02 Review AI-extracted items | Review screen | % per item; orange below 70%; tap to edit; swipe to delete; unknown line not saved unless named; **Confirm all** → "6 items added" |
 | NFR-22 AI fallback | Settings → **Simulate AI failure** → scan again | "We couldn't read the items", the raw lines, and **By hand** |
 | US-11.01 Receive push notifications | Settings → **Send expiry push** / **Send reservation push** / **Send pickup push** | Banner at the top; **Open** deep-links to Pantry / Deals and marks it read; bell shows the unread count |
+| US-4.02 Ask the cooking assistant (Sprint 2 story, built early) | Home → **Cooking assistant** → tap a suggestion, or type a question | An answer from the pantry, items closest to expiry first, with a **Safety note** for leftovers; a non-food question is declined; with **Simulate AI failure** on, a simple offline suggestion |
 | US-14.01 AI gateway | (back end, not in the demo) | `MockReceiptAiService` stands in for Gemini → Groq → non-AI fallback |
 
 **Web portal** (`docs/sprints/screenshots/portal-*.png`):
@@ -89,7 +90,7 @@ pnpm -s dev-token                     # prints a local login token
 cd apps/mobile
 flutter run -d chrome --dart-define=ELHA2_API_URL=http://localhost:3000 --dart-define=ELHA2_DEV_TOKEN=<token>
 ```
-Without the two `--dart-define` values the app keeps using the demo mock. Only scanning goes to the backend so far; "Confirm all" still saves into the app's demo pantry.
+Without the two `--dart-define` values the app keeps using the demo mock. Receipt scanning and the cooking assistant go to the backend; "Confirm all" still saves into the app's demo pantry.
 
 ## Real phone sign-in (Supabase)
 Both clients can sign in through Supabase Auth instead of the mock. The project uses **test numbers** with the fixed code `654321`, so no SMS is sent: `01012345678`, `01000000000` (administrator), `01011112222` and `01233334444`. Other numbers can't sign in until an SMS provider is set up.

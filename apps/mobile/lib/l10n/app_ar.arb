@@ -149,5 +149,21 @@
   "catMeat": "لحوم وفراخ وسمك",
   "catCooked": "أكل مطبوخ",
   "catDry": "بقالة ومعلبات",
-  "catDrinks": "مشروبات"
+  "catDrinks": "مشروبات",
+  "assistantTitle": "مساعد الطبخ",
+  "assistantHomeHint": "اسأل تطبخ إيه باللي عندك",
+  "assistantIntro": "اسألني تطبخ إيه بالأكل اللي في مطبخك. هبدأ بالحاجات اللي قربت تخلص.",
+  "assistantDisclaimer": "الإجابات اقتراحات من الذكاء الاصطناعي. بص على أكلك قبل ما تطبخه.",
+  "assistantSuggestion1": "أطبخ إيه بالحاجات اللي قربت تخلص؟",
+  "assistantSuggestion2": "أعمل إيه بالرز والفراخ اللي فاضلين؟",
+  "assistantSuggestion3": "أحفظ الطماطم إزاي عشان تعيش أكتر؟",
+  "assistantHint": "اكتب سؤالك",
+  "assistantSend": "اسأل",
+  "assistantThinking": "بيفكر…",
+  "assistantSafetyNote": "تنبيه أمان",
+  "assistantUses": "بيستخدم: {items}",
+  "assistantOffline": "المساعد مش متاح دلوقتي، فده اقتراح بسيط.",
+  "assistantYou": "إنت",
+  "assistantBot": "المساعد",
+  "assistantUnreachable": "مش قادرين نوصل لمساعد الطبخ دلوقتي. اتأكد من النت وجرّب تاني."
 }

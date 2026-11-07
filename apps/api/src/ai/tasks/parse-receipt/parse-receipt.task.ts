@@ -2,7 +2,7 @@ import type { CatalogueCandidate, ICatalogueMatch } from '../../../expiry/expiry
 import type { AiStore } from '../../ai.store';
 import { maskPersonalData } from '../../pii-masker';
 import type { AiTask, PreparedPrompt } from '../../task-runner';
-import { PROMPT_VERSION, type PromptExample, renderUserPrompt, SYSTEM_PROMPT } from './prompt.v1';
+import { PROMPT_VERSION, renderUserPrompt, SYSTEM_PROMPT } from './prompt.v1';
 import { ruleBasedParse } from './rule-based';
 import { PARSE_RECEIPT_JSON_SCHEMA, type ParseReceiptOutput, ParseReceiptOutputSchema } from './schema';
 
@@ -50,7 +50,7 @@ export class ParseReceiptTask implements AiTask<ParseReceiptInput, ParseReceiptO
   async prepare(input: ParseReceiptInput): Promise<PreparedPrompt<State>> {
     const candidates = await this.catalogue.closest(input.lines, CANDIDATES_PER_LINE);
     const examples = (await this.store.examples(this.name, EXAMPLES + 1))
-      .map((e) => ({ lines: (e.input as { lines: string[] }).lines, answer: e.output }) as PromptExample)
+      .map((e) => ({ lines: (e.input as { lines: string[] }).lines, answer: e.output }))
       // Never show the model the receipt it is reading (matters when scoring the labelled set).
       .filter((e) => JSON.stringify(e.lines) !== JSON.stringify(input.lines))
       .slice(0, EXAMPLES);

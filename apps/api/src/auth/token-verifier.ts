@@ -20,8 +20,7 @@ export class TokenVerifier {
     if (config.SUPABASE_URL) {
       const base = config.SUPABASE_URL.replace(/\/$/, '');
       const keys = createRemoteJWKSet(new URL(`${base}/auth/v1/.well-known/jwks.json`));
-      this.verifyToken = async (token) =>
-        (await jwtVerify(token, keys, { issuer: `${base}/auth/v1`, audience: 'authenticated' })).payload;
+      this.verifyToken = async (token) => (await jwtVerify(token, keys, { issuer: `${base}/auth/v1`, audience: 'authenticated' })).payload;
     } else {
       const secret = new TextEncoder().encode(config.AUTH_JWT_SECRET);
       this.verifyToken = async (token) =>

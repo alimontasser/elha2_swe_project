@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/models.dart';
+import '../features/assistant/assistant_screen.dart';
 import '../features/auth/otp_screen.dart';
 import '../features/auth/sign_in_screen.dart';
 import '../features/notifications/notifications_screen.dart';
@@ -85,6 +86,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/add/receipt/review',
         builder: (_, state) => ReceiptReviewScreen(result: state.extra as ReceiptParseResult?),
       ),
+      GoRoute(path: '/assistant', builder: (_, _) => const AssistantScreen()),
       GoRoute(path: '/settings', builder: (_, _) => const SettingsScreen()),
       GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
     ],

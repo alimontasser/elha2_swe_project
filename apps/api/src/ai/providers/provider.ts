@@ -1,12 +1,5 @@
 export type ProviderErrorCode =
-  | 'timeout'
-  | 'rate_limited'
-  | 'unavailable'
-  | 'network'
-  | 'auth'
-  | 'bad_request'
-  | 'model_not_found'
-  | 'invalid_response';
+  'timeout' | 'rate_limited' | 'unavailable' | 'network' | 'auth' | 'bad_request' | 'model_not_found' | 'invalid_response';
 
 /** Errors worth one more try on the same provider; the rest go straight to the next provider. */
 const RETRYABLE: ReadonlySet<ProviderErrorCode> = new Set(['unavailable', 'network', 'invalid_response']);

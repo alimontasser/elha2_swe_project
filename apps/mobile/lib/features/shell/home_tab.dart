@@ -40,6 +40,16 @@ class HomeTab extends ConsumerWidget {
               ),
             const SizedBox(height: 16),
             Card(
+              child: ListTile(
+                key: const Key('openAssistant'),
+                leading: const Icon(Icons.soup_kitchen_outlined),
+                title: Text(l.assistantTitle),
+                subtitle: Text(l.assistantHomeHint),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/assistant'),
+              ),
+            ),
+            Card(
               child: ListTile(leading: const Icon(Icons.restaurant_menu), title: Text(l.recipesSoon), trailing: const SprintChip(2)),
             ),
             Card(

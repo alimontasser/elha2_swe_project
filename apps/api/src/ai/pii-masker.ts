@@ -25,8 +25,7 @@ const CARD = /(?:(?:\d|[*xX]){4}[ -]?){3}(?:\d|[*xX]){1,7}/g;
 const CARD_TAIL = /((?:card|visa|mastercard|meeza|بطاقة|كارت|فيزا)[^\d\n]{0,12})(\d{4})\b/gi;
 
 // Egyptian mobiles (01x xxxx xxxx, +20 / 0020) and Cairo or governorate landlines.
-const PHONE =
-  /(?<!\d)(?:(?:\+|00)20[\s-]?|0)(?:1[0125](?:[\s-]?\d){8}|2(?:[\s-]?\d){8}|[3-9]\d(?:[\s-]?\d){7})(?!\d)/g;
+const PHONE = /(?<!\d)(?:(?:\+|00)20[\s-]?|0)(?:1[0125](?:[\s-]?\d){8}|2(?:[\s-]?\d){8}|[3-9]\d(?:[\s-]?\d){7})(?!\d)/g;
 
 function luhn(digits: string): boolean {
   let sum = 0;

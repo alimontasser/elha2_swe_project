@@ -187,3 +187,60 @@ class MockNotificationService implements NotificationService {
     _changes.add(null);
   }
 }
+
+/// Stands in for the cooking assistant (US-4.02) in the demo: it suggests a quick dish from
+/// the items closest to expiry and declines questions that are not about food.
+class MockCookingAssistant implements CookingAssistant {
+  MockCookingAssistant({required this.shouldFail, this.latency = const Duration(milliseconds: 900)});
+
+  final bool Function() shouldFail;
+  final Duration latency;
+
+  static final _foodWords = RegExp(
+    r'cook|recipe|eat|meal|dinner|lunch|breakfast|store|keep|leftover|fridge|freeze|rice|chicken|'
+    r'أطبخ|اطبخ|طبخ|أكل|اكل|وصفة|أعمل|اعمل|فطار|غدا|عشا|سحور|إفطار|أحفظ|احفظ|تحفظ|فاضل|بايت|تلاجة|فريزر|رز|فراخ',
+    caseSensitive: false,
+  );
+  static final _leftovers = RegExp(r'leftover|reheat|فاضل|بايت|سخن|سخّن', caseSensitive: false);
+
+  @override
+  Future<AssistantReply> ask(String question, {required String language, required List<PantryItem> items}) async {
+    await Future<void>.delayed(latency);
+    final ar = RegExp(r'[؀-ۿ]').hasMatch(question) || (!RegExp(r'[A-Za-z]').hasMatch(question) && language == 'ar');
+    final soonest = ([...items]..sort((a, b) => a.expiryDate.compareTo(b.expiryDate))).take(3).map((i) => ar ? i.nameAr : i.nameEn).toList();
+    final leftovers = _leftovers.hasMatch(question) || items.any((i) => i.category == FoodCategory.cooked);
+    final note = !leftovers
+        ? ''
+        : ar
+        ? 'سخّن الأكل البايت مرة واحدة بس لحد ما يغلي ويسخن من جوه خالص، وكُله خلال 3 أيام (والرز المطبوخ خلال يوم).'
+        : 'Reheat leftovers only once, until steaming hot all the way through, and eat them within 3 days (cooked rice within 1 day).';
+    if (shouldFail()) {
+      return AssistantReply(
+        answer: ar
+            ? 'مساعد الطبخ مش متاح دلوقتي. استخدم دول الأول لأنهم قربوا يخلصوا: ${soonest.join('، ')}.'
+            : "The cooking assistant isn't available right now. Use these first, they expire soonest: ${soonest.join(', ')}.",
+        reheatingNote: note,
+        usedItems: soonest,
+        fallbackUsed: true,
+      );
+    }
+    if (!_foodWords.hasMatch(question) && !items.any((i) => question.contains(i.nameAr) || question.toLowerCase().contains(i.nameEn.toLowerCase()))) {
+      return AssistantReply(
+        onTopic: false,
+        answer: ar
+            ? 'أنا بساعدك في الطبخ والأكل اللي عندك بس. اسألني عن وصفة أو إزاي تحفظ أكلك.'
+            : 'I can only help with cooking and the food you have. Ask me for a recipe or how to store your food.',
+      );
+    }
+    final list = soonest.join(ar ? ' و' : ' and ');
+    return AssistantReply(
+      answer: soonest.isEmpty
+          ? (ar ? 'مطبخك فاضي دلوقتي. ضيف أكل وأنا أقولك تطبخ إيه.' : 'Your pantry is empty. Add some food and I will suggest a dish.')
+          : ar
+          ? 'ابدأ بـ$list لأنهم أقرب حاجة هتخلص. ممكن تعمل منهم شكشوكة أو فتة سريعة: 1. شوّح البصل والتوم. 2. ضيف الطماطم والتوابل. 3. ضيف الباقي وسيبه يستوي كويس.'
+          : 'Start with $list, they expire soonest. A quick shakshuka or fatta works: 1. Fry onion and garlic. 2. Add tomatoes and spices. 3. Add the rest and cook it through.',
+      reheatingNote: note,
+      usedItems: soonest,
+    );
+  }
+}

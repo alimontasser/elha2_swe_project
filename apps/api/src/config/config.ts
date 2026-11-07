@@ -7,14 +7,12 @@ const optionalText = z
   .optional()
   .transform((v) => (v && v.trim() ? v.trim() : undefined));
 
-const list = z
-  .string()
-  .transform((v) =>
-    v
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean),
-  );
+const list = z.string().transform((v) =>
+  v
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
+);
 
 const ConfigSchema = z
   .object({
@@ -31,6 +29,7 @@ const ConfigSchema = z
     AI_PROVIDERS: list.default(['gemini', 'groq']),
     AI_TIMEOUT_MS: z.coerce.number().int().positive().default(15000),
     AI_DAILY_RECEIPTS_PER_USER: z.coerce.number().int().positive().default(30),
+    AI_DAILY_CHAT_PER_USER: z.coerce.number().int().positive().default(40),
     AI_CACHE_DAYS: z.coerce.number().int().positive().default(30),
     GEMINI_API_KEY: optionalText,
     GEMINI_MODEL: z.string().default('gemini-3.5-flash-lite'),

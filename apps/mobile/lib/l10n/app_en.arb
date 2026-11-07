@@ -233,5 +233,28 @@
   "catMeat": "Meat, poultry and fish",
   "catCooked": "Cooked food",
   "catDry": "Dry and canned food",
-  "catDrinks": "Drinks"
+  "catDrinks": "Drinks",
+  "assistantTitle": "Cooking assistant",
+  "assistantHomeHint": "Ask what to cook with what you have",
+  "assistantIntro": "Ask me what to cook with the food in your pantry. I start with the items closest to expiry.",
+  "assistantDisclaimer": "Answers are AI suggestions. Check your food before you cook it.",
+  "assistantSuggestion1": "What can I cook with the items that expire soon?",
+  "assistantSuggestion2": "What can I make with leftover rice and chicken?",
+  "assistantSuggestion3": "How do I store tomatoes so they last longer?",
+  "assistantHint": "Type your question",
+  "assistantSend": "Ask",
+  "assistantThinking": "Thinking…",
+  "assistantSafetyNote": "Safety note",
+  "assistantUses": "Uses: {items}",
+  "@assistantUses": {
+    "placeholders": {
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "assistantOffline": "The assistant is offline, so this is a simple suggestion.",
+  "assistantYou": "You",
+  "assistantBot": "Assistant",
+  "assistantUnreachable": "We couldn't reach the cooking assistant. Check your connection and try again."
 }

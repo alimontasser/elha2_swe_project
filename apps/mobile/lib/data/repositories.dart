@@ -51,6 +51,12 @@ abstract interface class ReceiptAiService {
   Future<ReceiptParseResult> parseReceipt(List<String> maskedLines, {required String sampleId});
 }
 
+abstract interface class CookingAssistant {
+  /// US-4.02 via the AI gateway: a cooking question answered from [items], in the question's
+  /// language, with a reheating note for leftovers. Never throws: a failure gives a fallback reply.
+  Future<AssistantReply> ask(String question, {required String language, required List<PantryItem> items});
+}
+
 abstract interface class OcrService {
   /// On-device text recognition (ML Kit in the real app).
   Future<List<String>> readReceipt(SampleReceipt receipt);

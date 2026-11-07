@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 import '../state/settings.dart';
+import 'api/api_cooking_assistant.dart';
 import 'api/api_receipt_ai_service.dart';
 import 'mock/mock_services.dart';
 import 'repositories.dart';
@@ -11,7 +12,7 @@ import 'supabase/supabase_auth_repository.dart';
 // --dart-define; without it the demo mock is used, so `flutter run` works with no setup.
 //
 //   SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY   real phone sign-in (Supabase Auth)
-//   ELHA2_API_URL                            the NestJS backend (receipt reading, ...)
+//   ELHA2_API_URL                            the NestJS backend (receipt reading, cooking assistant)
 //   ELHA2_DEV_TOKEN                          a local backend token when Supabase is off
 
 const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
@@ -44,6 +45,12 @@ final receiptAiServiceProvider = Provider<ReceiptAiService>(
   (ref) => _apiUrl.isNotEmpty
       ? ApiReceiptAiService(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider))
       : MockReceiptAiService(shouldFail: () => ref.read(settingsProvider).simulateAiFailure),
+);
+
+final cookingAssistantProvider = Provider<CookingAssistant>(
+  (ref) => _apiUrl.isNotEmpty
+      ? ApiCookingAssistant(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider))
+      : MockCookingAssistant(shouldFail: () => ref.read(settingsProvider).simulateAiFailure),
 );
 
 final notificationServiceProvider = Provider<NotificationService>((ref) => MockNotificationService());

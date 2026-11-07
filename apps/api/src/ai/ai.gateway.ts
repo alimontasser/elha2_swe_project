@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { type AppConfig, CONFIG } from '../config/config';
 import { CATALOGUE_MATCH, type ICatalogueMatch } from '../expiry/expiry.interfaces';
-import { AI_PROVIDERS, AI_STORE, type IAI, type ReceiptReading } from './ai.interfaces';
+import { AI_PROVIDERS, AI_STORE, type AssistantAnswer, type IAI, type ReceiptReading } from './ai.interfaces';
 import type { AiStore } from './ai.store';
 import type { LlmProvider } from './providers/provider';
 import { AiTaskRunner } from './task-runner';
+import { type CookingAssistantInput, CookingAssistantTask } from './tasks/cooking-assistant/cooking-assistant.task';
 import { ParseReceiptTask } from './tasks/parse-receipt/parse-receipt.task';
 
 /** The single entry point to hosted AI models (Facade, SDD D4 / US-14.01). */
@@ -12,6 +13,7 @@ import { ParseReceiptTask } from './tasks/parse-receipt/parse-receipt.task';
 export class AiGateway implements IAI {
   private readonly runner: AiTaskRunner;
   private readonly parseReceiptTask: ParseReceiptTask;
+  private readonly cookingAssistantTask = new CookingAssistantTask();
 
   constructor(
     @Inject(CONFIG) private readonly config: AppConfig,
@@ -36,6 +38,19 @@ export class AiGateway implements IAI {
       fallbackUsed: outcome.fallbackUsed,
       provider: outcome.provider,
       promptVersion: outcome.promptVersion,
+      requestId: outcome.requestId,
+    };
+  }
+
+  async askCookingAssistant(input: CookingAssistantInput, ctx: { userId: string }): Promise<AssistantAnswer> {
+    const outcome = await this.runner.run(this.cookingAssistantTask, input, {
+      userId: ctx.userId,
+      dailyLimit: this.config.AI_DAILY_CHAT_PER_USER,
+    });
+    return {
+      ...outcome.result,
+      language: outcome.input.language,
+      fallbackUsed: outcome.fallbackUsed,
       requestId: outcome.requestId,
     };
   }

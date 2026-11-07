@@ -22,10 +22,14 @@ async function main() {
     const reading = await app.get<IAI>(AI).parseReceipt(receipt.lines, { userId: SMOKE_USER, shopName: receipt.shopName });
     const ms = Date.now() - started;
 
-    console.log(`receipt ${receipt.id}: provider ${reading.provider}, prompt v${reading.promptVersion}, ${ms} ms, fallback ${reading.fallbackUsed}`);
+    console.log(
+      `receipt ${receipt.id}: provider ${reading.provider}, prompt v${reading.promptVersion}, ${ms} ms, fallback ${reading.fallbackUsed}`,
+    );
     for (const item of reading.items) {
       const id = item.catalogueId || '-';
-      console.log(`  L${item.line}  ${item.nameEn} / ${item.nameAr}  ${item.quantity} ${item.unit}  ${item.category}  ${id}  ${Math.round(item.confidence * 100)}%`);
+      console.log(
+        `  L${item.line}  ${item.nameEn} / ${item.nameAr}  ${item.quantity} ${item.unit}  ${item.category}  ${id}  ${Math.round(item.confidence * 100)}%`,
+      );
     }
     if (reading.fallbackUsed) process.exitCode = 1;
   } finally {

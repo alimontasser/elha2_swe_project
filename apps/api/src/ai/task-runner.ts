@@ -30,6 +30,11 @@ export interface AiTask<I, O, S> {
   prepare(input: I): Promise<PreparedPrompt<S>>;
   /** Step 6, beyond the schema: domain checks that repair or drop what cannot be trusted. */
   check(output: O, input: I, state: S): O;
+  /**
+   * Optional: checks that need no prepared state, re-applied to cached answers so a rule added
+   * later (e.g. a new NFR-07 safety pattern) also covers answers cached before it.
+   */
+  recheck?(output: O, input: I): O;
   /** The non-AI path (NFR-22). */
   fallback(input: I, state: S): O;
   confidence(output: O): number;
@@ -96,14 +101,17 @@ export class AiTaskRunner {
     if (maskedCount > 0) {
       this.logger.warn(`${task.name}: hid ${maskedCount} personal detail(s) that the phone did not mask`);
     }
-    const inputHash = createHash('sha256').update(`${task.name}:v${task.promptVersion}:${task.canonical(input)}`).digest('hex');
+    const inputHash = createHash('sha256')
+      .update(`${task.name}:v${task.promptVersion}:${task.canonical(input)}`)
+      .digest('hex');
     const base = { task: task.name, promptVersion: task.promptVersion, inputHash };
 
     const cached = await this.store.getCache(inputHash, this.now());
     if (cached) {
       const parsed = task.schema.safeParse(cached.response);
       if (parsed.success) {
-        const confidence = task.confidence(parsed.data);
+        const result = task.recheck ? task.recheck(parsed.data, input) : parsed.data;
+        const confidence = task.confidence(result);
         const requestId = await this.store.log({
           ...base,
           provider: cached.provider,
@@ -116,7 +124,18 @@ export class AiTaskRunner {
           attempts: 0,
           errorCodes: [],
         });
-        return { input, result: parsed.data, confidence, fallbackUsed: false, fromCache: true, provider: cached.provider, model: cached.model, promptVersion: task.promptVersion, requestId, maskedCount };
+        return {
+          input,
+          result,
+          confidence,
+          fallbackUsed: false,
+          fromCache: true,
+          provider: cached.provider,
+          model: cached.model,
+          promptVersion: task.promptVersion,
+          requestId,
+          maskedCount,
+        };
       }
     }
 
@@ -173,7 +192,18 @@ export class AiTaskRunner {
             attempts,
             errorCodes,
           });
-          return { input, result, confidence, fallbackUsed: false, fromCache: false, provider: provider.name, model: completion.model, promptVersion: task.promptVersion, requestId, maskedCount };
+          return {
+            input,
+            result,
+            confidence,
+            fallbackUsed: false,
+            fromCache: false,
+            provider: provider.name,
+            model: completion.model,
+            promptVersion: task.promptVersion,
+            requestId,
+            maskedCount,
+          };
         } catch (error) {
           if (!(error instanceof ProviderError)) throw error;
           errorCodes.push(`${provider.name}:${error.code}`);
@@ -197,6 +227,17 @@ export class AiTaskRunner {
       attempts,
       errorCodes,
     });
-    return { input, result, confidence, fallbackUsed: true, fromCache: false, provider: 'fallback', model: null, promptVersion: task.promptVersion, requestId, maskedCount };
+    return {
+      input,
+      result,
+      confidence,
+      fallbackUsed: true,
+      fromCache: false,
+      provider: 'fallback',
+      model: null,
+      promptVersion: task.promptVersion,
+      requestId,
+      maskedCount,
+    };
   }
 }
