@@ -164,7 +164,7 @@ void showAddFoodSheet(BuildContext context) {
             const SizedBox(height: 8),
             option(const Key('captureReceipt'), Icons.receipt_long, l.captureReceipt, route: '/add/receipt'),
             option(const Key('captureManual'), Icons.keyboard, l.captureManual, route: '/add/manual'),
-            option(const Key('captureBarcode'), Icons.qr_code_scanner, l.captureBarcode, sprint: 2),
+            option(const Key('captureBarcode'), Icons.qr_code_scanner, l.captureBarcode, route: '/add/barcode'),
             option(const Key('capturePhoto'), Icons.photo_camera_outlined, l.capturePhoto, sprint: 3),
             option(const Key('captureVoice'), Icons.mic_none, l.captureVoice, sprint: 3),
           ],

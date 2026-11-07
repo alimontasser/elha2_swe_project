@@ -48,7 +48,9 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 - [ ] **Administration:** `/admin/verifications` using `IOrgVerify` (approve, reject with a reason, request info). BR-01 is enforced.
 - [ ] **Pantry:**
   - [x] `/pantry/receipts` (typed lines) and `/pantry/receipts/photo` (photo), draft → confirm in one transaction, drafts purged after 24 h. The app's "Confirm all" saves through the backend when `ELHA2_API_URL` is set.
-  - [ ] `/pantry/items` (US-2.07, 2.10, 2.11), so the app loads its pantry from the backend. It still lists items locally.
+  - [x] `/pantry/items` (US-2.07, 2.10, 2.11): the app loads its pantry from the backend when `ELHA2_API_URL` is set. Changes made offline are queued on the phone and sent later (NFR-21).
+  - [x] Barcodes (US-2.03): `/products/:barcode` checks our products, then Open Food Facts (`world.openfoodfacts.org` is allowed in the cloud environment). The app scans with `mobile_scanner` (ML Kit on Android) or takes a typed number, and remembers products on the phone for offline scans. Unknown barcodes are saved as `pending_review`.
+  - [ ] Portal screen for admins to review pending barcodes (`expiry.product` where `status = 'pending_review'`).
 - [ ] **AI gateway (US-14.01):**
   - prompt registry and context builder;
   - schema validation, cache and AIRequestLog;

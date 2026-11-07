@@ -164,8 +164,9 @@ void main() {
       await openPantry(tester);
       await tester.tap(find.byKey(const Key('addFood')));
       await tester.pumpAndSettle();
-      expect(tester.widget<ListTile>(find.byKey(const Key('captureBarcode'))).enabled, isFalse);
-      expect(find.text('سبرنت 2'), findsOneWidget);
+      expect(tester.widget<ListTile>(find.byKey(const Key('captureBarcode'))).enabled, isTrue);
+      expect(tester.widget<ListTile>(find.byKey(const Key('capturePhoto'))).enabled, isFalse);
+      expect(find.text('سبرنت 3'), findsWidgets);
     });
   });
 }

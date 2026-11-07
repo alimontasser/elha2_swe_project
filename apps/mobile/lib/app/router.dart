@@ -7,6 +7,7 @@ import '../features/assistant/assistant_screen.dart';
 import '../features/auth/otp_screen.dart';
 import '../features/auth/sign_in_screen.dart';
 import '../features/notifications/notifications_screen.dart';
+import '../features/pantry/barcode_screen.dart';
 import '../features/pantry/manual_add_screen.dart';
 import '../features/pantry/pantry_screen.dart';
 import '../features/profile/location_screen.dart';
@@ -81,6 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: '/add/manual', builder: (_, _) => const ManualAddScreen()),
+      GoRoute(path: '/add/barcode', builder: (_, _) => const BarcodeScreen()),
       GoRoute(path: '/add/receipt', builder: (_, _) => const ReceiptScanScreen()),
       GoRoute(
         path: '/add/receipt/review',

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/expiry_rules.dart';
 import '../data/models.dart';
+import '../data/product_lookup.dart';
 import '../data/providers.dart';
 
 final catalogueProvider = FutureProvider<List<CatalogueItem>>((ref) => ref.watch(catalogueRepositoryProvider).all());
@@ -49,8 +50,33 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
     return item;
   }
 
+  /// US-2.03: a scanned product, with the shelf life of its catalogue item (or the cautious
+  /// 3-day estimate when it could not be matched, US-3.01).
+  Future<PantryItem> addScanned(ScannedProduct p, {DateTime? now}) async {
+    final today = now ?? DateTime.now();
+    final catalogue = await ref.read(catalogueRepositoryProvider).all();
+    final entry = catalogue.where((c) => c.id == p.catalogueId).firstOrNull;
+    final item = PantryItem(
+      id: _newId(),
+      catalogueId: entry?.id,
+      nameAr: p.nameAr,
+      nameEn: p.nameEn,
+      category: p.category,
+      quantity: p.quantity,
+      unit: p.unit,
+      storage: p.storage,
+      expiryDate: entry != null ? estimateExpiry(entry, p.storage, today) : daysAfter(today, 3),
+      expirySource: ExpirySource.estimated,
+      addedBy: CaptureMethod.barcode,
+      addedOn: today,
+    );
+    await ref.read(pantryRepositoryProvider).add(item);
+    await _refresh();
+    return item;
+  }
+
   /// A free-text item that is not in the catalogue: cupboard, one piece, a cautious 3-day estimate (US-3.01).
-  Future<PantryItem> addCustom(String name) async {
+  Future<PantryItem> addCustom(String name, {CaptureMethod addedBy = CaptureMethod.manual}) async {
     final today = DateTime.now();
     final item = PantryItem(
       id: _newId(),
@@ -62,7 +88,7 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
       storage: StoragePlace.cupboard,
       expiryDate: daysAfter(today, 3),
       expirySource: ExpirySource.estimated,
-      addedBy: CaptureMethod.manual,
+      addedBy: addedBy,
       addedOn: today,
     );
     await ref.read(pantryRepositoryProvider).add(item);

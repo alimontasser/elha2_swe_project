@@ -267,5 +267,24 @@
   "receiptTrySample": "Or try a sample receipt",
   "receiptPhotoUnavailable": "Reading photos needs the Elha2 server. Try a sample receipt instead.",
   "receiptSaveFailed": "We couldn't save the items. Check your connection and tap Confirm all again.",
-  "receiptDraftExpired": "This receipt was read more than 24 hours ago. Scan it again."
+  "receiptDraftExpired": "This receipt was read more than 24 hours ago. Scan it again.",
+  "barcodeTitle": "Scan a barcode",
+  "barcodeHint": "Point the camera at the barcode, or type its number.",
+  "barcodeField": "Barcode number",
+  "barcodeFind": "Find",
+  "barcodeInvalid": "A barcode is 8 to 14 digits.",
+  "barcodeCameraUnavailable": "The camera isn't available. Type the number instead.",
+  "barcodeLooking": "Looking it up…",
+  "barcodeUnknown": "We don't know this product yet. Type its name to add it, and we'll review it so others can scan it too.",
+  "barcodeOffline": "You're offline and this product isn't saved on the phone. Type its name to add it.",
+  "barcodeName": "Product name",
+  "barcodeAdd": "Add to pantry",
+  "barcodeExpiry": "Estimated expiry: {date}",
+  "@barcodeExpiry": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

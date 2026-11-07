@@ -133,3 +133,22 @@ With `ELHA2_API_URL` set, **Add food → Scan receipt** shows **Take a photo** a
 - **Review and Confirm all:** the review screen is the same. **Confirm all** saves through the backend in one transaction. If saving fails, nothing is saved and the review stays open.
 - **Without the backend:** the buttons are hidden, and the sample receipts still work.
 - **Verified on 07/11/2026:** the three labelled receipts, rendered as photos, gave 18/18 items exactly, in 3–4 s each. In Chromium, choosing a photo then Confirm all saved 6 rows in `pantry.pantry_item` and deleted the draft.
+
+## Pantry on the backend and barcode scanning
+With `ELHA2_API_URL` set, the pantry lives in the database.
+- **Every change is saved:** adding, editing, using up, throwing away and Undo.
+- **A fresh sign-in loads the same pantry.**
+- **Offline:** changes wait on the phone and are sent on the next load.
+- **Reset demo data** never deletes a real account's items.
+
+**Add food → Scan barcode** (US-2.03):
+- Point the camera at the barcode, or type its number.
+- A known product fills in its name, size, storage place and estimated expiry → **Add to pantry**, with Undo.
+- **Unknown product:** type its name to add it. It's sent for admin review.
+- **Offline:** products scanned before are found on the phone.
+- **Demo barcodes without the backend:** `6223000000017` (Juhayna milk), `5449000000996` (Coca-Cola).
+
+**Verified on 07/11/2026:**
+- Live lookups of real products take 0.1–1 s.
+- In Chromium, typing `5449000000996` added Coca-Cola (330 ml, cupboard). After signing in again, the item loaded back from the database.
+- Camera scanning needs a real phone or Chrome with a camera.

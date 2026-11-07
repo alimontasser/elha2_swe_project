@@ -8,6 +8,7 @@ import 'api/api_pantry_repository.dart';
 import 'api/api_receipt_ai_service.dart';
 import 'mock/mock_services.dart';
 import 'photo_picker.dart';
+import 'product_lookup.dart';
 import 'fcm/fcm_notification_service.dart';
 import 'fcm/firebase_config.dart';
 import 'fcm/push_client.dart';
@@ -60,6 +61,16 @@ final receiptAiServiceProvider = Provider<ReceiptAiService>(
 final receiptPhotosEnabledProvider = Provider<bool>((ref) => _apiUrl.isNotEmpty);
 
 final photoPickerProvider = Provider<Future<PickedPhoto?> Function({required bool camera})>((ref) => pickReceiptPhoto);
+
+/// US-2.03: barcode lookup, remembered on the phone so known products work offline.
+final productLookupProvider = Provider<ProductLookup>(
+  (ref) => CachedProductLookup(
+    _apiUrl.isNotEmpty ? ApiProductLookup(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider)) : MockProductLookup(),
+  ),
+);
+
+/// Whether the barcode screen shows the live camera (tests and phones without one type the number).
+final barcodeCameraProvider = Provider<bool>((ref) => true);
 
 final cookingAssistantProvider = Provider<CookingAssistant>(
   (ref) => _apiUrl.isNotEmpty
