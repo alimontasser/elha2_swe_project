@@ -43,6 +43,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
         () => _error = switch (e.code) {
           'locked' => l.locked(Fmt.read(ref, context).time(e.retryAt!)),
           'wrongCode' => l.wrongCode(e.remainingAttempts ?? 0),
+          'rateLimited' => l.authRateLimited,
+          'unavailable' => l.authUnavailable,
           _ => l.invalidPhone,
         },
       );

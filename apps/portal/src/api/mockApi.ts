@@ -1,3 +1,4 @@
+import { createAttemptLimiter } from '../domain/attemptLimiter'
 import { applyVerification, VerificationError } from '../domain/verification'
 import { normaliseEgyptianMobile } from '../domain/phone'
 import type { AppNotification, NotificationType, Organisation, Role, Session, VerificationStatus } from '../domain/types'
@@ -65,7 +66,7 @@ interface Options {
 }
 
 export function createMockApi({ store = browserStore(), latencyMs = 350, now = () => new Date() }: Options = {}): PortalApi {
-  const failedAttempts = new Map<string, number[]>()
+  const limiter = createAttemptLimiter({ maxAttempts: MAX_ATTEMPTS, windowMs: LOCK_MS, now })
   const codesSent = new Set<string>()
 
   const delay = () => new Promise<void>((resolve) => setTimeout(resolve, latencyMs))
@@ -99,18 +100,9 @@ export function createMockApi({ store = browserStore(), latencyMs = 350, now = (
     db.notifications.unshift(n)
   }
 
-  function recentFailures(phone: string): number[] {
-    const cutoff = now().getTime() - LOCK_MS
-    const recent = (failedAttempts.get(phone) ?? []).filter((t) => t > cutoff)
-    failedAttempts.set(phone, recent)
-    return recent
-  }
-
   function assertNotLocked(phone: string) {
-    const recent = recentFailures(phone)
-    if (recent.length >= MAX_ATTEMPTS) {
-      throw new ApiError('locked', new Date(recent[0] + LOCK_MS).toISOString())
-    }
+    const until = limiter.lockedUntil(phone)
+    if (until) throw new ApiError('locked', until.toISOString())
   }
 
   return {
@@ -129,11 +121,11 @@ export function createMockApi({ store = browserStore(), latencyMs = 350, now = (
         assertNotLocked(normalised)
         if (!codesSent.has(normalised)) throw new ApiError('codeNotSent')
         if (code.trim() !== DEMO_OTP) {
-          failedAttempts.set(normalised, [...recentFailures(normalised), now().getTime()])
+          limiter.recordFailure(normalised)
           assertNotLocked(normalised)
           throw new ApiError('wrongCode')
         }
-        failedAttempts.delete(normalised)
+        limiter.clear(normalised)
         codesSent.delete(normalised)
         const session: Session = { phone: normalised, role }
         store.set(SESSION_KEY, JSON.stringify(session))
@@ -251,7 +243,7 @@ export function createMockApi({ store = browserStore(), latencyMs = 350, now = (
 
     resetDemo() {
       store.set(DB_KEY, JSON.stringify(seedDb()))
-      failedAttempts.clear()
+      limiter.reset()
       codesSent.clear()
     },
   }

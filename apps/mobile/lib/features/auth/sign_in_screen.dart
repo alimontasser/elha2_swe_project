@@ -37,7 +37,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     } on AuthException catch (e) {
       if (!mounted) return;
       final l = context.l10n;
-      setState(() => _error = e.code == 'locked' ? l.locked(Fmt.read(ref, context).time(e.retryAt!)) : l.invalidPhone);
+      setState(
+        () => _error = switch (e.code) {
+          'locked' => l.locked(Fmt.read(ref, context).time(e.retryAt!)),
+          'rateLimited' => l.authRateLimited,
+          'unavailable' => l.authUnavailable,
+          _ => l.invalidPhone,
+        },
+      );
     } finally {
       if (mounted) setState(() => _busy = false);
     }

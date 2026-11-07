@@ -52,7 +52,10 @@
     "reasonRequired": "Write a reason so the organisation knows what to fix.",
     "invalidTransition": "This organisation has already been decided.",
     "notFound": "This organisation no longer exists.",
-    "generic": "Something went wrong. Try again."
+    "generic": "Something went wrong. Try again.",
+    "rateLimited": "Please wait a minute before asking for another code.",
+    "unavailable": "We couldn't reach the sign-in service. Check your connection and try again.",
+    "notAdmin": "This number is not an Elha2 administrator. Choose your organisation role instead."
   },
   "status": {
     "pending": "Pending review",

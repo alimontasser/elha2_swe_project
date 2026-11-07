@@ -35,6 +35,8 @@
       }
     }
   },
+  "authRateLimited": "Please wait a minute before asking for another code.",
+  "authUnavailable": "We couldn't reach the sign-in service. Check your connection and try again.",
   "changeNumber": "Change number",
   "locationTitle": "Where do you live?",
   "locationSubtitle": "We use your area to show deals near you. Other users only ever see an approximate distance, never your exact location.",

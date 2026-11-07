@@ -11,7 +11,9 @@ class ApiReceiptAiService implements ReceiptAiService {
   ApiReceiptAiService({required this.baseUrl, required this.token, http.Client? client}) : _client = client ?? http.Client();
 
   final String baseUrl;
-  final String token;
+
+  /// The current login token: the Supabase session's, or a local dev token.
+  final String? Function() token;
   final http.Client _client;
 
   @override
@@ -20,7 +22,7 @@ class ApiReceiptAiService implements ReceiptAiService {
       final res = await _client
           .post(
             Uri.parse('$baseUrl/api/v1/pantry/receipts'),
-            headers: {'content-type': 'application/json', 'authorization': 'Bearer $token'},
+            headers: {'content-type': 'application/json', 'authorization': 'Bearer ${token() ?? ''}'},
             body: jsonEncode({'lines': maskedLines}),
           )
           .timeout(const Duration(seconds: 45));

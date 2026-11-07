@@ -2,7 +2,7 @@
 
 This is a clickable demo of the Sprint 1 stories in the **mobile app** and the **web portal**.
 
-- **Nothing external is connected.** Sign-in, file storage, AI and push notifications are all simulated by mock implementations. The real adapters for SDD v1.1 (Supabase, the NestJS API, Gemini/Groq through the AI gateway, ML Kit, FCM) replace them later. The list of what is needed is in [`../TODO-integrations.md`](../TODO-integrations.md).
+- **By default nothing external is connected.** Sign-in, file storage, AI and push notifications are all simulated by mock implementations. Real Supabase sign-in and the backend's receipt reading can be switched on (see the end of this page). The real adapters for SDD v1.1 (Supabase, the NestJS API, Gemini/Groq through the AI gateway, ML Kit, FCM) replace them later. The list of what is needed is in [`../TODO-integrations.md`](../TODO-integrations.md).
 - **What is real:** the screens, Arabic/English with right-to-left layout, validation, the pantry rules (grouping, urgency, expiry estimate) and the **personal-data masker** (US-14.03).
 
 ## Run it
@@ -90,3 +90,18 @@ cd apps/mobile
 flutter run -d chrome --dart-define=ELHA2_API_URL=http://localhost:3000 --dart-define=ELHA2_DEV_TOKEN=<token>
 ```
 Without the two `--dart-define` values the app keeps using the demo mock. Only scanning goes to the backend so far; "Confirm all" still saves into the app's demo pantry.
+
+## Real phone sign-in (Supabase)
+Both clients can sign in through Supabase Auth instead of the mock. The project uses **test numbers** with the fixed code `654321`, so no SMS is sent: `01012345678`, `01000000000` (administrator), `01011112222` and `01233334444`. Other numbers can't sign in until an SMS provider is set up.
+
+**Portal:** copy `apps/portal/.env.example` to `.env.local` and paste the publishable key (Supabase → Project Settings → API Keys), then run `pnpm dev`.
+- "Administrator" works only for numbers whose token carries the `admin` role (`01000000000`). Other numbers get "not an administrator".
+- Organisations, verification and notifications still use the mock store.
+
+**App:**
+```bash
+flutter run -d chrome --dart-define=SUPABASE_URL=https://ujvucfvrhlrjttzmavgg.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=<key>
+```
+- Add `--dart-define=ELHA2_API_URL=http://localhost:3000` to send receipts to the backend. With Supabase on, the backend gets the Supabase token, so start the API with `SUPABASE_URL` set in `apps/api/.env`.
+
+**Wrong codes:** the 5-per-hour limit per number is kept in each client and survives a reload. Supabase itself only limits per IP address.

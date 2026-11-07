@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 import 'app/router.dart';
 import 'app/theme.dart';
@@ -11,7 +12,13 @@ import 'features/notifications/push_banner.dart';
 import 'l10n/gen/app_localizations.dart';
 import 'state/settings.dart';
 
-void main() => runApp(const ProviderScope(child: Elha2App()));
+Future<void> main() async {
+  if (supabaseEnabled) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await sb.Supabase.initialize(url: supabaseUrl, publishableKey: supabasePublishableKey);
+  }
+  runApp(const ProviderScope(child: Elha2App()));
+}
 
 class Elha2App extends ConsumerStatefulWidget {
   const Elha2App({super.key});

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
+import '../../core/attempt_limiter.dart';
 import '../../core/phone.dart';
 import '../models.dart';
 import '../repositories.dart';
@@ -12,27 +13,20 @@ import 'mock_data.dart';
 
 /// Fake Supabase phone OTP: the code is always [demoOtp]; 5 wrong codes in 1 h lock the number (NFR-12).
 class MockAuthRepository implements AuthRepository {
-  MockAuthRepository({DateTime Function()? clock, this.latency = const Duration(milliseconds: 400)}) : _clock = clock ?? DateTime.now;
+  MockAuthRepository({DateTime Function()? clock, this.latency = const Duration(milliseconds: 400)})
+    : _limiter = AttemptLimiter(clock: clock, maxAttempts: maxAttempts, window: lockWindow);
 
   static const demoOtp = '654321';
   static const maxAttempts = 5;
   static const lockWindow = Duration(hours: 1);
 
-  final DateTime Function() _clock;
   final Duration latency;
-  final _failures = <String, List<DateTime>>{};
+  final AttemptLimiter _limiter;
   final _sent = <String>{};
 
-  List<DateTime> _recent(String phone) {
-    final cutoff = _clock().subtract(lockWindow);
-    final list = (_failures[phone] ?? []).where((t) => t.isAfter(cutoff)).toList();
-    _failures[phone] = list;
-    return list;
-  }
-
   void _assertNotLocked(String phone) {
-    final recent = _recent(phone);
-    if (recent.length >= maxAttempts) throw AuthException('locked', retryAt: recent.first.add(lockWindow));
+    final until = _limiter.lockedUntil(phone);
+    if (until != null) throw AuthException('locked', retryAt: until);
   }
 
   @override
@@ -53,12 +47,11 @@ class MockAuthRepository implements AuthRepository {
     _assertNotLocked(normalised);
     if (!_sent.contains(normalised)) throw const AuthException('codeNotSent');
     if (code.trim() != demoOtp) {
-      final failures = [..._recent(normalised), _clock()];
-      _failures[normalised] = failures;
+      final remaining = _limiter.recordFailure(normalised);
       _assertNotLocked(normalised);
-      throw AuthException('wrongCode', remainingAttempts: maxAttempts - failures.length);
+      throw AuthException('wrongCode', remainingAttempts: remaining);
     }
-    _failures.remove(normalised);
+    _limiter.clear(normalised);
     _sent.remove(normalised);
     return Session(phone: normalised);
   }
