@@ -108,10 +108,10 @@ flutter run -d chrome --dart-define=SUPABASE_URL=https://ujvucfvrhlrjttzmavgg.su
 **Wrong codes:** the 5-per-hour limit per number is kept in each client and survives a reload. Supabase itself only limits per IP address.
 
 ## Real push notifications (Firebase Cloud Messaging)
-The app switches from the demo pushes to FCM when the public Firebase web config is set. Set it in `apps/mobile/lib/data/fcm/firebase_config.dart`, or pass `--dart-define=FIREBASE_API_KEY=… FIREBASE_APP_ID=… FIREBASE_MESSAGING_SENDER_ID=… FIREBASE_PROJECT_ID=…`. The VAPID key is already in that file.
+The app uses FCM by default: the public web config of Firebase project `elha2-201ad` and its VAPID key are in `apps/mobile/lib/data/fcm/firebase_config.dart`. If Firebase can't load (no permission, blocked network), the app keeps working with the demo pushes. To force the demo pushes, pass `--dart-define=FIREBASE_API_KEY=`.
 
 **Receive a push in Chrome without the backend:**
-1. `flutter run -d chrome` with the Firebase values.
+1. `flutter run -d chrome`.
 2. Sign in, and allow notifications when Chrome asks.
 3. Settings → **Push device token** → **Copy**.
 4. In Firebase → Messaging → **Send test message**, paste the token.
