@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -78,6 +79,7 @@ class SettingsScreen extends ConsumerWidget {
             title: Text(l.sendPickupPush),
             onTap: () => ref.read(notificationServiceProvider).simulate(NotificationType.pickup),
           ),
+          const _DeviceTokenTile(),
           ListTile(
             leading: const Icon(Icons.restart_alt),
             title: Text(l.resetDemo),
@@ -91,6 +93,43 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// US-11.01 testing aid: this device's push token, to paste into the Firebase console's
+/// "Send test message". Shown only once the device is registered for real pushes.
+class _DeviceTokenTile extends ConsumerWidget {
+  const _DeviceTokenTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final service = ref.watch(notificationServiceProvider);
+    return StreamBuilder<void>(
+      stream: service.changes,
+      builder: (context, _) {
+        final token = service.deviceToken;
+        if (token == null) return const SizedBox.shrink();
+        final l = context.l10n;
+        return ListTile(
+          key: const Key('deviceToken'),
+          leading: const Icon(Icons.vpn_key_outlined),
+          title: Text(l.deviceToken),
+          subtitle: Text(l.deviceTokenHint),
+          trailing: TextButton.icon(
+            icon: const Icon(Icons.copy, size: 18),
+            label: Text(l.copy),
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: token));
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text(l.copied)));
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

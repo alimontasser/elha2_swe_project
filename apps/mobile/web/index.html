@@ -41,6 +41,16 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
+  <script>
+    // US-11.01: a push tapped while the app is open asks it to show that screen (see fcm/firebase-messaging-sw.js).
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        const link = event.data && event.data.elha2DeepLink;
+        if (typeof link === 'string' && /^\/[a-z/]*$/.test(link)) window.location.hash = link;
+      });
+      navigator.serviceWorker.startMessages();
+    }
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

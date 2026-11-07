@@ -106,3 +106,23 @@ flutter run -d chrome --dart-define=SUPABASE_URL=https://ujvucfvrhlrjttzmavgg.su
 - Add `--dart-define=ELHA2_API_URL=http://localhost:3000` to send receipts to the backend. With Supabase on, the backend gets the Supabase token, so start the API with `SUPABASE_URL` set in `apps/api/.env`.
 
 **Wrong codes:** the 5-per-hour limit per number is kept in each client and survives a reload. Supabase itself only limits per IP address.
+
+## Real push notifications (Firebase Cloud Messaging)
+The app switches from the demo pushes to FCM when the public Firebase web config is set. Set it in `apps/mobile/lib/data/fcm/firebase_config.dart`, or pass `--dart-define=FIREBASE_API_KEY=… FIREBASE_APP_ID=… FIREBASE_MESSAGING_SENDER_ID=… FIREBASE_PROJECT_ID=…`. The VAPID key is already in that file.
+
+**Receive a push in Chrome without the backend:**
+1. `flutter run -d chrome` with the Firebase values.
+2. Sign in, and allow notifications when Chrome asks.
+3. Settings → **Push device token** → **Copy**.
+4. In Firebase → Messaging → **Send test message**, paste the token.
+   - With the app open, a banner appears.
+   - With the tab in the background, Chrome shows the notification; clicking it opens the app.
+   - To open a specific screen, add the custom data `type=expiryDigest` and `deepLink=/pantry`.
+
+**Through the backend:**
+- Also pass `ELHA2_API_URL`. The device is registered at sign-in and removed at sign-out.
+- Settings → **Send expiry push** asks the backend to push.
+- The API needs the service-account key at `apps/api/firebase-service-account.json` (git-ignored). Download it yourself: Firebase → Project settings → Service accounts. Never share it in chat.
+- Without the key, the API stores the notification but sends nothing.
+
+**Android:** register the app `org.elha2.elha2` in Firebase and use its app ID.

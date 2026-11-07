@@ -1,3 +1,5 @@
+import 'package:elha2/data/fcm/fcm_notification_service.dart';
+import 'package:elha2/data/fcm/push_client.dart';
 import 'package:elha2/data/models.dart';
 import 'package:elha2/data/providers.dart';
 import 'package:elha2/state/settings.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/harness.dart';
+import '../unit/fcm_notification_service_test.dart' show FakeBackend, FakePushClient;
 
 const expiryTitle = '٣ حاجات قربت تخلص';
 const reservedTitle = 'الشنطة اتحجزت';
@@ -175,6 +178,28 @@ void main() {
       expect(find.text('Bag reserved'), findsOneWidget);
       expect(find.text('Open'), findsOneWidget);
       await flushBannerTimer(tester);
+    });
+  });
+
+  group('US-11.01 over FCM (fake Firebase)', () {
+    testWidgets('signing in registers the device; a push tapped in the tray opens its screen; signing out forgets the device', (tester) async {
+      final client = FakePushClient();
+      final backend = FakeBackend();
+      final c = await pumpApp(tester, overrides: [notificationServiceProvider.overrideWithValue(FcmNotificationService(client, backend: backend))]);
+      await signIn(tester);
+      expect(backend.registered, ['fcm-token-1@web']);
+
+      client.openedCtl.add(const RemotePush(id: 'n-1', type: NotificationType.expiryDigest, deepLink: '/pantry'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('pantrySearch')), findsOneWidget);
+      expect(c.read(notificationServiceProvider).history.single.readAt, isNotNull);
+
+      await tester.tap(find.byTooltip('الإعدادات'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('deviceToken')), findsOneWidget);
+      await tester.tap(find.text('اخرج'));
+      await tester.pumpAndSettle();
+      expect(backend.removed, ['fcm-token-1']);
     });
   });
 }

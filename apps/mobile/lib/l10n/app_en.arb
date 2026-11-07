@@ -256,5 +256,9 @@
   "assistantOffline": "The assistant is offline, so this is a simple suggestion.",
   "assistantYou": "You",
   "assistantBot": "Assistant",
-  "assistantUnreachable": "We couldn't reach the cooking assistant. Check your connection and try again."
+  "assistantUnreachable": "We couldn't reach the cooking assistant. Check your connection and try again.",
+  "deviceToken": "Push device token",
+  "deviceTokenHint": "Paste it in Firebase → Messaging → Send test message.",
+  "copy": "Copy",
+  "copied": "Copied"
 }

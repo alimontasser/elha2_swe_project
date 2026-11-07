@@ -30,6 +30,7 @@ class Elha2App extends ConsumerStatefulWidget {
 class _Elha2AppState extends ConsumerState<Elha2App> {
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
   StreamSubscription<Object>? _pushes;
+  StreamSubscription<Object>? _taps;
 
   @override
   void initState() {
@@ -39,11 +40,17 @@ class _Elha2AppState extends ConsumerState<Elha2App> {
     _pushes = notifications.incoming.listen((n) {
       showPushBanner(_messengerKey, n, ref.read(routerProvider), onOpen: () => notifications.markRead(n.id));
     });
+    // A push tapped in the system tray opens its screen directly.
+    _taps = notifications.opened.listen((n) {
+      notifications.markRead(n.id);
+      ref.read(routerProvider).go(n.deepLink);
+    });
   }
 
   @override
   void dispose() {
     _pushes?.cancel();
+    _taps?.cancel();
     super.dispose();
   }
 

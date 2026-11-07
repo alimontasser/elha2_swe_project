@@ -3,8 +3,12 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 import '../state/settings.dart';
 import 'api/api_cooking_assistant.dart';
+import 'api/api_notifications_backend.dart';
 import 'api/api_receipt_ai_service.dart';
 import 'mock/mock_services.dart';
+import 'fcm/fcm_notification_service.dart';
+import 'fcm/firebase_config.dart';
+import 'fcm/push_client.dart';
 import 'repositories.dart';
 import 'supabase/supabase_auth_repository.dart';
 
@@ -14,6 +18,7 @@ import 'supabase/supabase_auth_repository.dart';
 //   SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY   real phone sign-in (Supabase Auth)
 //   ELHA2_API_URL                            the NestJS backend (receipt reading, cooking assistant)
 //   ELHA2_DEV_TOKEN                          a local backend token when Supabase is off
+//   FIREBASE_*                               push notifications (see data/fcm/firebase_config.dart)
 
 const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
 const supabasePublishableKey = String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
@@ -53,4 +58,11 @@ final cookingAssistantProvider = Provider<CookingAssistant>(
       : MockCookingAssistant(shouldFail: () => ref.read(settingsProvider).simulateAiFailure),
 );
 
-final notificationServiceProvider = Provider<NotificationService>((ref) => MockNotificationService());
+final notificationServiceProvider = Provider<NotificationService>(
+  (ref) => pushEnabled
+      ? FcmNotificationService(
+          FirebasePushClient(options: firebaseOptions, vapidKey: firebaseVapidKey),
+          backend: _apiUrl.isNotEmpty ? ApiNotificationsBackend(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider)) : null,
+        )
+      : MockNotificationService(),
+);

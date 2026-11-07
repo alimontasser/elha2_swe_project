@@ -165,5 +165,9 @@
   "assistantOffline": "المساعد مش متاح دلوقتي، فده اقتراح بسيط.",
   "assistantYou": "إنت",
   "assistantBot": "المساعد",
-  "assistantUnreachable": "مش قادرين نوصل لمساعد الطبخ دلوقتي. اتأكد من النت وجرّب تاني."
+  "assistantUnreachable": "مش قادرين نوصل لمساعد الطبخ دلوقتي. اتأكد من النت وجرّب تاني.",
+  "deviceToken": "رمز الجهاز للإشعارات",
+  "deviceTokenHint": "الصقه في Firebase ← Messaging ← Send test message.",
+  "copy": "انسخ",
+  "copied": "اتنسخ"
 }

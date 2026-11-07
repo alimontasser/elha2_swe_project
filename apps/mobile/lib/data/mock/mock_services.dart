@@ -157,6 +157,18 @@ class MockNotificationService implements NotificationService {
   Stream<AppNotification> get incoming => _controller.stream;
 
   @override
+  Stream<AppNotification> get opened => const Stream.empty();
+
+  @override
+  String? get deviceToken => null;
+
+  @override
+  Future<void> start() async {}
+
+  @override
+  Future<void> stop() async {}
+
+  @override
   Stream<void> get changes => _changes.stream;
 
   @override

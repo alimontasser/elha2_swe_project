@@ -63,8 +63,20 @@ abstract interface class OcrService {
 }
 
 abstract interface class NotificationService {
-  /// US-11.01: pushes arriving on this device (FCM in the real app).
+  /// US-11.01: pushes arriving on this device while the app is open (FCM in the real app).
   Stream<AppNotification> get incoming;
+
+  /// Pushes the user tapped in the system tray; the app opens their screen.
+  Stream<AppNotification> get opened;
+
+  /// This device's push token once registered, shown in Settings for test sends.
+  String? get deviceToken;
+
+  /// After sign-in: ask permission and register this device for pushes.
+  Future<void> start();
+
+  /// Before sign-out: this device stops receiving the user's pushes.
+  Future<void> stop();
 
   /// Fires whenever [history] changes (a new push, or one marked read), so the bell stays correct.
   Stream<void> get changes;
