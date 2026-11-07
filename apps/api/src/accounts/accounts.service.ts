@@ -18,4 +18,9 @@ export class AccountsService implements IMemberDirectory {
       return { userId: user.id, householdId: household.id, authUid };
     });
   }
+
+  async language(userId: string): Promise<'ar' | 'en'> {
+    const user = await this.db.user.findUnique({ where: { id: userId }, select: { language: true } });
+    return user?.language === 'en' ? 'en' : 'ar';
+  }
 }

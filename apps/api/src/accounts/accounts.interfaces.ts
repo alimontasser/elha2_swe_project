@@ -11,6 +11,8 @@ export interface Member {
  */
 export interface IMemberDirectory {
   resolve(authUid: string, phone?: string): Promise<Member>;
+  /** The language a user reads in (US-1.02), for text the server writes to them. */
+  language(userId: string): Promise<'ar' | 'en'>;
 }
 
 export const MEMBER_DIRECTORY = Symbol('IMemberDirectory');

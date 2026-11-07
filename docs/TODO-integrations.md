@@ -47,7 +47,11 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
   - prompt registry and context builder;
   - schema validation, cache and AIRequestLog;
   - provider order Gemini → Groq → non-AI fallback.
-- [ ] **Notifications (US-11.01):** device tokens, the stored Notification row, FCM push with a deep link.
+- [ ] **Notifications (US-11.01):**
+  - [x] Backend: device tokens, the stored Notification row (30 days), FCM HTTP v1 push with a deep link, and a demo `POST /api/v1/notifications/test`. The tables are in Supabase (`notifications` schema, RLS on).
+  - [ ] Firebase web config and VAPID key (public values) for the app's FCM adapter.
+  - [ ] Each developer saves the service-account key as `apps/api/firebase-service-account.json` (git-ignored, never shared in chat). Without it, notifications are stored but not pushed.
+  - [ ] Android: register `org.elha2.elha2` in Firebase.
 - [ ] **Worker:** a pg-boss Scheduler worker running as a separate entrypoint.
 - [ ] **CI:** GitHub Actions for lint and tests (api, portal, mobile).
 - [ ] **Switch the clients to the real adapters:**

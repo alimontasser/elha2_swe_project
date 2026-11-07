@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas  = ["accounts", "expiry", "pantry", "ai"]
+  schemas  = ["accounts", "expiry", "pantry", "ai", "notifications"]
 }
 
 // ---------- Accounts ----------
@@ -97,6 +97,8 @@ model FoodCatalogueItem {
   createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
 
+  // Trigram index for receipt-line matching (pg_trgm lives in the "extensions" schema).
+  @@index([searchText(ops: raw("gin_trgm_ops"))], type: Gin, map: "food_catalogue_item_search_trgm")
   @@map("food_catalogue_item")
   @@schema("expiry")
 }
@@ -251,4 +253,54 @@ model AiExample {
   @@index([task])
   @@map("example")
   @@schema("ai")
+}
+
+// ---------- Notifications ----------
+
+enum NotificationType {
+  expiryDigest @map("expiry_digest")
+  reservation
+  pickup
+
+  @@map("notification_type")
+  @@schema("notifications")
+}
+
+enum DevicePlatform {
+  web
+  android
+  ios
+
+  @@map("device_platform")
+  @@schema("notifications")
+}
+
+/// A phone or browser that receives push notifications through FCM (US-11.01).
+model DeviceToken {
+  id         String         @id @default(uuid()) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  token      String         @unique
+  platform   DevicePlatform
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastSeenAt DateTime       @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+
+  @@index([userId])
+  @@map("device_token")
+  @@schema("notifications")
+}
+
+/// Every notification sent, for the in-app list (kept 30 days, US-11.05).
+model Notification {
+  id       String           @id @default(uuid()) @db.Uuid
+  userId   String           @map("user_id") @db.Uuid
+  type     NotificationType
+  title    String
+  body     String
+  deepLink String           @map("deep_link")
+  sentAt   DateTime         @default(now()) @map("sent_at") @db.Timestamptz(3)
+  readAt   DateTime?        @map("read_at") @db.Timestamptz(3)
+
+  @@index([userId, sentAt])
+  @@map("notification")
+  @@schema("notifications")
 }

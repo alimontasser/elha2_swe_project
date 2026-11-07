@@ -37,6 +37,12 @@ const ConfigSchema = z
     GROQ_API_KEY: optionalText,
     GROQ_MODEL: z.string().default('openai/gpt-oss-120b'),
     GROQ_BASE_URL: z.url().default('https://api.groq.com/openai/v1'),
+
+    // Push notifications (US-11.01): path to the Firebase service-account JSON (never committed).
+    // Without it, notifications are stored and listed but not pushed.
+    FIREBASE_SERVICE_ACCOUNT_FILE: optionalText,
+    // Where a tapped web notification opens, e.g. https://elha2.web.app (optional).
+    APP_WEB_URL: optionalText.pipe(z.url().optional()),
   })
   .superRefine((c, ctx) => {
     if (!c.SUPABASE_URL && !c.AUTH_JWT_SECRET) {

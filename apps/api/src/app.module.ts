@@ -2,6 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import type { AppConfig } from './config/config';
 import { ConfigModule } from './config/config.module';
 import { HealthController } from './health/health.controller';
+import { NotificationsModule } from './notifications/notifications.module';
 import { PantryModule } from './pantry/pantry.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { RecipesModule } from './recipes/recipes.module';
@@ -12,7 +13,7 @@ export class AppModule {
   static forRoot(config?: AppConfig): DynamicModule {
     return {
       module: AppModule,
-      imports: [ConfigModule.forRoot(config), PrismaModule, PantryModule, RecipesModule],
+      imports: [ConfigModule.forRoot(config), PrismaModule, PantryModule, RecipesModule, NotificationsModule],
       controllers: [HealthController],
     };
   }
