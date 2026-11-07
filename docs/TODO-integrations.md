@@ -8,13 +8,14 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 - [x] **Network:** the cloud environment now allows `ujvucfvrhlrjttzmavgg.supabase.co` and `api.groq.com`. Inside the cloud sandbox, Node needs `NODE_USE_ENV_PROXY=1` to use its proxy; local machines don't.
 - [x] **Groq backup:** key works; default model `openai/gpt-oss-120b` read the Fresh Mart demo receipt correctly in 3.2 s.
 - [x] **Supabase database:** both Prisma migrations are applied (schemas `accounts`, `expiry`, `pantry`, `ai`; `pg_trgm`; row-level security on). The 104 catalogue items and 3 AI examples are loaded. `_prisma_migrations` matches the repo, so `pnpm db:deploy` against Supabase is a no-op until a new migration is added.
+- [x] **Supabase phone login (US-1.01):** Phone is on, using **test numbers** with the fixed code `654321` (`201012345678`, `201000000000`, `201011112222`, `201233334444`); they stop working on 31/01/2027.
+  - Twilio holds placeholder values: Supabase needs a provider, but sends no SMS to test numbers. Any other number fails until a real provider is set up.
+  - The code expires after 300 s (US-1.01).
+  - Checked on 07/11/2026: a wrong code is refused, `654321` signs in, and the API accepts the ES256 token through the project's JWKS when `SUPABASE_URL` is set.
+  - Still open: Supabase limits code checks per IP, not per number, so US-1.01's "5 attempts per hour per number" needs our own check.
 - [ ] **Supabase, still to do:**
-  - turn on Phone in Authentication → Providers (it is off), with test numbers for the demo;
   - give the team the database connection string (Connect → **Session pooler**) for `DATABASE_URL` in `apps/api/.env`; on Cloud Run it goes in the secret manager;
   - enable `postgis` when the Accounts location endpoint (US-1.04) is built.
-- [ ] **Supabase phone login (US-1.01):** pick one.
-  - An SMS provider (Twilio, Vonage or MessageBird). Each SMS costs money.
-  - Or free **test phone numbers** with fixed OTPs, for the course demo.
 - [ ] **Firebase project, used only for FCM (US-11.01) and portal hosting:** download `google-services.json`, `GoogleService-Info.plist` and a service-account key.
 - [ ] **Free AI keys:** Google AI Studio (Gemini, main) and GroqCloud (backup). Neither needs a card.
   - Free tiers may use prompts for training. Only masked text is sent (US-14.03), but this must still be stated in the consent text (NFR-13) and in the SRS.
