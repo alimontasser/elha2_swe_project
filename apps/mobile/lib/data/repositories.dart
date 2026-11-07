@@ -34,7 +34,13 @@ abstract interface class CatalogueRepository {
 }
 
 abstract interface class PantryRepository {
+  /// True when items live on the backend (so a receipt confirmed there is reloaded, not added again).
+  bool get syncsWithBackend;
+
   Future<List<PantryItem>> items();
+
+  /// Fetches the latest list (sending any changes made offline first).
+  Future<void> reload();
 
   Future<PantryItem> add(PantryItem item);
 

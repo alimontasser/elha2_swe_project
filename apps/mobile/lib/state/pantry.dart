@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/expiry_rules.dart';
@@ -6,8 +8,18 @@ import '../data/providers.dart';
 
 final catalogueProvider = FutureProvider<List<CatalogueItem>>((ref) => ref.watch(catalogueRepositoryProvider).all());
 
-var _idSeq = 0;
-String _newId() => 'p${DateTime.now().microsecondsSinceEpoch}-${_idSeq++}';
+final _random = Random.secure();
+
+/// A random UUID (v4): the backend stores items under the app's id, so Undo and retries hit the same row.
+String newItemId() {
+  final b = List<int>.generate(16, (_) => _random.nextInt(256));
+  b[6] = (b[6] & 0x0f) | 0x40;
+  b[8] = (b[8] & 0x3f) | 0x80;
+  final h = b.map((x) => x.toRadixString(16).padLeft(2, '0')).join();
+  return '${h.substring(0, 8)}-${h.substring(8, 12)}-${h.substring(12, 16)}-${h.substring(16, 20)}-${h.substring(20)}';
+}
+
+String _newId() => newItemId();
 
 class PantryController extends AsyncNotifier<List<PantryItem>> {
   @override
@@ -125,6 +137,12 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
     final repo = ref.read(pantryRepositoryProvider);
     final exists = (await repo.items()).any((i) => i.id == previous.id);
     exists ? await repo.update(previous) : await repo.add(previous);
+    await _refresh();
+  }
+
+  /// The latest list from the backend, e.g. after it saved a receipt (no-op for the demo store).
+  Future<void> reload() async {
+    await ref.read(pantryRepositoryProvider).reload();
     await _refresh();
   }
 

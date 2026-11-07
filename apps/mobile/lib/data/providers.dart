@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import '../state/settings.dart';
 import 'api/api_cooking_assistant.dart';
 import 'api/api_notifications_backend.dart';
+import 'api/api_pantry_repository.dart';
 import 'api/api_receipt_ai_service.dart';
 import 'mock/mock_services.dart';
 import 'photo_picker.dart';
@@ -43,7 +44,9 @@ final locationServiceProvider = Provider<LocationService>((ref) => MockLocationS
 
 final catalogueRepositoryProvider = Provider<CatalogueRepository>((ref) => AssetCatalogueRepository());
 
-final pantryRepositoryProvider = Provider<PantryRepository>((ref) => InMemoryPantryRepository());
+final pantryRepositoryProvider = Provider<PantryRepository>(
+  (ref) => _apiUrl.isNotEmpty ? ApiPantryRepository(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider)) : InMemoryPantryRepository(),
+);
 
 final ocrServiceProvider = Provider<OcrService>((ref) => MockOcrService());
 

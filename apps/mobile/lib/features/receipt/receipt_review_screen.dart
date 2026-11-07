@@ -54,7 +54,12 @@ class _ReceiptReviewScreenState extends ConsumerState<ReceiptReviewScreen> {
         return;
       }
     }
-    await pantry.addConfirmed([for (final c in confirmed) c.item]);
+    if (draftId != null && ref.read(pantryRepositoryProvider).syncsWithBackend) {
+      // The backend already saved them with the receipt; adding them here would duplicate them.
+      await pantry.reload();
+    } else {
+      await pantry.addConfirmed([for (final c in confirmed) c.item]);
+    }
     if (!mounted) return;
     final messenger = ScaffoldMessenger.of(context);
     final message = context.l10n.itemsAdded(confirmed.length);

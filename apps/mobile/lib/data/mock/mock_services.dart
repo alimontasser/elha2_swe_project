@@ -92,7 +92,13 @@ class InMemoryPantryRepository implements PantryRepository {
   late List<PantryItem> _items;
 
   @override
+  bool get syncsWithBackend => false;
+
+  @override
   Future<List<PantryItem>> items() async => List.unmodifiable(_items);
+
+  @override
+  Future<void> reload() async {}
 
   @override
   Future<PantryItem> add(PantryItem item) async {
