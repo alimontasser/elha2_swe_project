@@ -57,7 +57,10 @@ export function Layout() {
 
   const items: NavItem[] =
     session.role === 'admin'
-      ? [{ to: '/admin', label: t('nav.verification'), icon: '🛡️' }]
+      ? [
+          { to: '/admin', label: t('nav.verification'), icon: '🛡️' },
+          { to: '/admin/products', label: t('nav.productReview'), icon: '🏷️' },
+        ]
       : session.role === 'businessOwner'
         ? [
             { to: '/organisation', label: t('nav.organisation'), icon: '🏪' },
@@ -70,6 +73,11 @@ export function Layout() {
             { to: '/register/ngo', label: t('nav.registerNgo'), icon: '➕' },
             { to: '/offers', label: t('nav.offers'), icon: '📦', sprint: 3 },
           ]
+
+  const activeTo = items
+    .map((i) => i.to)
+    .filter((to) => location.pathname === to || location.pathname.startsWith(`${to}/`))
+    .sort((a, b) => b.length - a.length)[0]
 
   return (
     <div className="shell">
@@ -105,7 +113,13 @@ export function Layout() {
       <div className="body">
         <nav className="sidebar" aria-label="Main">
           {items.map((item) => (
-            <NavLink key={item.to} to={item.to} className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}>
+            // The longest matching link wins, so /admin/products does not also light up /admin.
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={items.some((o) => o.to.startsWith(`${item.to}/`))}
+              className={() => `nav-item${item.to === activeTo ? ' active' : ''}`}
+            >
               <span aria-hidden="true">{item.icon}</span>
               <span>{item.label}</span>
               {item.sprint && <span className="chip">{t('app.comingSprint', { n: item.sprint })}</span>}

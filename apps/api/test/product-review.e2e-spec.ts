@@ -134,4 +134,62 @@ describe('AI review of unknown barcodes (US-2.03)', () => {
     expect(ai.calls).toBe(0);
     expect((await db.product.findUnique({ where: { barcode } }))?.nameAr).toBe('لبن');
   });
+
+  describe('administrator review', () => {
+    it('lists what waits for an admin, with the AI note and catalogue candidates, and lets the admin accept with corrections', async () => {
+      const barcode = freshBarcode();
+      await new ProductSuggestionsService(products, aiSays({ decision: 'accept', confidence: 0.4, reason: 'brand unclear' })).suggest(
+        await newMember(db),
+        barcode,
+        {
+          nameAr: 'جبنه رومي',
+        },
+      );
+      const pending = (await products.listForReview('pending')).find((p) => p.barcode === barcode);
+      expect(pending).toMatchObject({ status: 'pendingReview', nameAr: 'جبنه رومي', reviewNote: 'AI unsure: brand unclear' });
+      expect(pending?.candidates.map((c) => c.id)).toContain('roumi-cheese');
+
+      const ok = await products.decide(barcode, {
+        status: 'known',
+        reviewedBy: 'admin',
+        note: 'checked the pack',
+        nameAr: 'جبنة رومي',
+        nameEn: 'Roumi cheese',
+        category: 'dairy',
+        catalogueId: 'roumi-cheese',
+        quantity: 0.25,
+        unit: 'kg',
+      });
+      expect(ok).toBe(true);
+      expect((await products.listForReview('pending')).some((p) => p.barcode === barcode)).toBe(false);
+      expect(await products.lookup(barcode)).toMatchObject({ found: true, nameEn: 'Roumi cheese', quantity: 0.25, unit: 'kg' });
+      expect(await db.product.findUnique({ where: { barcode } })).toMatchObject({ reviewedBy: 'admin', reviewNote: 'checked the pack' });
+    });
+
+    it('lets an admin overrule an AI acceptance, and shows it under AI accepted until then', async () => {
+      const barcode = freshBarcode();
+      await new ProductSuggestionsService(products, aiSays({ nameAr: 'بيبسي', nameEn: 'Pepsi', category: 'drinks' })).suggest(
+        await newMember(db),
+        barcode,
+        { nameAr: 'بيبسي' },
+      );
+      expect((await products.listForReview('aiAccepted')).some((p) => p.barcode === barcode)).toBe(true);
+      await products.decide(barcode, { status: 'rejected', reviewedBy: 'admin', note: 'barcode belongs to another product' });
+      expect((await products.listForReview('rejected')).find((p) => p.barcode === barcode)).toMatchObject({
+        reviewedBy: 'admin',
+        nameAr: null,
+      });
+      expect(await products.lookup(barcode)).toMatchObject({ found: false });
+    });
+
+    it('never touches Open Food Facts products', async () => {
+      const barcode = freshBarcode();
+      const off = new ProductsService(db, new CatalogueRepository(db), {
+        lookup: () => Promise.resolve({ status: 'found', product: { nameEn: 'Coca-Cola', categories: ['sodas'] } }),
+      });
+      await off.lookup(barcode);
+      expect(await products.decide(barcode, { status: 'rejected', reviewedBy: 'admin', note: 'x' })).toBe(false);
+      expect((await products.listForReview('all')).some((p) => p.barcode === barcode)).toBe(false);
+    });
+  });
 });

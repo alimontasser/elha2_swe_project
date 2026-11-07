@@ -21,7 +21,8 @@
     "listings": "Listings",
     "offers": "Donation offers",
     "verification": "Verification",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "productReview": "Product review"
   },
   "roles": {
     "businessOwner": "Business owner",
@@ -55,7 +56,8 @@
     "generic": "Something went wrong. Try again.",
     "rateLimited": "Please wait a minute before asking for another code.",
     "unavailable": "We couldn't reach the sign-in service. Check your connection and try again.",
-    "notAdmin": "This number is not an Elha2 administrator. Choose your organisation role instead."
+    "notAdmin": "This number is not an Elha2 administrator. Choose your organisation role instead.",
+    "productNotFound": "No product named by a user has this barcode."
   },
   "status": {
     "pending": "Pending review",
@@ -204,5 +206,56 @@
     "collected": "Collected",
     "autoDonate": "Uncollected bags are offered to your partner NGO automatically when the window ends.",
     "preview": "Preview with sample data. Pickups are built in Sprint 3 (US-6.04)."
+  },
+  "products": {
+    "title": "Product review",
+    "subtitle": "Names shoppers gave unknown barcodes. The AI accepts or rejects most of them; decide the ones it was unsure about, and overrule it when it got one wrong. Every decision keeps who made it and why.",
+    "filter": "Show",
+    "tab": {
+      "pending": "Needs review",
+      "aiAccepted": "Accepted by AI",
+      "rejected": "Rejected",
+      "all": "All"
+    },
+    "status": {
+      "pendingReview": "Needs review",
+      "known": "Accepted",
+      "rejected": "Rejected"
+    },
+    "empty": "Nothing here.",
+    "saved": "Decision saved.",
+    "barcode": "Barcode",
+    "namedOn": "named {{date}}",
+    "textNotKept": "Text not kept (rejected)",
+    "byAi": "AI",
+    "byAdmin": "Admin",
+    "waiting": "AI, unsure",
+    "catalogue": "Catalogue: {{id}}",
+    "accept": "Accept",
+    "edit": "Correct",
+    "reject": "Reject",
+    "nameAr": "Arabic name",
+    "nameEn": "English name",
+    "category": "Category",
+    "catalogueItem": "Catalogue item",
+    "catalogueHint": "Its shelf life is used for the expiry estimate.",
+    "noCatalogueItem": "None of these",
+    "size": "Pack size",
+    "sizeHint": "Leave empty when the pack has no fixed size.",
+    "unitLabel": "Unit",
+    "unit": {
+      "piece": "pieces",
+      "kg": "kg",
+      "g": "g",
+      "l": "litres",
+      "ml": "ml",
+      "pack": "packs",
+      "loaf": "loaves"
+    },
+    "reason": "Reason",
+    "reasonHint": "Kept for the record; the shopper's text is not.",
+    "saveAccept": "Save as accepted",
+    "saveReject": "Reject",
+    "cancel": "Cancel"
   }
 }

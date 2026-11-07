@@ -10,7 +10,9 @@ import {
   type FoodCategory,
   type ICatalogueMatch,
   type IProductCatalogue,
+  type ProductForReview,
   type ProductReviewDecision,
+  type ReviewFilter,
   type StoragePlace,
   type Unit,
 } from './expiry.interfaces';
@@ -144,32 +146,69 @@ export class ProductsService implements IProductCatalogue {
   }
 
   async applyReview(barcode: string, d: ProductReviewDecision, now = new Date()): Promise<void> {
+    await this.write({ barcode, status: 'pendingReview' }, d, now);
+  }
+
+  /** An administrator may overrule the AI, but only on products a user named (not Open Food Facts ones). */
+  async decide(barcode: string, d: ProductReviewDecision, now = new Date()): Promise<boolean> {
+    return (await this.write({ barcode, source: 'user' }, d, now)) > 0;
+  }
+
+  private async write(where: Prisma.ProductWhereInput, d: ProductReviewDecision, now: Date): Promise<number> {
     const review = { reviewedBy: d.reviewedBy, reviewNote: d.note.slice(0, 200), reviewedAt: now };
     if (d.status === 'pendingReview') {
       // Still undecided: keep the reviewer's note for the admin who decides.
-      await this.db.product.updateMany({ where: { barcode, status: 'pendingReview' }, data: { reviewNote: review.reviewNote } });
-      return;
+      return (await this.db.product.updateMany({ where, data: { status: 'pendingReview', reviewNote: review.reviewNote } })).count;
     }
     if (d.status === 'rejected') {
       // A rejected text is not kept: only the decision and its reason are.
-      await this.db.product.updateMany({
-        where: { barcode, status: 'pendingReview' },
-        data: { status: 'rejected', ...review, nameAr: null, nameEn: null },
-      });
-      return;
+      return (await this.db.product.updateMany({ where, data: { status: 'rejected', ...review, nameAr: null, nameEn: null } })).count;
     }
-    await this.db.product.updateMany({
-      where: { barcode, status: 'pendingReview' },
-      data: {
-        status: 'known',
-        ...review,
-        nameAr: d.nameAr,
-        nameEn: d.nameEn,
-        category: d.category ?? null,
-        catalogueId: d.catalogueId ?? null,
-        quantity: d.quantity ? new Prisma.Decimal(d.quantity) : null,
-        unit: d.quantity ? (d.unit ?? null) : null,
-      },
-    });
+    return (
+      await this.db.product.updateMany({
+        where,
+        data: {
+          status: 'known',
+          ...review,
+          nameAr: d.nameAr,
+          nameEn: d.nameEn,
+          category: d.category ?? null,
+          catalogueId: d.catalogueId ?? null,
+          quantity: d.quantity ? new Prisma.Decimal(d.quantity) : null,
+          unit: d.quantity ? (d.unit ?? null) : null,
+        },
+      })
+    ).count;
+  }
+
+  async listForReview(filter: ReviewFilter): Promise<ProductForReview[]> {
+    const where: Prisma.ProductWhereInput =
+      filter === 'pending'
+        ? { source: 'user', status: 'pendingReview' }
+        : filter === 'aiAccepted'
+          ? { source: 'user', status: 'known', reviewedBy: 'ai' }
+          : filter === 'rejected'
+            ? { source: 'user', status: 'rejected' }
+            : { source: 'user' };
+    const rows = await this.db.product.findMany({ where, orderBy: { updatedAt: 'desc' }, take: 200 });
+    const names = rows.map((r) => [r.nameEn, r.nameAr].filter(Boolean).join(' ') || r.barcode);
+    const candidates = names.length ? await this.catalogue.closest(names, 5) : [];
+    return rows.map((r, i) => ({
+      barcode: r.barcode,
+      status: r.status,
+      nameAr: r.nameAr,
+      nameEn: r.nameEn,
+      category: FOOD_CATEGORIES.find((c) => c === r.category) ?? null,
+      catalogueId: r.catalogueId,
+      quantity: r.quantity ? Number(r.quantity) : null,
+      unit: (r.unit as Unit | null) ?? null,
+      reviewedBy: r.reviewedBy,
+      reviewNote: r.reviewNote,
+      reviewedAt: r.reviewedAt?.toISOString() ?? null,
+      suggestedAt: r.createdAt.toISOString(),
+      candidates: (candidates[i] ?? [])
+        .filter((c) => c.score >= 0.3)
+        .map((c) => ({ id: c.id, nameAr: c.nameAr, nameEn: c.nameEn, category: c.category })),
+    }));
   }
 }

@@ -52,7 +52,7 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
   - [x] `/pantry/items` (US-2.07, 2.10, 2.11): the app loads its pantry from the backend when `ELHA2_API_URL` is set. Changes made offline are queued on the phone and sent later (NFR-21).
   - [x] Barcodes (US-2.03): `/products/:barcode` checks our products, then Open Food Facts (`world.openfoodfacts.org` is allowed in the cloud environment). The app scans with `mobile_scanner` (ML Kit on Android) or takes a typed number, and remembers products on the phone for offline scans. Unknown barcodes are saved as `pending_review`.
   - [x] Unknown barcodes are reviewed by the AI gateway (`reviewProduct` task), not an admin. When it is at least 70% sure, it accepts (clean names, category, size, catalogue match) or rejects (not food, nonsense, personal details), and records `reviewed_by = 'ai'` and its reason. Rejected text isn't kept.
-  - [ ] Portal screen for the rest: names the AI was unsure about, or got while it was down, stay `pending_review` with the AI's note.
+  - [x] Portal **Product review** (admin): what the AI was unsure about, what it accepted and what it rejected, with its notes. An admin accepts (correcting names, category, catalogue item, size) or rejects with a reason, and can overrule the AI. The backend checks the `admin` role in the token (`app_metadata.roles`).
 - [ ] **AI gateway (US-14.01):**
   - prompt registry and context builder;
   - schema validation, cache and AIRequestLog;

@@ -156,3 +156,18 @@ With `ELHA2_API_URL` set, the pantry lives in the database.
 - Live lookups of real products take 0.1–1 s.
 - In Chromium, typing `5449000000996` added Coca-Cola (330 ml, cupboard). After signing in again, the item loaded back from the database.
 - Camera scanning needs a real phone or Chrome with a camera.
+
+## Portal: product review (admin)
+Admin → **Product review** shows four tabs: names the AI was **unsure** about, the ones it **accepted**, the ones it **rejected**, and **all**.
+- Each row shows the barcode, the name, when it was named, and who decided and why.
+- **Accept** opens a form: Arabic and English names, category, catalogue item (the closest matches are offered), pack size and unit.
+- **Reject** needs a reason. The shopper's text isn't kept.
+- An admin can overrule the AI. Each decision records "admin" and the reason.
+
+**Without the backend:** three demo products show.
+
+**With the backend** (in `apps/portal/.env.local`, see `.env.example`):
+- set `VITE_API_URL`;
+- with Supabase sign-in, sign in as `01000000000` (its token carries the `admin` role);
+- otherwise set `VITE_API_DEV_TOKEN` to the output of `pnpm -s dev-token --admin` in `apps/api`.
+- A household user's token gets 403.

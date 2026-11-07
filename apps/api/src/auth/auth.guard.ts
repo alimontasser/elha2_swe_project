@@ -4,7 +4,7 @@ import { type IMemberDirectory, type Member, MEMBER_DIRECTORY } from '../account
 import { AppError } from '../common/errors';
 import { TokenVerifier } from './token-verifier';
 
-type AuthedRequest = Request & { member?: Member };
+export type AuthedRequest = Request & { member?: Member; roles?: string[] };
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     const login = await this.verifier.verify(token);
     if (!login) throw new AppError(401, 'unauthenticated', 'The login token is not valid');
     req.member = await this.members.resolve(login.authUid, login.phone);
+    req.roles = login.roles;
     return true;
   }
 }

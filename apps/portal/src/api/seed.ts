@@ -1,8 +1,10 @@
-import type { AppNotification, Organisation } from '../domain/types'
+import type { AppNotification, Organisation, ProductForReview } from '../domain/types'
 
 export interface DemoDb {
   organisations: Organisation[]
   notifications: AppNotification[]
+  /** Optional so demo data saved before it existed still loads. */
+  products?: ProductForReview[]
 }
 
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString()
@@ -13,6 +15,7 @@ export const DEMO_NGO_PHONE = '01233334444'
 
 export function seedDb(): DemoDb {
   return {
+    products: seedProducts(),
     organisations: [
       {
         id: 'org-bakery',
@@ -70,4 +73,58 @@ export function seedDb(): DemoDb {
     ],
     notifications: [],
   }
+}
+
+const cheese = { id: 'roumi-cheese', nameAr: 'جبنة رومي', nameEn: 'Roumi cheese', category: 'dairy' as const }
+const biscuits = { id: 'biscuits', nameAr: 'بسكويت', nameEn: 'Biscuits', category: 'dry' as const }
+
+/** Demo barcodes: one the AI was unsure about, one it accepted and one it rejected. */
+export function seedProducts(): ProductForReview[] {
+  return [
+    {
+      barcode: '6221234500017',
+      status: 'pendingReview',
+      nameAr: 'جبنه رومي',
+      nameEn: null,
+      category: null,
+      catalogueId: null,
+      quantity: null,
+      unit: null,
+      reviewedBy: null,
+      reviewNote: 'AI unsure: brand and size unclear',
+      reviewedAt: null,
+      suggestedAt: daysAgo(0.2),
+      candidates: [cheese, { id: 'white-cheese', nameAr: 'جبنة بيضا', nameEn: 'White cheese', category: 'dairy' }],
+    },
+    {
+      barcode: '6221234500024',
+      status: 'known',
+      nameAr: 'بسكويت شمعدان بالشيكولاتة',
+      nameEn: 'Shamadan Chocolate Biscuit',
+      category: 'dry',
+      catalogueId: 'biscuits',
+      quantity: null,
+      unit: null,
+      reviewedBy: 'ai',
+      reviewNote: 'It is a valid chocolate biscuit product.',
+      reviewedAt: daysAgo(0.5),
+      suggestedAt: daysAgo(0.5),
+      candidates: [biscuits],
+    },
+    {
+      barcode: '6221234500031',
+      status: 'rejected',
+      nameAr: null,
+      nameEn: null,
+      category: null,
+      catalogueId: null,
+      quantity: null,
+      unit: null,
+      reviewedBy: 'ai',
+      reviewNote: 'Not a food or drink product',
+      reviewedAt: daysAgo(1),
+      suggestedAt: daysAgo(1),
+      candidates: [],
+    },
+  ]
 }

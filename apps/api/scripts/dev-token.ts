@@ -1,6 +1,7 @@
 // Prints a local login token in the Supabase Auth format, signed with AUTH_JWT_SECRET.
 // Only for development: production verifies real Supabase tokens through the project's JWKS.
-//   pnpm dev-token [authUid] [phone]
+//   pnpm dev-token [authUid] [phone]          a household user
+//   pnpm dev-token --admin [authUid] [phone]  an administrator (app_metadata.roles = ["admin"])
 import { SignJWT } from 'jose';
 import { loadConfig } from '../src/config/config';
 
@@ -9,8 +10,13 @@ async function main() {
   if (config.SUPABASE_URL || !config.AUTH_JWT_SECRET) {
     throw new Error('dev-token works only with AUTH_JWT_SECRET and no SUPABASE_URL');
   }
-  const [authUid = 'dev-user-1', phone = '01012345678'] = process.argv.slice(2);
-  const token = await new SignJWT({ phone, role: 'authenticated' })
+  const args = process.argv.slice(2);
+  const admin = args.includes('--admin');
+  const [authUid = admin ? 'dev-admin-1' : 'dev-user-1', phone = admin ? '01000000000' : '01012345678'] = args.filter(
+    (a) => a !== '--admin',
+  );
+  const claims = { phone, role: 'authenticated', ...(admin ? { app_metadata: { roles: ['admin'] } } : {}) };
+  const token = await new SignJWT(claims)
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(authUid)
     .setIssuer(config.AUTH_JWT_ISSUER)

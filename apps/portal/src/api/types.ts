@@ -5,6 +5,9 @@ import type {
   FoodCategory,
   OrgDocument,
   Organisation,
+  ProductDecision,
+  ProductForReview,
+  ProductReviewFilter,
   Role,
   Session,
   VerificationStatus,
@@ -60,6 +63,12 @@ export interface AdminApi {
   setVerification(id: string, status: VerificationStatus, adminPhone: string, reason?: string): Promise<Organisation>
 }
 
+/** US-2.03: administrators check what the AI decided about user-named barcodes, and decide the rest. */
+export interface ProductReviewApi {
+  list(filter: ProductReviewFilter): Promise<ProductForReview[]>
+  decide(barcode: string, decision: ProductDecision): Promise<void>
+}
+
 export interface NotificationsApi {
   list(userPhone: string): Promise<AppNotification[]>
   markAllRead(userPhone: string): Promise<void>
@@ -69,6 +78,7 @@ export interface PortalApi {
   auth: AuthApi
   organisations: OrganisationsApi
   admin: AdminApi
+  products: ProductReviewApi
   notifications: NotificationsApi
   resetDemo(): void
 }

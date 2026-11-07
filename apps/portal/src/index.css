@@ -612,3 +612,65 @@ tr:last-child td {
   margin-top: 1.25rem;
   font-size: 1.35rem;
 }
+
+/* Product review (US-2.03) */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 1rem 0 0;
+  list-style: none;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.product-card p {
+  margin: 0;
+}
+.product-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.badge-product-pendingReview {
+  background: var(--orange-50);
+  color: var(--orange);
+}
+.badge-product-known {
+  background: var(--green-50);
+  color: var(--green-800);
+}
+.badge-product-rejected {
+  background: var(--red-50);
+  color: var(--red);
+}
+.review-note {
+  padding: 0.5rem 0.75rem;
+  border-inline-start: 3px solid var(--line);
+  background: var(--sand-50);
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+.product-card .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.decision-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+}
+.decision-form select,
+.decision-form input,
+.decision-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+}

@@ -88,3 +88,46 @@ export interface Session {
   phone: string
   role: Role
 }
+
+// US-2.03: products users named for unknown barcodes, after the AI's review.
+export type ProductUnit = 'piece' | 'kg' | 'g' | 'l' | 'ml' | 'pack' | 'loaf'
+export const PRODUCT_UNITS: ProductUnit[] = ['piece', 'kg', 'g', 'l', 'ml', 'pack', 'loaf']
+export type ProductReviewStatus = 'known' | 'pendingReview' | 'rejected'
+export type ProductReviewFilter = 'pending' | 'aiAccepted' | 'rejected' | 'all'
+
+export interface CatalogueCandidate {
+  id: string
+  nameAr: string
+  nameEn: string
+  category: FoodCategory
+}
+
+export interface ProductForReview {
+  barcode: string
+  status: ProductReviewStatus
+  nameAr: string | null
+  nameEn: string | null
+  category: FoodCategory | null
+  catalogueId: string | null
+  quantity: number | null
+  unit: ProductUnit | null
+  /** "ai" or "admin", once decided. */
+  reviewedBy: string | null
+  reviewNote: string | null
+  reviewedAt: string | null
+  suggestedAt: string
+  candidates: CatalogueCandidate[]
+}
+
+export type ProductDecision =
+  | {
+      decision: 'accept'
+      nameAr: string
+      nameEn: string
+      category: FoodCategory
+      catalogueId: string | null
+      quantity: number | null
+      unit: ProductUnit | null
+      note?: string
+    }
+  | { decision: 'reject'; note: string }

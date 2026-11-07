@@ -5,6 +5,8 @@ import { type AppConfig, CONFIG } from '../config/config';
 export interface VerifiedLogin {
   authUid: string;
   phone?: string;
+  /** From the token's app_metadata.roles, which only the backend or an admin can set (e.g. "admin"). */
+  roles: string[];
 }
 
 /**
@@ -38,7 +40,9 @@ export class TokenVerifier {
     try {
       const payload = await this.verifyToken(token);
       if (!payload.sub) return null;
-      return { authUid: payload.sub, phone: typeof payload.phone === 'string' && payload.phone ? payload.phone : undefined };
+      const meta = payload.app_metadata as { roles?: unknown } | undefined;
+      const roles = Array.isArray(meta?.roles) ? meta.roles.filter((r): r is string => typeof r === 'string') : [];
+      return { authUid: payload.sub, phone: typeof payload.phone === 'string' && payload.phone ? payload.phone : undefined, roles };
     } catch {
       return null;
     }

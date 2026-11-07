@@ -3,7 +3,7 @@ import { applyVerification, VerificationError } from '../domain/verification'
 import { normaliseEgyptianMobile } from '../domain/phone'
 import type { AppNotification, NotificationType, Organisation, Role, Session, VerificationStatus } from '../domain/types'
 import { ApiError, type PortalApi } from './types'
-import { seedDb, type DemoDb } from './seed'
+import { seedDb, seedProducts, type DemoDb } from './seed'
 
 // Demo-only implementation of the portal API. Every external service is faked:
 // - Supabase Auth phone OTP: the code is always DEMO_OTP; 5 wrong codes in 1 h lock the number (NFR-12).
@@ -238,6 +238,38 @@ export function createMockApi({ store = browserStore(), latencyMs = 350, now = (
         const at = now().toISOString()
         db.notifications = db.notifications.map((n) => (n.userPhone === userPhone && !n.readAt ? { ...n, readAt: at } : n))
         save(db)
+      },
+    },
+
+    products: {
+      async list(filter) {
+        await delay()
+        const all = load().products ?? seedProducts()
+        return all.filter((p) =>
+          filter === 'all'
+            ? true
+            : filter === 'pending'
+              ? p.status === 'pendingReview'
+              : filter === 'rejected'
+                ? p.status === 'rejected'
+                : p.status === 'known' && p.reviewedBy === 'ai',
+        )
+      },
+      async decide(barcode, d) {
+        await delay()
+        const db = load()
+        const products = db.products ?? seedProducts()
+        const i = products.findIndex((p) => p.barcode === barcode)
+        if (i < 0) throw new ApiError('productNotFound')
+        if (d.decision === 'reject' && !d.note.trim()) throw new ApiError('reasonRequired')
+        const at = now().toISOString()
+        if (d.decision === 'accept') {
+          const { decision: _, note, ...details } = d
+          products[i] = { ...products[i], ...details, status: 'known', reviewedBy: 'admin', reviewNote: note ?? '', reviewedAt: at }
+        } else {
+          products[i] = { ...products[i], status: 'rejected', nameAr: null, nameEn: null, reviewedBy: 'admin', reviewNote: d.note, reviewedAt: at }
+        }
+        save({ ...db, products })
       },
     },
 

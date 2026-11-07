@@ -60,12 +60,37 @@ export interface ProductReviewDecision {
   unit?: Unit | null;
 }
 
-/** Offered by Expiry to Pantry: barcoded products and their review. */
+export const REVIEW_FILTERS = ['pending', 'aiAccepted', 'rejected', 'all'] as const;
+export type ReviewFilter = (typeof REVIEW_FILTERS)[number];
+
+/** A user-named product as an administrator reviews it. */
+export interface ProductForReview {
+  barcode: string;
+  status: 'known' | 'pendingReview' | 'rejected';
+  nameAr: string | null;
+  nameEn: string | null;
+  category: FoodCategory | null;
+  catalogueId: string | null;
+  quantity: number | null;
+  unit: Unit | null;
+  reviewedBy: string | null;
+  reviewNote: string | null;
+  reviewedAt: string | null;
+  suggestedAt: string;
+  /** The closest catalogue items to its name, for the administrator to pick from. */
+  candidates: { id: string; nameAr: string; nameEn: string; category: FoodCategory }[];
+}
+
+/** Offered by Expiry to Pantry and Administration: barcoded products and their review. */
 export interface IProductCatalogue {
   /** Saves a user's name for an unknown barcode; false when the barcode is already known. */
   suggest(suggestedBy: string, barcode: string, s: { nameAr: string; nameEn?: string }): Promise<{ saved: boolean }>;
   /** Applies a review to a pending suggestion; a known product is never changed. */
   applyReview(barcode: string, decision: ProductReviewDecision): Promise<void>;
+  /** User-named products for an administrator, newest first. */
+  listForReview(filter: ReviewFilter): Promise<ProductForReview[]>;
+  /** An administrator's decision, which may overrule the AI's. False when the barcode has no user-named product. */
+  decide(barcode: string, decision: ProductReviewDecision): Promise<boolean>;
 }
 
 export const PRODUCT_CATALOGUE = Symbol('IProductCatalogue');

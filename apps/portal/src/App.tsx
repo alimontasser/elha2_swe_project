@@ -5,6 +5,7 @@ import { Layout } from './components/Layout'
 import { HOME_FOR_ROLE } from './domain/roles'
 import type { Role } from './domain/types'
 import { AdminOrgDetail } from './pages/AdminOrgDetail'
+import { AdminProducts } from './pages/AdminProducts'
 import { AdminQueue } from './pages/AdminQueue'
 import { Notifications } from './pages/Notifications'
 import { OrgDashboard } from './pages/OrgDashboard'
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/offers" element={<RequireRole roles={['ngoCoordinator']}><ComingSoon sprint={3} title={t('nav.offers')} /></RequireRole>} />
         <Route path="/admin" element={<RequireRole roles={['admin']}><AdminQueue /></RequireRole>} />
         <Route path="/admin/organisations/:id" element={<RequireRole roles={['admin']}><AdminOrgDetail /></RequireRole>} />
+        <Route path="/admin/products" element={<RequireRole roles={['admin']}><AdminProducts /></RequireRole>} />
         <Route path="/notifications" element={<Notifications />} />
       </Route>
       <Route path="*" element={<Navigate to={session ? HOME_FOR_ROLE[session.role] : '/signin'} replace />} />
