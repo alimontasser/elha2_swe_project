@@ -30,6 +30,7 @@ const ConfigSchema = z
     AI_TIMEOUT_MS: z.coerce.number().int().positive().default(15000),
     AI_DAILY_RECEIPTS_PER_USER: z.coerce.number().int().positive().default(30),
     AI_DAILY_CHAT_PER_USER: z.coerce.number().int().positive().default(40),
+    AI_DAILY_PRODUCT_REVIEWS_PER_USER: z.coerce.number().int().positive().default(20),
     AI_CACHE_DAYS: z.coerce.number().int().positive().default(30),
     GEMINI_API_KEY: optionalText,
     GEMINI_MODEL: z.string().default('gemini-3.5-flash-lite'),

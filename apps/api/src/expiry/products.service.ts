@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Member } from '../accounts/accounts.interfaces';
 import { type ExternalProduct, type IProduct, PRODUCT_SOURCE } from '../adapters/product.interfaces';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -7,8 +6,11 @@ import {
   CATALOGUE_MATCH,
   type CatalogueCandidate,
   type CatalogueEntry,
+  FOOD_CATEGORIES,
   type FoodCategory,
   type ICatalogueMatch,
+  type IProductCatalogue,
+  type ProductReviewDecision,
   type StoragePlace,
   type Unit,
 } from './expiry.interfaces';
@@ -32,14 +34,6 @@ export type ProductView =
     }
   | { barcode: string; found: false; lookupFailed: boolean };
 
-export interface Suggestion {
-  nameAr: string;
-  nameEn?: string;
-  catalogueId?: string | null;
-  quantity?: number;
-  unit?: Unit;
-}
-
 /** "1 l", "400 g", "33 cl", "1.5L" → quantity and unit; null when the text has no size. */
 export function parseQuantity(text?: string): { quantity: number; unit: Unit } | null {
   const m = /([\d]+(?:[.,]\d+)?)\s*(kg|g|l|ml|cl)\b/i.exec(text ?? '');
@@ -53,7 +47,7 @@ export function parseQuantity(text?: string): { quantity: number; unit: Unit } |
 
 /** Expiry module: barcoded products (US-2.03), our table first, then the open product database. */
 @Injectable()
-export class ProductsService {
+export class ProductsService implements IProductCatalogue {
   constructor(
     @Inject(PrismaService) private readonly db: PrismaService,
     @Inject(CATALOGUE_MATCH) private readonly catalogue: ICatalogueMatch,
@@ -64,7 +58,8 @@ export class ProductsService {
     const entry: CatalogueEntry | undefined = row.catalogueId
       ? (await this.catalogue.byIds([row.catalogueId])).get(row.catalogueId)
       : undefined;
-    const category: FoodCategory = entry?.category ?? 'dry';
+    const own = FOOD_CATEGORIES.find((c) => c === row.category);
+    const category: FoodCategory = own ?? entry?.category ?? 'dry';
     return {
       barcode: row.barcode,
       found: true,
@@ -126,21 +121,55 @@ export class ProductsService {
     return this.view(row);
   }
 
-  /** An unknown barcode, named by a user: saved for an admin to review. Never changes a known product. */
-  async suggest(member: Member, barcode: string, s: Suggestion): Promise<{ saved: boolean }> {
+  /** An unknown barcode, named by a user: saved as pending until it is reviewed. Never changes a known product. */
+  async suggest(suggestedBy: string, barcode: string, sug: { nameAr: string; nameEn?: string }): Promise<{ saved: boolean }> {
     const existing = await this.db.product.findUnique({ where: { barcode } });
     if (existing?.status === 'known') return { saved: false };
     const data = {
-      catalogueId: s.catalogueId ?? null,
-      nameAr: s.nameAr,
-      nameEn: s.nameEn ?? null,
-      quantity: s.quantity === undefined ? null : new Prisma.Decimal(s.quantity),
-      unit: s.unit ?? null,
+      catalogueId: null,
+      category: null,
+      nameAr: sug.nameAr,
+      nameEn: sug.nameEn ?? null,
+      quantity: null,
+      unit: null,
       source: 'user' as const,
       status: 'pendingReview' as const,
-      suggestedBy: member.userId,
+      suggestedBy,
+      reviewedBy: null,
+      reviewNote: null,
+      reviewedAt: null,
     };
     await this.db.product.upsert({ where: { barcode }, create: { barcode, ...data }, update: data });
     return { saved: true };
+  }
+
+  async applyReview(barcode: string, d: ProductReviewDecision, now = new Date()): Promise<void> {
+    const review = { reviewedBy: d.reviewedBy, reviewNote: d.note.slice(0, 200), reviewedAt: now };
+    if (d.status === 'pendingReview') {
+      // Still undecided: keep the reviewer's note for the admin who decides.
+      await this.db.product.updateMany({ where: { barcode, status: 'pendingReview' }, data: { reviewNote: review.reviewNote } });
+      return;
+    }
+    if (d.status === 'rejected') {
+      // A rejected text is not kept: only the decision and its reason are.
+      await this.db.product.updateMany({
+        where: { barcode, status: 'pendingReview' },
+        data: { status: 'rejected', ...review, nameAr: null, nameEn: null },
+      });
+      return;
+    }
+    await this.db.product.updateMany({
+      where: { barcode, status: 'pendingReview' },
+      data: {
+        status: 'known',
+        ...review,
+        nameAr: d.nameAr,
+        nameEn: d.nameEn,
+        category: d.category ?? null,
+        catalogueId: d.catalogueId ?? null,
+        quantity: d.quantity ? new Prisma.Decimal(d.quantity) : null,
+        unit: d.quantity ? (d.unit ?? null) : null,
+      },
+    });
   }
 }

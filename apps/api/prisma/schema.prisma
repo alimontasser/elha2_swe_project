@@ -115,13 +115,14 @@ enum ProductSource {
 enum ProductStatus {
   known
   pendingReview @map("pending_review")
+  rejected
 
   @@map("product_status")
   @@schema("expiry")
 }
 
-/// A packaged product found by its barcode: from Open Food Facts, or suggested by a user for an
-/// admin to review (US-2.03). It points to the catalogue item that gives its shelf life.
+/// A packaged product found by its barcode: from Open Food Facts, or named by a user and reviewed
+/// by the AI gateway (US-2.03). It points to the catalogue item that gives its shelf life.
 model Product {
   barcode     String        @id
   catalogueId String?       @map("catalogue_id")
@@ -132,7 +133,12 @@ model Product {
   unit        String?
   source      ProductSource
   status      ProductStatus
+  category    String?
   suggestedBy String?       @map("suggested_by") @db.Uuid
+  /// "ai" or "admin": who decided on a user's suggestion, why, and when.
+  reviewedBy  String?       @map("reviewed_by")
+  reviewNote  String?       @map("review_note")
+  reviewedAt  DateTime?     @map("reviewed_at") @db.Timestamptz(3)
   createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 

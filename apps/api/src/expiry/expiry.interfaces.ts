@@ -46,3 +46,26 @@ export interface IEstimateExpiry {
 
 export const CATALOGUE_MATCH = Symbol('ICatalogueMatch');
 export const ESTIMATE_EXPIRY = Symbol('IEstimateExpiry');
+
+/** A decision on a user's name for an unknown barcode (US-2.03). */
+export interface ProductReviewDecision {
+  status: 'known' | 'rejected' | 'pendingReview';
+  reviewedBy: 'ai' | 'admin';
+  note: string;
+  nameAr?: string;
+  nameEn?: string;
+  category?: FoodCategory;
+  catalogueId?: string | null;
+  quantity?: number | null;
+  unit?: Unit | null;
+}
+
+/** Offered by Expiry to Pantry: barcoded products and their review. */
+export interface IProductCatalogue {
+  /** Saves a user's name for an unknown barcode; false when the barcode is already known. */
+  suggest(suggestedBy: string, barcode: string, s: { nameAr: string; nameEn?: string }): Promise<{ saved: boolean }>;
+  /** Applies a review to a pending suggestion; a known product is never changed. */
+  applyReview(barcode: string, decision: ProductReviewDecision): Promise<void>;
+}
+
+export const PRODUCT_CATALOGUE = Symbol('IProductCatalogue');

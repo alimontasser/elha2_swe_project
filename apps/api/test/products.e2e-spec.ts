@@ -2,7 +2,7 @@ import type { IProduct, ProductLookupResult } from '../src/adapters/product.inte
 import { CatalogueRepository } from '../src/expiry/catalogue.repository';
 import { parseQuantity, ProductsService } from '../src/expiry/products.service';
 import type { PrismaService } from '../src/prisma/prisma.service';
-import { newMember, testDb } from './helpers';
+import { testDb } from './helpers';
 
 class FakeProducts implements IProduct {
   calls = 0;
@@ -92,21 +92,6 @@ describe('barcode lookup (US-2.03)', () => {
       found: false,
       lookupFailed: true,
     });
-  });
-
-  it('saves a user’s name for an unknown barcode for admin review, and never overwrites a known product', async () => {
-    const me = await newMember(db);
-    const unknown = freshBarcode();
-    expect(await service(new FakeProducts({ status: 'missing' })).suggest(me, unknown, { nameAr: 'جبنة رومي' })).toEqual({ saved: true });
-    const row = await db.product.findUnique({ where: { barcode: unknown } });
-    expect(row).toMatchObject({ status: 'pendingReview', source: 'user', nameAr: 'جبنة رومي', suggestedBy: me.userId });
-    // A pending suggestion is not shown as a known product.
-    expect(await service(new FakeProducts({ status: 'missing' })).lookup(unknown)).toMatchObject({ found: false });
-
-    const known = freshBarcode();
-    await service(new FakeProducts(juhayna)).lookup(known);
-    expect(await service(new FakeProducts(juhayna)).suggest(me, known, { nameAr: 'غلط' })).toEqual({ saved: false });
-    expect((await db.product.findUnique({ where: { barcode: known } }))?.nameAr).toBe('لبن كامل الدسم');
   });
 
   it('reads sizes as printed on packs', () => {

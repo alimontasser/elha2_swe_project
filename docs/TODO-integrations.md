@@ -36,7 +36,8 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
   - **receipt photos (decided 07/11/2026):** the app sends the photo to the AI gateway, and Gemini (backup: Groq `qwen/qwen3.8-27b`) reads it. This replaces on-phone ML Kit OCR, which can't read Arabic. Record it in:
     - US-14.03 and the SDD's privacy design: for photos, masking happens on the server right after the model reads the text; the photo is never stored, cached or logged;
     - the SDD AI-context table ("Read a receipt"): the photo is now sent;
-    - NFR-13 consent text: name Google, and say that free tiers may use the photo for training.
+    - NFR-13 consent text: name Google, and say that free tiers may use the photo for training;
+  - **US-2.03 acceptance test (decided 07/11/2026):** "unknown barcodes saved for admin review" becomes "reviewed by the AI gateway; an admin decides only when the AI is unsure". Add `reviewProduct` to the SDD AI task table (context: the typed name, masked, plus the 5 closest catalogue items; output: decision, names, category, size, confidence).
 - [ ] Add revision-history rows and tag `docs-v1.2`.
 
 ## Code (real Sprint 1)
@@ -50,7 +51,8 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
   - [x] `/pantry/receipts` (typed lines) and `/pantry/receipts/photo` (photo), draft → confirm in one transaction, drafts purged after 24 h. The app's "Confirm all" saves through the backend when `ELHA2_API_URL` is set.
   - [x] `/pantry/items` (US-2.07, 2.10, 2.11): the app loads its pantry from the backend when `ELHA2_API_URL` is set. Changes made offline are queued on the phone and sent later (NFR-21).
   - [x] Barcodes (US-2.03): `/products/:barcode` checks our products, then Open Food Facts (`world.openfoodfacts.org` is allowed in the cloud environment). The app scans with `mobile_scanner` (ML Kit on Android) or takes a typed number, and remembers products on the phone for offline scans. Unknown barcodes are saved as `pending_review`.
-  - [ ] Portal screen for admins to review pending barcodes (`expiry.product` where `status = 'pending_review'`).
+  - [x] Unknown barcodes are reviewed by the AI gateway (`reviewProduct` task), not an admin. When it is at least 70% sure, it accepts (clean names, category, size, catalogue match) or rejects (not food, nonsense, personal details), and records `reviewed_by = 'ai'` and its reason. Rejected text isn't kept.
+  - [ ] Portal screen for the rest: names the AI was unsure about, or got while it was down, stay `pending_review` with the AI's note.
 - [ ] **AI gateway (US-14.01):**
   - prompt registry and context builder;
   - schema validation, cache and AIRequestLog;

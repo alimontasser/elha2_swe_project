@@ -32,6 +32,20 @@ export interface ReceiptPhotoReading {
   requestId: string;
 }
 
+export interface ProductReviewOutcome {
+  decision: 'accept' | 'reject' | 'unsure';
+  reason: string;
+  nameAr: string;
+  nameEn: string;
+  category: string;
+  catalogueId: string | null;
+  quantity: number | null;
+  unit: string | null;
+  confidence: number;
+  fallbackUsed: boolean;
+  requestId: string;
+}
+
 /**
  * Offered by the AI gateway to the feature modules (SDD §3.2.4). Each operation returns a result,
  * a confidence and whether the fallback was used. More tasks (voice, photos, recipes) join in later sprints.
@@ -40,6 +54,8 @@ export interface IAI {
   parseReceipt(lines: string[], ctx: { userId: string; shopName?: string }): Promise<ReceiptReading>;
   /** US-2.01 from a photo: the model copies the receipt's lines. The photo is never stored. */
   readReceiptPhoto(photo: ImagePart, ctx: { userId: string }): Promise<ReceiptPhotoReading>;
+  /** US-2.03: reviews a user's name for an unknown barcode, in place of an admin. */
+  reviewProduct(input: { barcode: string; name: string }, ctx: { userId: string }): Promise<ProductReviewOutcome>;
   /** US-4.02: a cooking question answered from the household's pantry (NFR-07 checked). */
   askCookingAssistant(input: CookingAssistantInput, ctx: { userId: string }): Promise<AssistantAnswer>;
   /** The person changed the AI's answer before saving it (feeds US-14.04). */

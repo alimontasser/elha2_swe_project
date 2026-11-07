@@ -144,7 +144,11 @@ With `ELHA2_API_URL` set, the pantry lives in the database.
 **Add food → Scan barcode** (US-2.03):
 - Point the camera at the barcode, or type its number.
 - A known product fills in its name, size, storage place and estimated expiry → **Add to pantry**, with Undo.
-- **Unknown product:** type its name to add it. It's sent for admin review.
+- **Unknown product:** type its name to add it. The AI then reviews the name.
+  - If it's a real food or drink, the AI cleans the Arabic and English names, sets the category and size, and matches it to the catalogue. The next person who scans that barcode gets it filled in, and still confirms with **Add to pantry**.
+  - Nonsense, non-food and personal details are rejected.
+  - Names the AI is unsure about wait for an admin.
+  - Live check: "جبنه رومي دومتي ٢٥٠ جم" became *Domty Roumi Cheese*, 250 g, dairy. A phone charger, "asdf test" and a name with a phone number were rejected.
 - **Offline:** products scanned before are found on the phone.
 - **Demo barcodes without the backend:** `6223000000017` (Juhayna milk), `5449000000996` (Coca-Cola).
 
