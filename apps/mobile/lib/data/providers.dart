@@ -6,6 +6,7 @@ import 'api/api_cooking_assistant.dart';
 import 'api/api_notifications_backend.dart';
 import 'api/api_receipt_ai_service.dart';
 import 'mock/mock_services.dart';
+import 'photo_picker.dart';
 import 'fcm/fcm_notification_service.dart';
 import 'fcm/firebase_config.dart';
 import 'fcm/push_client.dart';
@@ -51,6 +52,11 @@ final receiptAiServiceProvider = Provider<ReceiptAiService>(
       ? ApiReceiptAiService(baseUrl: _apiUrl, token: ref.watch(apiTokenProvider))
       : MockReceiptAiService(shouldFail: () => ref.read(settingsProvider).simulateAiFailure),
 );
+
+/// Receipt photos are read by the backend's AI gateway, so the photo buttons need it.
+final receiptPhotosEnabledProvider = Provider<bool>((ref) => _apiUrl.isNotEmpty);
+
+final photoPickerProvider = Provider<Future<PickedPhoto?> Function({required bool camera})>((ref) => pickReceiptPhoto);
 
 final cookingAssistantProvider = Provider<CookingAssistant>(
   (ref) => _apiUrl.isNotEmpty

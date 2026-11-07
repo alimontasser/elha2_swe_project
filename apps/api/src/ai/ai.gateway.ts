@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { type AppConfig, CONFIG } from '../config/config';
 import { CATALOGUE_MATCH, type ICatalogueMatch } from '../expiry/expiry.interfaces';
-import { AI_PROVIDERS, AI_STORE, type AssistantAnswer, type IAI, type ReceiptReading } from './ai.interfaces';
+import { AI_PROVIDERS, AI_STORE, type AssistantAnswer, type IAI, type ReceiptPhotoReading, type ReceiptReading } from './ai.interfaces';
 import type { AiStore } from './ai.store';
-import type { LlmProvider } from './providers/provider';
+import type { ImagePart, LlmProvider } from './providers/provider';
 import { AiTaskRunner } from './task-runner';
 import { type CookingAssistantInput, CookingAssistantTask } from './tasks/cooking-assistant/cooking-assistant.task';
 import { ParseReceiptTask } from './tasks/parse-receipt/parse-receipt.task';
+import { ReadReceiptPhotoTask } from './tasks/read-receipt-photo/read-receipt-photo.task';
 
 /** The single entry point to hosted AI models (Facade, SDD D4 / US-14.01). */
 @Injectable()
@@ -14,6 +15,7 @@ export class AiGateway implements IAI {
   private readonly runner: AiTaskRunner;
   private readonly parseReceiptTask: ParseReceiptTask;
   private readonly cookingAssistantTask = new CookingAssistantTask();
+  private readonly readReceiptPhotoTask = new ReadReceiptPhotoTask();
 
   constructor(
     @Inject(CONFIG) private readonly config: AppConfig,
@@ -40,6 +42,15 @@ export class AiGateway implements IAI {
       promptVersion: outcome.promptVersion,
       requestId: outcome.requestId,
     };
+  }
+
+  async readReceiptPhoto(photo: ImagePart, ctx: { userId: string }): Promise<ReceiptPhotoReading> {
+    const outcome = await this.runner.run(
+      this.readReceiptPhotoTask,
+      { photo },
+      { userId: ctx.userId, dailyLimit: this.config.AI_DAILY_RECEIPTS_PER_USER },
+    );
+    return { lines: outcome.result.lines, fallbackUsed: outcome.fallbackUsed, requestId: outcome.requestId };
   }
 
   async askCookingAssistant(input: CookingAssistantInput, ctx: { userId: string }): Promise<AssistantAnswer> {

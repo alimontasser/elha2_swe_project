@@ -150,6 +150,7 @@ class DraftItem {
     required this.storage,
     required this.confidence,
     this.catalogueId,
+    this.expiryDate,
   });
 
   final String id;
@@ -164,6 +165,9 @@ class DraftItem {
 
   /// 0..1 as returned by the AI gateway.
   final double confidence;
+
+  /// The backend's expiry estimate for this item, when the receipt was read by the backend.
+  final DateTime? expiryDate;
 
   bool get isLowConfidence => confidence < 0.7;
 
@@ -181,13 +185,16 @@ class DraftItem {
         category: category,
         storage: storage ?? this.storage,
         confidence: confidence ?? this.confidence,
+        expiryDate: expiryDate,
       );
 }
 
 /// Result of the AI gateway call: items, or the non-AI fallback with the raw lines (NFR-22).
 class ReceiptParseResult {
-  const ReceiptParseResult({required this.items, required this.fallbackUsed, required this.maskedLines});
+  const ReceiptParseResult({required this.items, required this.fallbackUsed, required this.maskedLines, this.draftId});
 
+  /// The backend's draft (kept 24 h); "Confirm all" saves it through the backend. Null in the demo.
+  final String? draftId;
   final List<DraftItem> items;
   final bool fallbackUsed;
   final List<String> maskedLines;

@@ -169,5 +169,12 @@
   "deviceToken": "رمز الجهاز للإشعارات",
   "deviceTokenHint": "الصقه في Firebase ← Messaging ← Send test message.",
   "copy": "انسخ",
-  "copied": "اتنسخ"
+  "copied": "اتنسخ",
+  "receiptTakePhoto": "صوّر الفاتورة",
+  "receiptChoosePhoto": "اختار صورة",
+  "receiptPhotoPrivacy": "الصورة بتتبعت لـ Google Gemini عشان يقرا الحاجات. مش بنحتفظ بيها، والأسامي وأرقام التليفون والكروت بتتخبى قبل ما أي حاجة تتحفظ.",
+  "receiptTrySample": "أو جرّب فاتورة تجريبية",
+  "receiptPhotoUnavailable": "قراية الصور محتاجة سيرفر إلحق. جرّب فاتورة تجريبية بدالها.",
+  "receiptSaveFailed": "مقدرناش نحفظ الحاجات. اتأكد من النت ودوس «أكّد الكل» تاني.",
+  "receiptDraftExpired": "الفاتورة دي اتقرت من أكتر من 24 ساعة. صوّرها تاني."
 }

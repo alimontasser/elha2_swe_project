@@ -58,31 +58,45 @@ class PantryController extends AsyncNotifier<List<PantryItem>> {
     return item;
   }
 
-  /// US-2.02: "Confirm all" saves every reviewed draft item in one go.
-  Future<int> confirmDraft(List<DraftItem> drafts) async {
+  /// US-2.02: the pantry items "Confirm all" will save, with an estimated expiry each
+  /// (the backend's estimate when the receipt was read there).
+  Future<List<({DraftItem draft, PantryItem item})>> itemsFromDrafts(List<DraftItem> drafts) async {
     final catalogue = await ref.read(catalogueRepositoryProvider).all();
     final today = DateTime.now();
     final byId = {for (final c in catalogue) c.id: c};
-    final items = [
+    return [
       for (final d in drafts)
-        PantryItem(
-          id: _newId(),
-          catalogueId: d.catalogueId,
-          nameAr: d.nameAr,
-          nameEn: d.nameEn,
-          category: d.category,
-          quantity: d.quantity,
-          unit: d.unit,
-          storage: d.storage,
-          expiryDate: byId[d.catalogueId] != null ? estimateExpiry(byId[d.catalogueId]!, d.storage, today) : daysAfter(today, 3),
-          expirySource: ExpirySource.estimated,
-          addedBy: CaptureMethod.receipt,
-          addedOn: today,
+        (
+          draft: d,
+          item: PantryItem(
+            id: _newId(),
+            catalogueId: d.catalogueId,
+            nameAr: d.nameAr,
+            nameEn: d.nameEn,
+            category: d.category,
+            quantity: d.quantity,
+            unit: d.unit,
+            storage: d.storage,
+            expiryDate:
+                d.expiryDate ?? (byId[d.catalogueId] != null ? estimateExpiry(byId[d.catalogueId]!, d.storage, today) : daysAfter(today, 3)),
+            expirySource: ExpirySource.estimated,
+            addedBy: CaptureMethod.receipt,
+            addedOn: today,
+          ),
         ),
     ];
+  }
+
+  /// US-2.02: "Confirm all" saves every reviewed draft item in one go.
+  Future<int> confirmDraft(List<DraftItem> drafts) async {
+    final items = await itemsFromDrafts(drafts);
+    await addConfirmed([for (final i in items) i.item]);
+    return items.length;
+  }
+
+  Future<void> addConfirmed(List<PantryItem> items) async {
     await ref.read(pantryRepositoryProvider).addAll(items);
     await _refresh();
-    return items.length;
   }
 
   /// US-2.10: thrown away with a reason from the fixed list (or "other" with a note).

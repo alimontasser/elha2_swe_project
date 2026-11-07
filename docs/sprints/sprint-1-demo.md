@@ -126,3 +126,10 @@ The app uses FCM by default: the public web config of Firebase project `elha2-20
 - Without the key, the API stores the notification but sends nothing.
 
 **Android:** register the app `org.elha2.elha2` in Firebase and use its app ID.
+
+## Real receipt photos
+With `ELHA2_API_URL` set, **Add food → Scan receipt** shows **Take a photo** and **Choose a photo**, with a note that the photo goes to Google Gemini.
+- **How it's read:** the backend has Gemini read the photo (Groq `qwen/qwen3.8-27b` if Gemini fails). It masks names, phone and card numbers in the text, then matches the items as before. The photo is never stored.
+- **Review and Confirm all:** the review screen is the same. **Confirm all** saves through the backend in one transaction. If saving fails, nothing is saved and the review stays open.
+- **Without the backend:** the buttons are hidden, and the sample receipts still work.
+- **Verified on 07/11/2026:** the three labelled receipts, rendered as photos, gave 18/18 items exactly, in 3–4 s each. In Chromium, choosing a photo then Confirm all saved 6 rows in `pantry.pantry_item` and deleted the draft.

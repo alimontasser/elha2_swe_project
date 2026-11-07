@@ -16,7 +16,9 @@ export function providersFromConfig(config: AppConfig): LlmProvider[] {
     if (name === 'gemini' && config.GEMINI_API_KEY) {
       providers.push(new GeminiProvider(config.GEMINI_API_KEY, config.GEMINI_MODEL, config.GEMINI_BASE_URL));
     } else if (name === 'groq' && config.GROQ_API_KEY) {
-      providers.push(new OpenAiCompatibleProvider('groq', config.GROQ_BASE_URL, config.GROQ_API_KEY, config.GROQ_MODEL));
+      providers.push(
+        new OpenAiCompatibleProvider('groq', config.GROQ_BASE_URL, config.GROQ_API_KEY, config.GROQ_MODEL, config.GROQ_VISION_MODEL),
+      );
     } else {
       logger.warn(`AI provider "${name}" is not configured and will be skipped`);
     }

@@ -13,14 +13,19 @@ import type { ConfirmReceiptRequest, DraftItem, ScanReceiptRequest } from './rec
 export const DRAFT_LIFETIME_MS = 24 * 60 * 60 * 1000;
 
 export interface DraftView {
-  id: string;
+  /** Null when there was nothing to read, so no draft was made. */
+  id: string | null;
   items: DraftItem[];
   /** The masked lines, so the app can offer manual entry when the AI could not help. */
   lines: string[];
   fallbackUsed: boolean;
   confidence: number;
-  expiresAt: string;
+  expiresAt: string | null;
 }
+
+/** Photo types the AI providers accept. */
+export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'] as const;
+export const MAX_PHOTO_BYTES = 6 * 1024 * 1024;
 
 /** Pantry module: scan a receipt into a draft, then confirm it into pantry items (US-2.01, US-2.02). */
 @Injectable()
@@ -77,6 +82,21 @@ export class ReceiptsService {
       confidence: Math.round(reading.confidence * 100) / 100,
       expiresAt: new Date(now.getTime() + DRAFT_LIFETIME_MS).toISOString(),
     };
+  }
+
+  /**
+   * US-2.01 from a photo: the AI gateway copies the printed lines (masked on the server, US-14.03),
+   * then the same reading as typed lines. The photo is not stored anywhere.
+   */
+  async scanPhoto(member: Member, photo: { mimeType: string; bytes: Buffer }, now = new Date()): Promise<DraftView> {
+    const read = await this.ai.readReceiptPhoto(
+      { mimeType: photo.mimeType, base64: photo.bytes.toString('base64') },
+      { userId: member.userId },
+    );
+    if (read.lines.length === 0) {
+      return { id: null, items: [], lines: [], fallbackUsed: true, confidence: 0, expiresAt: null };
+    }
+    return this.scan(member, { lines: read.lines }, now);
   }
 
   /** Saves every reviewed item in one transaction and deletes the draft. Nothing is saved before this (NFR-30). */

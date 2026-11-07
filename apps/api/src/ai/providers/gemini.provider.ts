@@ -23,7 +23,15 @@ export class GeminiProvider implements LlmProvider {
       { 'x-goog-api-key': this.apiKey },
       {
         systemInstruction: { parts: [{ text: request.system }] },
-        contents: [{ role: 'user', parts: [{ text: request.user }] }],
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              ...(request.images ?? []).map((i) => ({ inlineData: { mimeType: i.mimeType, data: i.base64 } })),
+              { text: request.user },
+            ],
+          },
+        ],
         generationConfig: {
           temperature: 0,
           responseMimeType: 'application/json',

@@ -16,14 +16,24 @@ export class OpenAiCompatibleProvider implements LlmProvider {
     private readonly baseUrl: string,
     private readonly apiKey: string,
     readonly model: string,
+    /** A model that reads images, used only for requests with photos. */
+    private readonly visionModel?: string,
   ) {}
 
   async complete(request: CompletionRequest): Promise<Completion> {
+    const images = request.images ?? [];
+    if (images.length && !this.visionModel) throw new ProviderError('bad_request', `${this.name} has no vision model configured`);
+    const userContent = images.length
+      ? [
+          { type: 'text', text: request.user },
+          ...images.map((i) => ({ type: 'image_url', image_url: { url: `data:${i.mimeType};base64,${i.base64}` } })),
+        ]
+      : request.user;
     const data = (await postJson(
       `${this.baseUrl.replace(/\/$/, '')}/chat/completions`,
       { authorization: `Bearer ${this.apiKey}` },
       {
-        model: this.model,
+        model: images.length ? this.visionModel : this.model,
         temperature: 0,
         response_format: { type: 'json_object' },
         messages: [
@@ -31,7 +41,7 @@ export class OpenAiCompatibleProvider implements LlmProvider {
             role: 'system',
             content: `${request.system}\n\nAnswer with one JSON object that matches this JSON Schema:\n${JSON.stringify(request.jsonSchema)}`,
           },
-          { role: 'user', content: request.user },
+          { role: 'user', content: userContent },
         ],
       },
       request.timeoutMs,

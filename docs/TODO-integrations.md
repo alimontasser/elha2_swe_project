@@ -32,7 +32,11 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 - [ ] Release SRS/SDD v1.2 with tracked changes:
   - close TBD-01 (Gemini vs Groq, by measured accuracy and cost);
   - replace the wireframes with demo screenshots (`docs/sprints/screenshots/`);
-  - add AIExample and DeviceToken to the data dictionary if they are missing.
+  - add AIExample and DeviceToken to the data dictionary if they are missing;
+  - **receipt photos (decided 07/11/2026):** the app sends the photo to the AI gateway, and Gemini (backup: Groq `qwen/qwen3.8-27b`) reads it. This replaces on-phone ML Kit OCR, which can't read Arabic. Record it in:
+    - US-14.03 and the SDD's privacy design: for photos, masking happens on the server right after the model reads the text; the photo is never stored, cached or logged;
+    - the SDD AI-context table ("Read a receipt"): the photo is now sent;
+    - NFR-13 consent text: name Google, and say that free tiers may use the photo for training.
 - [ ] Add revision-history rows and tag `docs-v1.2`.
 
 ## Code (real Sprint 1)
@@ -42,7 +46,9 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
   - `/api/v1`, OpenAPI, and a `/health` endpoint.
 - [ ] **Accounts:** `/me` (language, location stored as `geography(Point)`, only the area name returned) and `/organisations` with documents saved to a private Storage bucket.
 - [ ] **Administration:** `/admin/verifications` using `IOrgVerify` (approve, reject with a reason, request info). BR-01 is enforced.
-- [ ] **Pantry:** `/pantry/items` (US-2.07, 2.10, 2.11); `/pantry/receipts` with draft → confirm in one transaction, and drafts purged after 24 h.
+- [ ] **Pantry:**
+  - [x] `/pantry/receipts` (typed lines) and `/pantry/receipts/photo` (photo), draft → confirm in one transaction, drafts purged after 24 h. The app's "Confirm all" saves through the backend when `ELHA2_API_URL` is set.
+  - [ ] `/pantry/items` (US-2.07, 2.10, 2.11), so the app loads its pantry from the backend. It still lists items locally.
 - [ ] **AI gateway (US-14.01):**
   - prompt registry and context builder;
   - schema validation, cache and AIRequestLog;
@@ -56,5 +62,5 @@ The Sprint 1 demo runs on mock repositories. These items turn it into the real s
 - [ ] **Worker:** a pg-boss Scheduler worker running as a separate entrypoint.
 - [ ] **CI:** GitHub Actions for lint and tests (api, portal, mobile).
 - [ ] **Switch the clients to the real adapters:**
-  - mobile: `apps/mobile/lib/data/providers.dart`, plus real ML Kit OCR and FCM;
+  - mobile: `apps/mobile/lib/data/providers.dart` (Supabase sign-in, receipt photos, the cooking assistant and FCM are switched over; the pantry list and location are still mocks);
   - portal: `apps/portal/src/api/index.ts`.

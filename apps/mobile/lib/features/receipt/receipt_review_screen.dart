@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../app/labels.dart';
 import '../../app/theme.dart';
 import '../../data/models.dart';
+import '../../data/providers.dart';
+import '../../data/repositories.dart';
 import '../../state/pantry.dart';
 import 'receipt_scan_screen.dart';
 
@@ -35,10 +37,27 @@ class _ReceiptReviewScreenState extends ConsumerState<ReceiptReviewScreen> {
 
   Future<void> _confirm() async {
     setState(() => _saving = true);
-    final count = await ref.read(pantryProvider.notifier).confirmDraft(_items.where((i) => !_isUnknown(i)).toList());
+    final pantry = ref.read(pantryProvider.notifier);
+    final confirmed = await pantry.itemsFromDrafts(_items.where((i) => !_isUnknown(i)).toList());
+    final draftId = widget.result?.draftId;
+    if (draftId != null) {
+      // Read by the backend: save there first, in one transaction. On failure nothing is saved.
+      try {
+        await ref.read(receiptAiServiceProvider).confirm(draftId, confirmed);
+      } on ReceiptSaveException catch (e) {
+        if (!mounted) return;
+        setState(() => _saving = false);
+        final l = context.l10n;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(e.expired ? l.receiptDraftExpired : l.receiptSaveFailed)));
+        return;
+      }
+    }
+    await pantry.addConfirmed([for (final c in confirmed) c.item]);
     if (!mounted) return;
     final messenger = ScaffoldMessenger.of(context);
-    final message = context.l10n.itemsAdded(count);
+    final message = context.l10n.itemsAdded(confirmed.length);
     context.go('/pantry');
     messenger.showSnackBar(SnackBar(content: Text(message)));
   }

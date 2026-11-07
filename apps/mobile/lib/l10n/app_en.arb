@@ -260,5 +260,12 @@
   "deviceToken": "Push device token",
   "deviceTokenHint": "Paste it in Firebase → Messaging → Send test message.",
   "copy": "Copy",
-  "copied": "Copied"
+  "copied": "Copied",
+  "receiptTakePhoto": "Take a photo",
+  "receiptChoosePhoto": "Choose a photo",
+  "receiptPhotoPrivacy": "The photo is sent to Google Gemini to read the items. It isn't stored, and names, phone and card numbers are hidden before anything is saved.",
+  "receiptTrySample": "Or try a sample receipt",
+  "receiptPhotoUnavailable": "Reading photos needs the Elha2 server. Try a sample receipt instead.",
+  "receiptSaveFailed": "We couldn't save the items. Check your connection and tap Confirm all again.",
+  "receiptDraftExpired": "This receipt was read more than 24 hours ago. Scan it again."
 }

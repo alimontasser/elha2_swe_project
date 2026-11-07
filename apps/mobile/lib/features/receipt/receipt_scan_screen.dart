@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,8 +11,8 @@ import '../../data/mock/mock_data.dart';
 import '../../data/models.dart';
 import '../../data/providers.dart';
 
-/// US-2.01 + US-14.03: read the receipt on the phone, hide personal data, then ask the AI gateway.
-/// Demo camera: the user picks a sample receipt instead of taking a photo.
+/// US-2.01 + US-14.03. With the backend: take or choose a photo, which the backend has the AI
+/// read and then masks. Without it, or as a demo: pick a sample receipt, masked on the phone.
 class ReceiptScanScreen extends ConsumerStatefulWidget {
   const ReceiptScanScreen({super.key});
 
@@ -21,7 +23,22 @@ class ReceiptScanScreen extends ConsumerStatefulWidget {
 class _ReceiptScanScreenState extends ConsumerState<ReceiptScanScreen> {
   SampleReceipt _receipt = sampleReceipts.first;
   MaskResult? _masked;
+  Uint8List? _photo;
   bool _busy = false;
+
+  /// US-2.01 from a real photo: the backend reads it and masks the lines (US-14.03).
+  Future<void> _readPhoto({required bool camera}) async {
+    final picked = await ref.read(photoPickerProvider)(camera: camera);
+    if (picked == null || !mounted) return;
+    setState(() {
+      _busy = true;
+      _photo = picked.bytes;
+    });
+    final result = await ref.read(receiptAiServiceProvider).readPhoto(picked.bytes, mimeType: picked.mimeType);
+    if (!mounted) return;
+    setState(() => _busy = false);
+    context.pushReplacement('/add/receipt/review', extra: result);
+  }
 
   Future<void> _read() async {
     setState(() {
@@ -46,7 +63,55 @@ class _ReceiptScanScreenState extends ConsumerState<ReceiptScanScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (_masked == null) ...[
+          if (_photo != null) ...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.memory(_photo!, height: 320, fit: BoxFit.contain),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                const SizedBox(width: 12),
+                Text(l.readingReceipt),
+              ],
+            ),
+          ] else if (_masked == null) ...[
+            if (ref.watch(receiptPhotosEnabledProvider)) ...[
+              Card(
+                color: Elha2Colors.greenSoft,
+                child: ListTile(
+                  leading: const Icon(Icons.privacy_tip_outlined, color: Elha2Colors.green),
+                  title: Text(l.receiptPhotoPrivacy),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  FilledButton.icon(
+                    key: const Key('takePhoto'),
+                    onPressed: _busy ? null : () => _readPhoto(camera: true),
+                    icon: const Icon(Icons.photo_camera_outlined),
+                    label: Text(l.receiptTakePhoto),
+                  ),
+                  OutlinedButton.icon(
+                    key: const Key('choosePhoto'),
+                    onPressed: _busy ? null : () => _readPhoto(camera: false),
+                    icon: const Icon(Icons.photo_library_outlined),
+                    label: Text(l.receiptChoosePhoto),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(l.receiptTrySample, style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 8),
+            ] else ...[
+              Text(l.receiptPhotoUnavailable, style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: 12),
+            ],
             Text(l.receiptChoose, style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 8),
             SegmentedButton<String>(

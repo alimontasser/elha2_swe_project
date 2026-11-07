@@ -1,3 +1,5 @@
+export { stripForeignScripts } from '../../text-cleanup';
+
 // NFR-07: recipe and chat output is checked for unsafe food handling (WHO Five Keys to Safer
 // Food) and for medical or nutritional advice, after the model answers and before the user sees it.
 // The patterns are a backstop to the prompt, not a replacement for it.
@@ -24,11 +26,6 @@ const MEDICAL: RegExp[] = [
 
 const LEFTOVERS =
   /\b(leftover|left over|reheat|yesterday'?s|cooked (rice|chicken|meat|pasta))|بايت|فاضل من|متبقي|سخّن|سخن|تسخين|من امبارح|مطبوخ/i;
-
-/** Small models sometimes slip a letter from another script into Arabic text; keep Arabic, Latin and shared marks only. */
-export function stripForeignScripts(text: string): string {
-  return text.replace(/[^\p{Script=Arabic}\p{Script=Latin}\p{Script=Common}\p{Script=Inherited}]/gu, '').replace(/ {2,}/g, ' ');
-}
 
 export function isUnsafe(text: string): boolean {
   return UNSAFE_HANDLING.some((p) => p.test(text));

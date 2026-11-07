@@ -3,12 +3,14 @@ import { Logger } from '@nestjs/common';
 import type { z } from 'zod';
 import { cairoDate } from '../common/text';
 import type { AiStore } from './ai.store';
-import { type LlmProvider, ProviderError } from './providers/provider';
+import { type ImagePart, type LlmProvider, ProviderError } from './providers/provider';
 
 /** The context a task's prompt is built from (SDD Fig. 3.5, steps 1–4). */
 export interface PreparedPrompt<S> {
   system: string;
   user: string;
+  /** Photos the model reads with the prompt, e.g. a receipt photo. Never cached or logged. */
+  images?: ImagePart[];
   /** Task-specific data reused by the checks and the fallback, e.g. catalogue candidates. */
   state: S;
 }
@@ -158,6 +160,7 @@ export class AiTaskRunner {
             user: feedback ? `${prompt.user}\n\n${feedback}` : prompt.user,
             jsonSchema: task.jsonSchema,
             timeoutMs: this.options.timeoutMs,
+            images: prompt.images,
           });
           let json: unknown;
           try {

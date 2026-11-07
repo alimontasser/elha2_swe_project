@@ -37,6 +37,11 @@ const ConfigSchema = z
     GROQ_API_KEY: optionalText,
     GROQ_MODEL: z.string().default('openai/gpt-oss-120b'),
     GROQ_BASE_URL: z.url().default('https://api.groq.com/openai/v1'),
+    // Backup reader for receipt photos; set it to an empty string to use Gemini only.
+    GROQ_VISION_MODEL: z
+      .string()
+      .default('qwen/qwen3.8-27b')
+      .transform((v) => v.trim() || undefined),
 
     // Push notifications (US-11.01): path to the Firebase service-account JSON (never committed).
     // Without it, notifications are stored and listed but not pushed.

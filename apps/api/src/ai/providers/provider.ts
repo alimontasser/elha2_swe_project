@@ -23,6 +23,13 @@ export interface CompletionRequest {
   /** JSON Schema of the expected answer. Providers that support it enforce it natively. */
   jsonSchema: Record<string, unknown>;
   timeoutMs: number;
+  /** Photos sent with the prompt (receipt photos). Providers that cannot read images refuse with bad_request. */
+  images?: ImagePart[];
+}
+
+export interface ImagePart {
+  mimeType: string;
+  base64: string;
 }
 
 export interface Completion {

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/attempt_limiter.dart';
 import '../../core/phone.dart';
+import '../../core/pii_masker.dart';
 import '../models.dart';
 import '../repositories.dart';
 import 'mock_data.dart';
@@ -145,6 +146,17 @@ class MockReceiptAiService implements ReceiptAiService {
     }
     return ReceiptParseResult(items: cannedReceiptResults[sampleId] ?? const [], fallbackUsed: false, maskedLines: maskedLines);
   }
+
+  /// Demo: any photo "reads" as the first sample receipt, masked as the server would.
+  @override
+  Future<ReceiptParseResult> readPhoto(Uint8List bytes, {required String mimeType}) {
+    final sample = sampleReceipts.first;
+    return parseReceipt(const PiiMasker().mask(sample.ocrLines).lines, sampleId: sample.id);
+  }
+
+  /// Demo: confirmed items are kept in the app only.
+  @override
+  Future<void> confirm(String draftId, List<({DraftItem draft, PantryItem item})> items) async {}
 }
 
 class MockNotificationService implements NotificationService {

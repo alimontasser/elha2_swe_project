@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'models.dart';
 
 // Interfaces the screens depend on (Repository pattern, SDD v1.1 §3.1.4).
@@ -49,6 +51,21 @@ abstract interface class ReceiptAiService {
   /// US-2.01 via the AI gateway (US-14.01): masked lines in, draft items with confidence out,
   /// or the non-AI fallback with the lines only.
   Future<ReceiptParseResult> parseReceipt(List<String> maskedLines, {required String sampleId});
+
+  /// US-2.01 from a photo: the backend has the AI read it, then masks the lines (US-14.03).
+  /// The photo is not stored. A photo that cannot be read gives the fallback with no lines.
+  Future<ReceiptParseResult> readPhoto(Uint8List bytes, {required String mimeType});
+
+  /// US-2.02 "Confirm all" through the backend: saves the reviewed items in one transaction.
+  /// Throws [ReceiptSaveException] when nothing was saved.
+  Future<void> confirm(String draftId, List<({DraftItem draft, PantryItem item})> items);
+}
+
+class ReceiptSaveException implements Exception {
+  const ReceiptSaveException({this.expired = false});
+
+  /// The draft is older than 24 hours; the receipt must be scanned again.
+  final bool expired;
 }
 
 abstract interface class CookingAssistant {
